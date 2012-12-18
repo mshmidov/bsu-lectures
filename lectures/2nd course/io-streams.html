@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>java.io</title>
+
+		<meta name="author" content="Maxim Shmidov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="reveal/css/reveal.css">
+        <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+        <script src="reveal/lib/js/html5shiv.js"></script>
+        <![endif]-->
+
+	</head>
+
+	<body>
+
+        <div id="exadel-header"></div>
+
+		<div class="reveal">
+			<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+
+                <section id="intro">
+                    <h1>Вступление</h1>
+                    <p>Пакет <strong>java.io</strong> содержит фундаментальные классы, отвечающие за ввод и вывод данных.</p>
+                    <dl>
+                        <dt>Поток данных (Stream)</dt>
+                        <dd>обмен данными со сторонними ресурсами</dd>
+                        <dt>InputStream</dt>
+                        <dd>мы читаем из ресурса</dd>
+                        <dt>OutputStream</dt>
+                        <dd>мы пишем в ресурс</dd>
+                        <dt>Ресурс</dt>
+                        <dd>буфер в памяти, файл, сетевой сокет и.т.п.</dd>
+                    </dl>
+                </section>
+
+                <section id="input-stream">
+                    <h1>Ввод</h1>
+                    <h2>java.io.InputStream</h2>
+                    <aside><small>
+                        <h2>Поток умеет:</h2>
+                        <ul>
+                            <li>Читать байты</li>
+                            <li>Пропускать байты</li>
+                            <li>Узнавать количество доступных байт</li>
+                            <li>Закрываться</li>
+                            <li>Запоминать позицию</li>
+                            <li>Возвращаться к позиции</li>
+                        </ul>
+
+                    </small></aside>
+                    <pre><code class="java">public abstract class InputStream {
+
+    public abstract int read() throws IOException;
+
+    public int read(byte b[]) throws IOException;
+
+    public long skip(long n) throws IOException;
+
+    public int available() throws IOException;
+
+    public void close() throws IOException;
+
+    public synchronized void mark(int readlimit);
+
+    public synchronized void reset();
+
+    public boolean markSupported();
+}</code></pre>
+
+                </section>
+
+                <section id="input-stream-descendants">
+
+                    <section id="input-stream-descendants-1">
+                        <h1>Потомки класса InputStream (1/2)</h1>
+
+                        <h3><strong>FileInputStream:</strong> читаем из файла</h3>
+                        <pre><code class="java">public FileInputStream(String name) throws FileNotFoundException;
+
+public FileInputStream(File file) throws FileNotFoundException;</code></pre>
+
+                        <h3><strong>ByteArrayInputStream:</strong> читаем из массива байт</h3>
+                        <pre><code class="java">public ByteArrayInputStream(byte buf[]);</code></pre>
+
+                        <h3><strong>BufferedInputStream:</strong> читаем с буферизацией</h3>
+                        <pre><code class="java">public BufferedInputStream(InputStream in);</code></pre>
+
+                    </section>
+
+                    <section id="input-stream-descendants-2">
+                        <h1>Потомки класса InputStream (2/2)</h1>
+                        <h3><strong>DataInputStream:</strong> читаем примитивные типы</h3>
+                        <pre><code class="java">public DataInputStream(InputStream in);
+
+public final boolean readBoolean() throws IOException;
+
+public final int readInt() throws IOException;
+
+public final long readLong() throws IOException;
+
+public final double readDouble() throws IOException;</code></pre>
+
+                        <h3><strong>ObjectInputStream:</strong> читаем объекты</h3>
+                        <pre><code class="java">public final Object readObject() throws IOException, ClassNotFoundException;
+
+// Прочитанный объект нужно привести к конкретному типу:
+final MyObject myObject = (MyObject) stream.readObject()</code></pre>
+
+                    </section>
+
+                </section>
+
+                <section id="input-streams-chaining">
+
+                    <h1>Потоки читают из потоков</h1>
+                    <img src="" alt="">
+                    <pre><code class="java">final FileInputStream fileInputStream = new FileInputStream("objects.dat");
+final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+final ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
+
+final Object result = objectInputStream.readObject();</code></pre>
+
+                </section>
+
+                <section id="reader">
+                    <h1>Читаем строки</h1>
+                    <h2>java.io.Reader</h2>
+                    <aside><small>
+                        <h2>Reader умеет:</h2>
+                        <ul>
+                            <li>Читать байты</li>
+                            <li><strong>Читать символы</strong></li>
+                            <li><strong>Пропускать символы</strong></li>
+                            <li><strong>Узнавать, есть ли доступные символы</strong></li>
+                            <li>Закрываться</li>
+                            <li>Запоминать позицию</li>
+                            <li>Возвращаться к позиции</li>
+                        </ul>
+                    </small></aside>
+
+                    <pre><code class="java">public abstract class Reader implements Readable, Closeable {
+
+    public int read() throws IOException;
+
+    public int read(char cbuf[]) throws IOException;
+
+    public long skip(long n) throws IOException;
+
+    public boolean ready() throws IOException;
+
+    public abstract void close() throws IOException;
+
+    public void mark(int readAheadLimit) throws IOException;
+
+    public void reset() throws IOException;
+
+    public boolean markSupported();
+}</code></pre>
+                </section>
+
+                <section id="reader-descendants">
+                    <h1>Потомки класса Reader</h1>
+
+                    <h3><strong>InputStreamReader:</strong> читаем из потока</h3>
+                    <pre><code class="java">public InputStreamReader(InputStream in);
+
+public InputStreamReader(InputStream in, String charsetName);</code></pre>
+
+                    <h3><strong>CharArrayReader:</strong> читаем из массива символов</h3>
+                    <pre><code class="java">public CharArrayReader(char buf[]);</code></pre>
+
+                    <h3><strong>StringReader:</strong> читаем из строки</h3>
+                    <pre><code class="java">public StringReader(String s);</code></pre>
+
+                    <h3><strong>BufferedReader:</strong> читаем с буферизацией, читаем строки.</h3>
+                    <pre><code class="java">public BufferedReader(Reader in);
+
+public String readLine() throws IOException</code></pre>
+
+                </section>
+
+                <section id="output-stream">
+                    <h1>Вывод</h1>
+                    <h2>java.io.OutputStream</h2>
+                    <aside><small>
+                        <h2>Поток умеет:</h2>
+                        <ul>
+                            <li>Записывать байты</li>
+                            <li>Принудительно проталкивать буфер</li>
+                            <li>Закрываться</li>
+
+                        </ul>
+
+                    </small></aside>
+                        <pre><code class="java">public abstract class OutputStream {
+
+    public abstract void write(int b) throws IOException;
+
+    public void write(byte b[]) throws IOException;
+
+    public void flush() throws IOException;
+
+    public void close() throws IOException;
+}</code></pre>
+
+                </section>
+
+                <section id="output-stream-descendants">
+
+                    <section id="output-stream-descendants-1">
+                        <h1>Потомки класса OutputStream (1/2)</h1>
+
+                        <h3><strong>FileOutputStream:</strong> пишем в файл</h3>
+                            <pre><code class="java">public FileOutputStream(String name) throws FileNotFoundException;
+
+public FileOutputStream(String name, boolean append) throws FileNotFoundException;
+
+public FileOutputStream(File file) throws FileNotFoundException;
+
+public FileOutputStream(File file, boolean append) throws FileNotFoundException;</code></pre>
+
+                        <h3><strong>ByteArrayOutputStream:</strong> пишем в массив байт</h3>
+                        <pre><code class="java">public synchronized void writeTo(OutputStream out);
+
+public synchronized byte[] toByteArray();
+
+public synchronized String toString();</code></pre>
+
+                        <h3><strong>BufferedOutputStream:</strong> пишем с буферизацией</h3>
+                        <pre><code class="java">public BufferedOutputStream(OutputStream out);</code></pre>
+
+                    </section>
+
+                    <section id="output-stream-descendants-2">
+                        <h1>Потомки класса OutputStream (2/2)</h1>
+                        <h3><strong>DataOutputStream:</strong> пишем примитивные типы</h3>
+                            <pre><code class="java">public DataOutputStream(OutputStream out);
+
+public final void writeBoolean(boolean v) throws IOException;
+
+public final void writeInt(int v) throws IOException;
+
+public final void writeLong(long v) throws IOException;
+
+public final void writeDouble(double v) throws IOException;</code></pre>
+
+                        <h3><strong>ObjectOutputStream:</strong> пишем объекты</h3>
+                            <pre><code class="java">public ObjectOutputStream(OutputStream out) throws IOException;
+
+public final void writeObject(Object obj) throws IOException;</code></pre>
+
+                    </section>
+
+                </section>
+
+                <section id="writer">
+                    <h1>Пишем строки</h1>
+                    <h2>java.io.Writer</h2>
+                    <aside><small>
+                        <h2>Writer умеет:</h2>
+                        <ul>
+                            <li>Записывать символы</li>
+                            <li>Записывать строки</li>
+                            <li>Принудительно проталкивать буфер</li>
+                            <li>Закрываться</li>
+                        </ul>
+                    </small></aside>
+
+                        <pre><code class="java">public abstract class Writer
+        implements Appendable, Closeable, Flushable {
+
+    public void write(int c) throws IOException;
+
+    public void write(char cbuf[]) throws IOException;
+
+    public void write(String str) throws IOException;
+
+    abstract public void flush() throws IOException;
+
+    public abstract void close() throws IOException;
+}</code></pre>
+                </section>
+
+                <section id="writer-descendants">
+
+                    <section id="writer-descendants-1">
+
+                        <h1>Потомки класса Writer (1/2)</h1>
+
+                        <h3><strong>OutputStreamReader:</strong> пишем в поток</h3>
+                            <pre><code class="java">public OutputStreamWriter(OutputStream out);
+
+public OutputStreamWriter(OutputStream out, String charsetName) throws UnsupportedEncodingException;</code></pre>
+
+                        <h3><strong>CharArrayWriter:</strong> пишем в массив символов</h3>
+                        <pre><code class="java">public char[] toCharArray();</code></pre>
+
+                        <h3><strong>StringWriter:</strong> пишем в строку</h3>
+                        <pre><code class="java">public String toString();</code></pre>
+
+                        <h3><strong>BufferedWriter:</strong> пишем с буферизацией.</h3>
+                            <pre><code class="java">public BufferedWriter(Writer out);
+
+public void newLine() throws IOException;</code></pre>
+                    </section>
+
+                    <section>
+                        <h1>Потомки класса Writer (2/2)</h1>
+
+                        <h3><strong>PrintWriter:</strong> пишем строки</h3>
+                            <pre><code class="java">public PrintWriter(OutputStream out);
+public PrintWriter(Writer out, boolean autoFlush);
+
+public void print(boolean b);
+public void print(int i);
+public void print(long l);
+public void print(double d);
+public void print(char s[]);
+public void print(String s);
+public void print(Object obj);
+public void println();
+// для всех методов print есть аналог println
+
+public PrintWriter printf(String format, Object ... args);
+                            </code></pre>
+                    </section>
+                </section>
+
+                <section id="close">
+
+                    <section id="close-1">
+                        <h1>Метод close (1/4)</h1>
+                        <h2>Вызывайте close()</h2>
+
+                        <div>
+
+                            <ul>
+                                <li>Освобождаются ресурсы ОС (напр. файловые указатели)</li>
+                                <li>Сбрасывается буфер</li>
+                                <li>Закрывается вся цепочка потоков</li>
+                            </ul>
+
+
+                        <pre><code class="java">final ObjectInputStream objectInputStream = new ObjectInputStream(
+new BufferedInputStream(new FileInputStream("objects.dat")));
+final Object result = objectInputStream.readObject();
+
+objectInputStream.close(); // закрылись все вложенные потоки</code></pre>
+
+                        </div>
+
+                        <h3>Если не вызывать close():</h3>
+                        <ul>
+                            <li>Будет терятся память</li>
+                            <li>Будет тормозить</li>
+                            <li>Рано или поздно рухнет</li>
+                            <li>Виноваты будете вы</li>
+                        </ul>
+
+                    </section>
+
+                    <section id="close-2">
+                        <h1>Метод close (2/4)</h1>
+                        <h2>Вызывайте close() всегда</h2>
+
+                        <p>так было бы хорошо</p>
+
+                        <pre><code class="java">ObjectInputStream objectInputStream = null;
+
+try {
+    objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream("objects.dat")));
+    final Object result = objectInputStream.readObject();
+
+} catch (ClassNotFoundException e) {
+    // do something
+} catch (FileNotFoundException e) {
+    // do something
+} catch (IOException e) {
+    // do something
+
+} finally {
+
+    if (objectInputStream != null) {
+        objectInputStream.close();
+    }
+}</code></pre>
+                        <p>но есть нюанс&hellip;</p>
+
+                    </section>
+
+                    <section id="close-3">
+                        <h1>Метод close (3/4)</h1>
+                        <h2>close() throws IOException</h2>
+
+                        <aside><small>
+                            <h2>Зачем он это делает?</h2>
+                            <ul>
+                                <li>Закрытие указателей ОС - возможны проблемы</li>
+                                <li>Сброс буфера записи - возможны проблемы</li>
+                            </ul>
+                        </small></aside>
+
+                        <pre><code class="java">} finally {
+
+    if (objectInputStream != null) {
+        try {
+            objectInputStream.close();
+        } catch (IOException e) {
+            // ничего конструктивного мы сделать не можем
+            // но логировать надо обязательно
+            // это поможет при диагностике проблемы
+            logger.warn(e);
+        }
+    }
+}</code></pre>
+                        <p>хорошо, но громоздко</p>
+                    </section>
+
+                    <section>
+                        <h1>Метод close (4/4)</h1>
+
+                        <h2>Обобщённое решение</h2>
+                        <pre><code class="java">private void close(Closeable closeable) {
+    if (closeable == null) {
+        return;
+    }
+    try {
+        closeable.close();
+    } catch (IOException e) {
+        logger.warn("IOException thrown while closing Closeable.", e);
+    }
+}</code></pre>
+
+                        <pre><code class="class">} finally {
+    close(objectInputStream);
+}</code></pre>
+                    </section>
+
+
+                </section>
+			</div>
+		</div>
+
+		<script src="reveal/lib/js/head.min.js"></script>
+		<script src="reveal/js/reveal.min.js"></script>
+		<script>
+			Reveal.initialize({
+
+				controls: false,// Display controls in the bottom right corner
+				progress: true,	// Display a presentation progress bar
+				history: false,// Push each slide change to the browser history
+				keyboard: true,// Enable keyboard shortcuts for navigation
+				overview: true,// Enable the slide overview mode
+				center: false,	// Vertical centering of slides
+				loop: false,// Loop the presentation
+				rtl: false,	// Change the presentation direction to be RTL
+				autoSlide: 0,
+				mouseWheel: false,// Enable slide navigation via mouse wheel
+				rollingLinks: false,// Apply a 3D roll to links on hover
+				transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+				 dependencies: [
+			        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+			        { src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+			        // Interpret Markdown in <section> elements
+			        { src: 'reveal/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			        { src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			        // Syntax highlight for <code> elements
+			        { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.tabReplace = '    '; hljs.initHighlightingOnLoad(); } },
+			        // Zoom in and out with Alt+click
+			        { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+			        // Speaker notes
+			        { src: 'reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'reveal/plugin/clock/clock.js', async: true, callback: function() { clock.init("exadel-header"); } }
+			    ]
+			});
+		</script>
+	</body>
+</html>
