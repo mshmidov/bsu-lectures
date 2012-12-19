@@ -222,3 +222,7 @@ body {
     display: block;
     margin: 0.5em auto;
 }
+
+.reveal code.long {
+    max-height: none;
+}
