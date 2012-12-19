@@ -203,6 +203,38 @@ try {
 
                 <section>
                     <h1>java.net.URLConnection</h1>
+
+                    <aside><small>
+                        <h2>URLConnection умеет:</h2>
+                        <ul>
+                            <li>Устанавливать заголовки запроса</li>
+                            <li>Получать информацию из заголовка ответа</li>
+                            <li>Открывать поток для входящих данных</li>
+                            <li>Открывать поток для исходящих данных</li>
+                        </ul>
+                    </small></aside>
+
+                    <pre><code class="java">public abstract class URLConnection {
+
+    public void setRequestProperty(String key, String value);
+
+    public String getHeaderField(String name);
+
+    public void setDoInput(boolean doinput);
+
+    public void setDoOutput(boolean dooutput);
+
+    public InputStream getInputStream() throws IOException;
+
+    public OutputStream getOutputStream() throws IOException;
+
+}</code></pre>
+
+                    <h2>java.net.HttpURLConnection</h2>
+                    <ul>
+                        <li>потомок URLConnection</li>
+                        <li>работает с HTTP-запросами</li>
+                    </ul>
                 </section>
 
 			</div>
