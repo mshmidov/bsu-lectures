@@ -36,12 +36,174 @@
 			<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
 
 				<section>
-                    <h1></h1>
+                    <h1>Networking in Java</h1>
+                    <p>Пакет <strong>java.net</strong> содержит фундаментальные классы, отвечающие за работу с сетью.</p>
 
+                    <dl>
+                        <dt>Socket</dt>
+                        <dd>устанавливает TCP-соединения; передаёт и принимает данные</dd>
+                        <dt>ServerSocket</dt>
+                        <dd>слушает подключения от Socket'ов</dd>
+                        <dt>InetAddress</dt>
+                        <dd>описывает IP-адрес; может получить IP из имени хоста</dd>
+                        <dt>URL</dt>
+                        <dd>может установить соединение с ресурсом</dd>
+                        <dt>URLConnection</dt>
+                        <dd>позволяет обмениваться данными с ресурсом</dd>
+                    </dl>
 
 				</section>
 
+                <section>
+                    <section>
+                      <h1>java.net.Socket (1/2)</h1>
 
+                      <aside><small>
+                            <h2>Socket умеет:</h2>
+                            <ul>
+                                <li>Соединяться с конкретным портом конкретного хоста</li>
+                                <li>Открывать поток для входящих данных</li>
+                                <li>Открывать поток для исходящих данных</li>
+                                <li>Закрываться</li>
+                            </ul>
+
+                        </small></aside>
+
+                        <pre><code class="java">public class Socket {
+
+    public Socket(String host, int port);
+
+    public InputStream getInputStream() throws IOException;
+
+    public OutputStream getOutputStream() throws IOException;
+
+    public synchronized void close() throws IOException;
+
+}</code></pre>
+                    </section>
+
+                    <section>
+                        <h1>java.net.Socket (2/2)</h1>
+                        <h2>Пример использования</h2>
+
+                        <pre><code class="java long">Socket socket = null;
+PrintWriter out = null;
+BufferedReader in = null;
+
+try {
+    socket = new Socket("some host", 7);
+    out = new PrintWriter(socket.getOutputStream(), true);
+    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+    out.println("request");
+    final String response = in.readLine();
+
+} catch (UnknownHostException e) {
+    System.err.println(e);
+} catch (IOException e) {
+    System.err.println(e);
+
+} finally {
+    close(out);
+    close(in);
+    close(socket);
+}</code></pre>
+                    </section>
+                </section>
+
+                <section>
+                   <h1>java.net.InetAddress</h1>
+
+                    <aside><small>
+                        <h2>InetAddress умеет:</h2>
+                        <ul>
+                            <li>Получать IP-адреса по имени хоста (DNS lookup)</li>
+                            <li>Получать разнообразную информацию об IP-адресе</li>
+                        </ul>
+
+                    </small></aside>
+
+                    <pre><code class="java">public class InetAddress implements java.io.Serializable {
+
+    public static InetAddress[] getAllByName(String host)
+        throws UnknownHostException;
+
+    public String getHostAddress();
+    public String getHostName();
+    public String getCanonicalHostName();
+
+}</code></pre>
+
+                    <h2>Пример использования</h2>
+                    <pre><code class="java long">final InetAddress[] addresses = InetAddress.getAllByName("google.com");
+
+for (InetAddress address : addresses) {
+   System.out.println("host address: " + address.getHostAddress());
+   System.out.println("host name: " + address.getHostName());
+   System.out.println("canonical host name: " + address.getCanonicalHostName());
+}</code></pre>
+
+                </section>
+
+                <section>
+                    <section>
+                        <h1>java.net.URL (1/2)</h1>
+
+                        <aside><small>
+                            <h2>URL умеет:</h2>
+                            <ul>
+                                <li>Создаваться из строки адреса</li>
+                                <li>Открывать соединение</li>
+                                <li>Открывать поток чтения (через открытие соединения)</li>
+                            </ul>
+
+                        </small></aside>
+
+                        <pre><code class="java">public final class URL implements java.io.Serializable {
+
+    public URL(String protocol, String host, int port, String file)
+        throws MalformedURLException;
+
+    public URL(String spec) throws MalformedURLException;
+
+    public URLConnection openConnection()
+        throws java.io.IOException;
+
+    public final InputStream openStream()
+        throws java.io.IOException;
+}</code></pre>
+                    </section>
+
+                    <section>
+                        <h1>java.net.URL (2/2)</h1>
+                        <h2>Пример использования</h2>
+                        <pre><code class="java long">final URL url = new URL("http", "google.com", "/intl/en/about/");
+
+BufferedReader stream = null;
+
+try {
+    stream = new BufferedReader(new InputStreamReader(url.openStream()));
+
+    String line;
+
+    while((line = stream.readLine()) != null) {
+        System.out.println(line);
+    }
+
+} catch (IOException e) {
+    System.out.println(e);
+
+} finally {
+    close(stream);
+}
+                        </code></pre>
+                    </section>
+
+                </section>
+
+                <section>
+                    <h1>java.net.URLConnection</h1>
+                </section>
 
 			</div>
 		</div>
