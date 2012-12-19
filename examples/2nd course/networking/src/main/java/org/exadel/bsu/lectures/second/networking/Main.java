@@ -1,9 +1,6 @@
 package org.exadel.bsu.lectures.second.networking;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 
 public class Main {
@@ -14,7 +11,7 @@ public class Main {
 
         inspectLocalhost();
 
-        loadPage("http", "google.com", "");
+        loadPage("http", "google.com", "/intl/en/about/");
 
         inspectConnection("http", "google.com", "");
     }
@@ -44,7 +41,7 @@ public class Main {
     }
 
     private static void loadPage(String protocol, String host, String file) throws MalformedURLException {
-        System.out.println("Loading " + host);
+        System.out.println("Loading " + host + file);
 
         final URL url = new URL(protocol, host, file);
 
@@ -55,12 +52,9 @@ public class Main {
 
             String line;
 
-            do {
-                line = stream.readLine();
-
+            while((line = stream.readLine()) != null) {
                 System.out.println(line);
-
-            } while (line != null);
+            }
 
         } catch (IOException e) {
             System.out.println(e);
@@ -87,7 +81,91 @@ public class Main {
         System.out.println("=========================");
     }
 
+    private static void testSocket() {
+        Socket socket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+
+        try {
+            socket = new Socket("some host", 7);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            out.println("request");
+            final String response = in.readLine();
+
+        } catch (UnknownHostException e) {
+            System.err.println(e);
+        } catch (IOException e) {
+            System.err.println(e);
+
+        } finally {
+            close(out);
+            close(in);
+            close(socket);
+        }
+    }
+
+    public static String excutePost(String targetURL, String urlParameters)
+    {
+        URL url;
+        HttpURLConnection connection = null;
+        try {
+            url = new URL(targetURL);
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
+            connection.setRequestProperty("Content-Language", "en-US");
+
+            connection.setUseCaches (false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            //Send request
+            DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
+            wr.writeBytes (urlParameters);
+            wr.flush ();
+            wr.close ();
+
+            //Get Response
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while((line = rd.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            rd.close();
+            return response.toString();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return null;
+
+        } finally {
+
+            if(connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
     private static void close(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    private static void close(Socket closeable) {
         if (closeable != null) {
             try {
                 closeable.close();
