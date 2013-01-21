@@ -27,7 +27,7 @@
     <![endif]-->
 
     <style lang="css">
-        dl.dropcaps dt:first-letter {
+        dl.drop-caps dt:first-letter {
             color: #0b326a;
         }
 
@@ -44,26 +44,35 @@
 
         <section class="intro">
             <h1>Software design</h1>
-        </section>
 
-        <section>
-            <h1>Object-oriented design</h1>
-        </section>
+            <p>Методологии разработки <abbr title="программное обеспечение">ПО</abbr> решают характерные задачи:</p>
+            <ul>
+                <li>Борьба со сложностью</li>
+                <li>Выработка систематического, измеримого подхода к разработке</li>
+            </ul>
 
-        <section>
-            <h1>Model-driven design</h1>
         </section>
 
         <section id="dry">
-            <h1>DRY</h1>
+            <h1>Принцип DRY</h1>
+
+            <blockquote>Don't Repeat Yourself</blockquote>
+
+            <ul>
+                <li>Наследование</li>
+                <li>Utility classes</li>
+                <li>Композиция</li>
+            </ul>
+
         </section>
 
-        <section id="solid">
+        <section>
 
-            <section>
+            <section id="solid">
+
                 <h1>SOLID (1/6)</h1>
 
-                <dl class="dropcaps">
+                <dl class="drop-caps">
                     <dt>Single responsibility principle</dt>
                     <dd>Принцип единственной обязанности</dd>
                     <dt>Open/closed principle</dt>
@@ -77,26 +86,74 @@
                 </dl>
             </section>
 
-            <section>
+            <section id="solid-s">
+
                 <h1>Single responsibility (2/6)</h1>
 
+                <blockquote>Каждый объект должен иметь одну обязанность и эта обязанность должна быть полностью
+                    инкапсулирована в класс. Все его сервисы должны быть направлены исключительно на обеспечение этой
+                    обязанности.
+                </blockquote>
+
             </section>
 
-            <section>
+            <section id="solid-o">
 
                 <h1>Open/closed principle (3/6)</h1>
+
+                <blockquote>Классы должны быть открыты для расширения, но закрыты для изменения.</blockquote>
+
+                <ul>
+                    <li>Наследование от абстрактных базовых классов и/или реализация интерфейса</li>
+                    <li>Однажды опубликованный интерфейс не должен изменяться</li>
+                    <li>Реализация интерфейса может изменяться</li>
+                </ul>
+
             </section>
 
-            <section>
+            <section id="solid-l">
+
                 <h1>Liskov substitution principle (4/6)</h1>
+
+                <blockquote>Функции, которые используют базовый тип, должны иметь возможность использовать подтипы
+                    базового типа не зная об этом.
+                </blockquote>
+
+                <ul>
+                    <li>Поведение классов-потомков не должно противоречить поведению, заданному предком</li>
+                    <li>Проектирование по контракту:
+                        <ul>
+                            <li>Предусловия не могут быть усилены в подклассе</li>
+                            <li>Постусловия не могут быть ослаблены в подклассе</li>
+                        </ul>
+                    </li>
+                </ul>
+
             </section>
 
-            <section>
+            <section id="solid-i">
+
                 <h1>Interface segregation (5/6)</h1>
+
+                <blockquote>Клиенты не должны зависеть от методов, которые они не используют.</blockquote>
+
+                <ul>
+                    <li>Интерфейс должен описывать чётко выделенную обязанность и быть максимально узким</li>
+                    <li>Клиенты маленьких интерфейсов должны знать только о необходимх им в работе методах.</li>
+                </ul>
+
             </section>
 
-            <section>
+            <section id="solid-d">
+
                 <h1>Dependency inversion (6/6)</h1>
+
+                <blockquote>Модули верхних уровней не должны зависеть от модулей нижних уровней. Оба типа модулей должны
+                    зависеть от абстракций.
+                </blockquote>
+                <blockquote>Абстракции не должны зависеть от деталей. Детали должны зависеть от абстракций.
+                </blockquote>
+
             </section>
 
         </section>
