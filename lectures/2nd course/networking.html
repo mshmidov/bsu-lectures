@@ -1,279 +1,432 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
 
-		<title>Networking in Java</title>
+    <title>Networking in Java</title>
 
-		<meta name="author" content="MAxim Shmidov">
+    <meta name="author" content="MAxim Shmidov">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<link rel="stylesheet" href="reveal/css/reveal.css">
-        <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
 
-		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
-		<script>
-			document.write( '<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
-		</script>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
 
-		<!--[if lt IE 9]>
-        <script src="reveal/lib/js/html5shiv.js"></script>
-        <![endif]-->
-    
-	</head>
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
 
-	<body>
+</head>
 
-        <div id="exadel-header"></div>
+<body>
 
-		<div class="reveal">
-			<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+<div id="exadel-header"></div>
 
-				<section>
-                    <h1>Networking in Java</h1>
-                    <p>Пакет <strong>java.net</strong> содержит фундаментальные классы, отвечающие за работу с сетью.</p>
+<div class="reveal">
+    <div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
 
-                    <dl>
-                        <dt>Socket</dt>
-                        <dd>устанавливает TCP-соединения; передаёт и принимает данные</dd>
-                        <dt>ServerSocket</dt>
-                        <dd>слушает подключения от Socket'ов</dd>
-                        <dt>InetAddress</dt>
-                        <dd>описывает IP-адрес; может получить IP из имени хоста</dd>
-                        <dt>URL</dt>
-                        <dd>может установить соединение с ресурсом</dd>
-                        <dt>URLConnection</dt>
-                        <dd>позволяет обмениваться данными с ресурсом</dd>
-                    </dl>
+        <section>
+            <h1>Networking in Java</h1>
 
-				</section>
+            <p>Пакет <strong>java.net</strong> содержит фундаментальные классы, отвечающие за работу с сетью.</p>
 
-                <section>
-                    <section>
-                      <h1>java.net.Socket (1/2)</h1>
+            <dl>
+                <dt>Socket</dt>
+                <dd>устанавливает TCP-соединения; передаёт и принимает данные</dd>
+                <dt>ServerSocket</dt>
+                <dd>слушает подключения от Socket'ов</dd>
+                <dt>InetAddress</dt>
+                <dd>описывает IP-адрес; может получить IP из имени хоста</dd>
+                <dt>URL</dt>
+                <dd>может установить соединение с ресурсом</dd>
+                <dt>URLConnection</dt>
+                <dd>позволяет обмениваться данными с ресурсом</dd>
+            </dl>
 
-                      <aside><small>
-                            <h2>Socket умеет:</h2>
-                            <ul>
-                                <li>Соединяться с конкретным портом конкретного хоста</li>
-                                <li>Открывать поток для входящих данных</li>
-                                <li>Открывать поток для исходящих данных</li>
-                                <li>Закрываться</li>
-                            </ul>
+        </section>
 
-                        </small></aside>
+        <section>
+            <section>
+                <h1>java.net.Socket (1/2)</h1>
 
-                        <pre><code class="java">public class Socket {
-
-    public Socket(String host, int port);
-
-    public InputStream getInputStream() throws IOException;
-
-    public OutputStream getOutputStream() throws IOException;
-
-    public synchronized void close() throws IOException;
-
-}</code></pre>
-                    </section>
-
-                    <section>
-                        <h1>java.net.Socket (2/2)</h1>
-                        <h2>Пример использования</h2>
-
-                        <pre><code class="java long">Socket socket = null;
-PrintWriter out = null;
-BufferedReader in = null;
-
-try {
-    socket = new Socket("some host", 7);
-    out = new PrintWriter(socket.getOutputStream(), true);
-    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-    out.println("request");
-    final String response = in.readLine();
-
-} catch (UnknownHostException e) {
-    System.err.println(e);
-} catch (IOException e) {
-    System.err.println(e);
-
-} finally {
-    close(out);
-    close(in);
-    close(socket);
-}</code></pre>
-                    </section>
-                </section>
-
-                <section>
-                   <h1>java.net.InetAddress</h1>
-
-                    <aside><small>
-                        <h2>InetAddress умеет:</h2>
+                <aside>
+                    <small>
+                        <h2>Socket умеет:</h2>
                         <ul>
-                            <li>Получать IP-адреса по имени хоста (DNS lookup)</li>
-                            <li>Получать разнообразную информацию об IP-адресе</li>
-                        </ul>
-
-                    </small></aside>
-
-                    <pre><code class="java">public class InetAddress implements java.io.Serializable {
-
-    public static InetAddress[] getAllByName(String host)
-        throws UnknownHostException;
-
-    public String getHostAddress();
-    public String getHostName();
-    public String getCanonicalHostName();
-
-}</code></pre>
-
-                    <h2>Пример использования</h2>
-                    <pre><code class="java long">final InetAddress[] addresses = InetAddress.getAllByName("google.com");
-
-for (InetAddress address : addresses) {
-   System.out.println("host address: " + address.getHostAddress());
-   System.out.println("host name: " + address.getHostName());
-   System.out.println("canonical host name: " + address.getCanonicalHostName());
-}</code></pre>
-
-                </section>
-
-                <section>
-                    <section>
-                        <h1>java.net.URL (1/2)</h1>
-
-                        <aside><small>
-                            <h2>URL умеет:</h2>
-                            <ul>
-                                <li>Создаваться из строки адреса</li>
-                                <li>Открывать соединение</li>
-                                <li>Открывать поток чтения (через открытие соединения)</li>
-                            </ul>
-
-                        </small></aside>
-
-                        <pre><code class="java">public final class URL implements java.io.Serializable {
-
-    public URL(String protocol, String host, int port, String file)
-        throws MalformedURLException;
-
-    public URL(String spec) throws MalformedURLException;
-
-    public URLConnection openConnection()
-        throws java.io.IOException;
-
-    public final InputStream openStream()
-        throws java.io.IOException;
-}</code></pre>
-                    </section>
-
-                    <section>
-                        <h1>java.net.URL (2/2)</h1>
-                        <h2>Пример использования</h2>
-                        <pre><code class="java long">final URL url = new URL("http", "google.com", "/intl/en/about/");
-
-BufferedReader stream = null;
-
-try {
-    stream = new BufferedReader(new InputStreamReader(url.openStream()));
-
-    String line;
-
-    while((line = stream.readLine()) != null) {
-        System.out.println(line);
-    }
-
-} catch (IOException e) {
-    System.out.println(e);
-
-} finally {
-    close(stream);
-}
-                        </code></pre>
-                    </section>
-
-                </section>
-
-                <section>
-                    <h1>java.net.URLConnection</h1>
-
-                    <aside><small>
-                        <h2>URLConnection умеет:</h2>
-                        <ul>
-                            <li>Устанавливать заголовки запроса</li>
-                            <li>Получать информацию из заголовка ответа</li>
+                            <li>Соединяться с конкретным портом конкретного хоста</li>
                             <li>Открывать поток для входящих данных</li>
                             <li>Открывать поток для исходящих данных</li>
+                            <li>Закрываться</li>
                         </ul>
-                    </small></aside>
 
-                    <pre><code class="java">public abstract class URLConnection {
+                    </small>
+                </aside>
 
-    public void setRequestProperty(String key, String value);
+                                <pre><code class="java">public class Socket {
 
-    public String getHeaderField(String name);
+            public Socket(String host, int port);
 
-    public void setDoInput(boolean doinput);
+            public InputStream getInputStream() throws IOException;
 
-    public void setDoOutput(boolean dooutput);
+            public OutputStream getOutputStream() throws IOException;
 
-    public InputStream getInputStream() throws IOException;
+            public synchronized void close() throws IOException;
 
-    public OutputStream getOutputStream() throws IOException;
+        }</code></pre>
+            </section>
 
-}</code></pre>
+            <section>
+                <h1>java.net.Socket (2/2)</h1>
 
-                    <h2>java.net.HttpURLConnection</h2>
+                <h2>Пример использования</h2>
+
+                                <pre><code class="java long">Socket socket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+
+        try {
+            socket = new Socket("some host", 7);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            out.println("request");
+            final String response = in.readLine();
+
+        } catch (UnknownHostException e) {
+            System.err.println(e);
+        } catch (IOException e) {
+            System.err.println(e);
+
+        } finally {
+            close(out);
+            close(in);
+            close(socket);
+        }</code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h1>java.net.InetAddress</h1>
+
+            <aside>
+                <small>
+                    <h2>InetAddress умеет:</h2>
                     <ul>
-                        <li>потомок URLConnection</li>
-                        <li>работает с HTTP-запросами</li>
+                        <li>Получать IP-адреса по имени хоста (DNS lookup)</li>
+                        <li>Получать разнообразную информацию об IP-адресе</li>
                     </ul>
-                </section>
 
-			</div>
-		</div>
+                </small>
+            </aside>
 
-		<script src="reveal/lib/js/head.min.js"></script>
-		<script src="reveal/js/reveal.min.js"></script>
+                            <pre><code class="java">public class InetAddress implements java.io.Serializable {
 
-		<script>
-			Reveal.initialize({
+            public static InetAddress[] getAllByName(String host)
+                throws UnknownHostException;
 
-				controls: false,// Display controls in the bottom right corner
-				progress: true,	// Display a presentation progress bar
-				history: false,// Push each slide change to the browser history
-				keyboard: true,// Enable keyboard shortcuts for navigation
-				overview: true,// Enable the slide overview mode
-				center: false,	// Vertical centering of slides
-				loop: false,// Loop the presentation
-				rtl: false,	// Change the presentation direction to be RTL
-				autoSlide: 0,
-				mouseWheel: false,// Enable slide navigation via mouse wheel
-				rollingLinks: false,// Apply a 3D roll to links on hover
-				transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+            public String getHostAddress();
+            public String getHostName();
+            public String getCanonicalHostName();
 
-				 dependencies: [
-			        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-			        { src: 'reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-			        // Interpret Markdown in <section> elements
-			        { src: 'reveal/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-			        { src: 'reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-			        // Syntax highlight for <code> elements
-			        { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function() { hljs.tabReplace = '    '; hljs.initHighlightingOnLoad(); } },
-			        // Zoom in and out with Alt+click
-			        { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-			        // Speaker notes
-			        { src: 'reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: 'reveal/plugin/clock/clock.js', async: true, callback: function() { clock.init("exadel-header"); } }
-			    ]
-			});
-		</script>
-	</body>
+        }</code></pre>
+
+            <h2>Пример использования</h2>
+                            <pre><code class="java long">final InetAddress[] addresses = InetAddress.getAllByName("google.com");
+
+        for (InetAddress address : addresses) {
+            System.out.println("host address: " + address.getHostAddress());
+            System.out.println("host name: " + address.getHostName());
+            System.out.println("canonical host name: " + address.getCanonicalHostName());
+        }</code></pre>
+
+        </section>
+
+        <section>
+            <section>
+                <h1>java.net.URL (1/2)</h1>
+
+                <aside>
+                    <small>
+                        <h2>URL умеет:</h2>
+                        <ul>
+                            <li>Создаваться из строки адреса</li>
+                            <li>Открывать соединение</li>
+                            <li>Открывать поток чтения (через открытие соединения)</li>
+                        </ul>
+
+                    </small>
+                </aside>
+
+                                <pre><code class="java">public final class URL implements java.io.Serializable {
+
+            public URL(String protocol, String host, int port, String file)
+                throws MalformedURLException;
+
+            public URL(String spec)
+                throws MalformedURLException;
+
+            public URLConnection openConnection()
+                throws java.io.IOException;
+
+            public final InputStream openStream()
+                throws java.io.IOException;
+        }</code></pre>
+            </section>
+
+            <section>
+                <h1>java.net.URL (2/2)</h1>
+
+                <h2>Пример использования</h2>
+                                <pre><code class="java long">final URL url = new URL("http", "google.com", "/intl/en/about/");
+
+        BufferedReader stream = null;
+
+        try {
+            stream = new BufferedReader(new InputStreamReader(url.openStream()));
+
+            String line;
+
+            while((line = stream.readLine()) != null) {
+                System.out.println(line);
+            }
+
+        } catch (IOException e) {
+            System.out.println(e);
+
+        } finally {
+            close(stream);
+        }
+                                </code></pre>
+            </section>
+
+        </section>
+
+        <section>
+            <h1>java.net.URLConnection</h1>
+
+            <aside>
+                <small>
+                    <h2>URLConnection умеет:</h2>
+                    <ul>
+                        <li>Устанавливать заголовки запроса</li>
+                        <li>Получать информацию из заголовка ответа</li>
+                        <li>Открывать поток для входящих данных</li>
+                        <li>Открывать поток для исходящих данных</li>
+                    </ul>
+                </small>
+            </aside>
+
+                            <pre><code class="java">public abstract class URLConnection {
+
+            public void setRequestProperty(String key, String value);
+
+            public String getHeaderField(String name);
+
+            public void setDoInput(boolean doinput);
+
+            public void setDoOutput(boolean dooutput);
+
+            public InputStream getInputStream() throws IOException;
+
+            public OutputStream getOutputStream() throws IOException;
+
+        }</code></pre>
+
+            <h2>java.net.HttpURLConnection</h2>
+            <ul>
+                <li>потомок URLConnection</li>
+                <li>работает с HTTP-запросами</li>
+            </ul>
+        </section>
+
+        <section id="tasks">
+
+            <section>
+                <h1>Задачи (1/6)</h1>
+
+                <h2>Скачивание ресурса</h2>
+
+                <p>Программма должна скачивать содержимое существующего в интернете ресурса в файл на локальной машине.
+                    Имя локального файла и адрес удалённого ресурса могут быть фиксированно заданы в тексте программы.</p>
+
+                <h3>Дополнительные баллы:</h3>
+                <ul>
+                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
+                        перезаписать файл или прекратить исполнение программы.
+                    </li>
+                    <li>После завершения копирования выводить на экран размер скачанного файла в килобайтах.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Задачи (2/6)</h1>
+
+                <h2>Скачивание и склеивание ресурсов</h2>
+
+                <p>Программма должна последовательно считывать содержимое нескольких существующих в интернете ресурсов и
+                    записывать его в локальный файл.
+                    Имена локального файла и адреса удалённых ресурсов могут быть фиксированно заданы в тексте программы.
+                    Количество входных ресурсов опредеделяется исполнителем произвольно.</p>
+
+                <h3>Дополнительные баллы:</h3>
+                <ul>
+                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
+                        перезаписать файл или прекратить исполнение программы.
+                    </li>
+                    <li>Решить задачу универсальным алгоритмом для N входных ресурсов.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Задачи (3/6)</h1>
+
+                <h2>Сравнение ресурсов</h2>
+
+                <p>Программа должна посимвольно считывать содержимое двух существующих в интернете ресурсов и сравнивать его.
+                    При первом найденном различии программа должна вывести на экран позицию различающегося символа и прекратить
+                    исполнение.
+                    Адреса ресурсов могут быть фиксированно заданы в тексте программы.</p>
+
+                <h3>Дополнительные баллы:</h3>
+                <ul>
+                    <li>При найденном различии выводить на экран фрагменты сравниваемых ресурсов (например, 15 символов),
+                        содержащие различающийся символ.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Задачи (4/6)</h1>
+
+                <h2>Сортировка строк в файле</h2>
+
+                <p>Программа должна считывать в память содержимое существующего в интернете текстового файла,
+                    сортировать его строки по алфавиту и сохранять результат в выходной файл.
+                    Адреса файлов могут быть фиксированно заданы в тексте программы.</p>
+
+                <h3>Дополнительные баллы:</h3>
+                <ul>
+                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
+                        перезаписать файл или прекратить исполнение программы.
+                    </li>
+                    <li>После завершения копирования выводить на экран количество строк во входном файле.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Задачи (5/6)</h1>
+
+                <h2>Подсчёт слов в файле</h2>
+
+                <p>Программа должна считывать в память содержимое существующего в интернете текстового файла, разбивать его на
+                    слова и
+                    подсчитывать количество повторов каждого слова. Результат подсчёта сохранять в текстовый файл.
+                    Имена файлов могут быть фиксированно заданы в тексте программы.</p>
+
+                <p><strong>Словом</strong> следует считать последовательность символов, отделённую от других
+                    последовательностей любым количеством следующих разделителей:</p>
+                <ul>
+                    <li>пробелом</li>
+                    <li>знаком табуляции</li>
+                    <li>знаками перевода строки</li>
+                    <li>точкой</li>
+                    <li>запятой</li>
+                </ul>
+
+                <h3>Дополнительные баллы:</h3>
+                <ul>
+                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
+                        перезаписать файл или прекратить исполнение программы.
+                    </li>
+                    <li>Решить задачу универсальным алгоритмом для любого набора разделителей.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>Задачи (6/6)</h1>
+
+                <h2>Приложение: текстовые файлы для задач</h2>
+
+                <p>Ниже приведён список случайно выбранных книг с сайта
+                    <a href="http://www.gutenberg.org/">Gutenberg Project</a>. Все книги размещены в plaintext UTF-8.
+                    Если приведённых файлов не хватает, там есть ещё много.</p>
+
+                <ul>
+                    <li>http://www.gutenberg.org/cache/epub/3537/pg3537.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/132/pg132.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/41791/pg41791.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/2938/pg2938.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/2846/pg2846.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/1877/pg1877.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/1206/pg1206.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/1719/pg1719.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/41897/pg41897.txt</li>
+                    <li>http://www.gutenberg.org/cache/epub/270/pg270.txt</li>
+                </ul>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: false,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
 </html>

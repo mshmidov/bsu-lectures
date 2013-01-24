@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Software design</title>
+
+    <meta name="author" content="Maxim Shmidov">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style lang="css">
+        dl.drop-caps dt:first-letter {
+            color: #0b326a;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+    <div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+
+        <section id="intro">
+            <h1>Software design</h1>
+
+            <p class="thesis">Программы пишутся для людей</p>
+
+            <p class="thesis">Большую часть стоимости системы составляет её поддержка</p>
+
+            <h3>В промышленной разработке:</h3>
+            <ul>
+                <li>Системы часто очень большие</li>
+                <li>Код пишет множество людей</li>
+                <li>Требования постоянно меняются</li>
+                <li>Ошибки накапливаются</li>
+            </ul>
+
+            <p class="thesis">Очень важно правильное <strong>проектирование</strong> <abbr
+                    title="программное обеспечение">ПО</abbr>.</p>
+
+        </section>
+
+        <section id="managing-complexity">
+            <h1>Борьба со сложностью</h1>
+
+            <p class="thesis">Способности человека к фиксации внимания ограничены. Человек стремится делить задачи на
+                подзадачи.</p>
+
+            <h3>Уровни проектирования</h3>
+            <ol>
+                <li>Система</li>
+                <li>Подсистемы/пакеты</li>
+                <li>Классы</li>
+                <li>Данные и методы</li>
+                <li>Код методов</li>
+            </ol>
+
+        </section>
+
+        <section id="methodologies">
+            <h1>Методологии</h1>
+
+            <h3>Задачи:</h3>
+            <ul>
+                <li>Создание всем понятного языка</li>
+                <li>Формализация процесса разработки</li>
+                <li>Создание готовых рецептов решения задач</li>
+                <li>Упрощение обучения</li>
+            </ul>
+
+        </section>
+
+        <section id="dry">
+            <h1>Принцип DRY</h1>
+
+            <p class="thesis">Don't Repeat Yourself</p>
+
+            <ul>
+                <li>Наследование</li>
+                <li>Utility classes</li>
+                <li>Композиция</li>
+            </ul>
+
+        </section>
+
+        <section>
+
+            <section id="solid">
+
+                <h1>SOLID (1/6)</h1>
+
+                <dl class="drop-caps">
+                    <dt>Single responsibility principle</dt>
+                    <dd>Принцип единственной обязанности</dd>
+                    <dt>Open/closed principle</dt>
+                    <dd>Принцип открытости/закрытости</dd>
+                    <dt>Liskov substitution principle</dt>
+                    <dd>Принцип подстановки Барбары Лисков</dd>
+                    <dt>Interface segregation principle</dt>
+                    <dd>Принцип разделения интерфейса</dd>
+                    <dt>Dependency inversion principle</dt>
+                    <dd>Принцип инверсии зависимостей</dd>
+                </dl>
+            </section>
+
+            <section id="solid-s">
+
+                <h1>Single responsibility (2/6)</h1>
+
+                <blockquote>Каждый объект должен иметь одну обязанность и эта обязанность должна быть полностью
+                    инкапсулирована в класс. Все его сервисы должны быть направлены исключительно на обеспечение
+                    этой
+                    обязанности.
+                </blockquote>
+
+            </section>
+
+            <section id="solid-o">
+
+                <h1>Open/closed principle (3/6)</h1>
+
+                <blockquote>Классы должны быть открыты для расширения, но закрыты для изменения.</blockquote>
+
+                <ul>
+                    <li>Наследование от абстрактных базовых классов и/или реализация интерфейса</li>
+                    <li>Однажды опубликованный интерфейс не должен изменяться</li>
+                    <li>Реализация интерфейса может изменяться</li>
+                </ul>
+
+            </section>
+
+            <section id="solid-l">
+
+                <h1>Liskov substitution principle (4/6)</h1>
+
+                <blockquote>Функции, которые используют базовый тип, должны иметь возможность использовать подтипы
+                    базового типа не зная об этом.
+                </blockquote>
+
+                <ul>
+                    <li>Поведение классов-потомков не должно противоречить поведению, заданному предком</li>
+                    <li>Проектирование по контракту:
+                        <ul>
+                            <li>Предусловия не могут быть усилены в подклассе</li>
+                            <li>Постусловия не могут быть ослаблены в подклассе</li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </section>
+
+            <section id="solid-i">
+
+                <h1>Interface segregation (5/6)</h1>
+
+                <blockquote>Клиенты не должны зависеть от методов, которые они не используют.</blockquote>
+
+                <ul>
+                    <li>Интерфейс должен описывать чётко выделенную обязанность и быть максимально узким</li>
+                    <li>Клиенты маленьких интерфейсов должны знать только о необходимх им в работе методах.</li>
+                </ul>
+
+            </section>
+
+            <section id="solid-d">
+
+                <h1>Dependency inversion (6/6)</h1>
+
+                <blockquote>Модули верхних уровней не должны зависеть от модулей нижних уровней. Оба типа модулей
+                    должны
+                    зависеть от абстракций.
+                </blockquote>
+                <blockquote>Абстракции не должны зависеть от деталей. Детали должны зависеть от абстракций.
+                </blockquote>
+
+            </section>
+
+        </section>
+
+
+        <section>
+            <h1>Patterns</h1>
+        </section>
+
+    </div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
+</html>
