@@ -36,7 +36,386 @@
 <div class="reveal">
     <div class="slides">
         <section>
-            <h1>Java Collections API</h1>
+            <h1>Java Collections Framework</h1>
+        </section>
+        <section>
+            <section>
+                <h1>Collection interfaces</h1>
+                <ul>
+                    <li><p class="fragment roll-in">The <b>Collection</b> interface is a group of objects, with duplicates allowed</p></li>
+                    <li><p class="fragment roll-in">The <b>Set</b> interface extends <b>Collection</b> but forbids duplicates</p></li>
+                    <li><p class="fragment roll-in">The <b>List</b> interface extends <b>Collection</b>, allows duplicates, and introduces positional indexing</p></li>
+                    <li><p class="fragment roll-in">The <b>Map</b> interface extends neither <b>Set</b> nor <b>Collection</b></p></li>
+                </ul>
+            </section>
+            <section>
+                <h1>Collection interfaces</h1>
+                <img src="collections.files/main-diagram.png">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Collection interface</h1>
+                <h2>Methods:</h2>
+                <pre><code class="java">
+        boolean add(T element);
+        boolean remove(T element);
+        int size();
+        boolean isEmpty();
+        boolean contains(T element);
+        Iterator&lt;T&gt; iterator();
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Iterator interface</h1>
+                <pre>
+                    <code class="java">
+        boolean hasNext();
+        T next();
+        void remove();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Collection interface interface</h1>
+                <h2>Group operations</h2>
+                <pre>
+                    <code class="java">
+        boolean containsAll(Collection&lt;T&gt; collection);
+        boolean addAll(Collection&lt;T&gt; collection);
+        void clear()
+        void removeAll(Collection&lt;T&gt; collection);
+        void retainAll(Collection&lt;T&gt; collection);
+                    </code>
+                </pre>
+            </section>
+
+            <section>
+                <h1>Iterator interface</h1>
+                <h2>Удаление элемента из коллекции (1/2)</h2>
+                <pre>
+                    <code class="java">
+        Collection&lt;Integer&gt; odds = new ArrayList&lt;&gt;();
+        Collections.addAll(odds, 1, 2, 3, 4, 5, 6, 7);
+        for (Integer odd : odds) {
+            if (odd % 2 == 0) {
+                odds.remove(odd); // ConcurrentModificationException will thrown
+            }
+        }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Iterator interface</h1>
+                <h2>Удаление элемента из коллекции (2/2)</h2>
+                <pre>
+                    <code class="java">
+        List&lt;Integer&gt; odds = new ArrayList&lt;&gt;();
+        Collections.addAll(odds, 1, 2, 3, 4, 5, 6, 7);
+        Iterator&lt;Integer&gt; iterator = odds.iterator();
+        while (iterator.hasNext()) {
+            Integer next = iterator.next();
+            if (next % 2 == 0) {
+                iterator.remove();
+            }
+        }
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>List interface</h1>
+                <p>Дает возможность работать с элементами коллекции через индекс</p>
+                <pre>
+                    <code class="java">
+        boolean addAll(int index, Collection&lt;? extends E&gt; c);
+        E get(int index);
+        E set(int index, E element);
+        void add(int index, E element);
+        E remove(int index);
+        int indexOf(Object o);
+        int lastIndexOf(Object o);
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>List interface - subList (1/2)</h1>
+                <p>Лист также предоставляет возможность работать с подмножеством</p>
+                <pre>
+                    <code class="java">
+        List&lt;E&gt; subList(int fromIndex, int toIndex);
+                    </code>
+                </pre>
+            </section>
+
+            <section>
+                <h1>List interface - subList (2/2)</h1>
+                <div>Важно помнить, что, изменяя подмножество (add, remove, set), изменяется также и список</div>
+                <pre>
+                    <code class="java">
+        List&lt;Integer&gt; even = new ArrayList&lt;&gt;();
+        Collections.addAll(even, 2, 4, 6, 8, 10, 12);
+        List&lt;Integer&gt; lastTwo = even.subList(4, even.size());
+        System.out.println(lastTwo); // [10, 12]
+        lastTwo.add(1, 11);
+        System.out.println(even); // [2, 4, 6, 8, 10, 11, 12]
+        lastTwo.remove(2);
+        System.out.println(even); // [2, 4, 6, 8, 10, 11]
+        Collections.swap(lastTwo, 0, 1);
+        System.out.println(even); // [2, 4, 6, 8, 11, 10]
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>List Iterator</h1>
+                <p>ListIterator расширяет интерфейс Iterator и добавляет возможность двунаправленного доступа, а также
+                добавление и изменение элемента коллекции</p>
+                <pre>
+                    <code class="java">
+        // методы для получения ListIterator из листа
+        ListIterator&lt;E&gt; listIterator();
+        ListIterator&lt;E&gt; listIterator(int index);
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>List Iterator</h1>
+                <h2>Методы ListIterator'a</h2>
+                <pre>
+                    <code class="java">
+        boolean hasPrevious();
+        E previous();
+        int nextIndex();
+        int previousIndex();
+        void set(E e);
+        void add(E e);
+                    </code>
+                </pre>
+
+            </section>
+            <section>
+                <h1>List Iterator</h1>
+                <h2>Пример:</h2>
+                <pre>
+                    <code class="java">
+        List&lt;Integer&gt; fibs = new ArrayList&lt;&gt;();
+        Collections.addAll(fibs, 1, 1, 2, 3, 5, 8, 13, 21, 34);
+        ListIterator&lt;Integer&gt; iterator = fibs.listIterator(fibs.size());
+        while (iterator.hasPrevious()) {
+            System.out.println(iterator.previous());
+        }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>ArrayList и LinkedList</h1>
+
+                <div class="fragment roll-in">
+                    <h2>ArrayList лучше использовать если:</h2>
+                    <ul>
+                        <li>Random access</li>
+                        <li>Добавление элементов только в конец</li>
+                        <li>Удаление только последних элементов</li>
+                    </ul>
+                </div>
+                <div class="fragment roll-in">
+                    <h2>LinkedList лучше использовать если:</h2>
+                    <ul>
+                        <li>Удаление или добавление не последнего элемента</li>
+                        <li>Доступ к элементам в списке только последовательно</li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h1>Сложности операций</h1>
+                <table>
+                    <tr>
+                        <th>f</th>
+                        <th>LinkedList</th>
+                        <th>ArrayList</th>
+                    </tr>
+                    <tr>
+                        <td>get</td><td>O(n)</td><td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td>add(i,o)</td><td>O(n)</td><td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>add(o)</td><td>O(1)</td><td>O(1) или O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>remove</td><td>O(n)</td><td>O(n)</td>
+                    </tr>
+
+                </table>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h1>Queue Interface</h1>
+                Расширяет интерфей Collection, позволяя реализовать поведение First-In-First-Out
+                <pre>
+                    <code class="java">
+                        boolean offer(E e); // добавляет в конец
+                        E remove(); // возвращает и удаляет головной элемент
+                        E poll(); // возвращает и удаляет головной элемент
+                        E element(); // возвращает головной элемент
+                        E peek(); // возвращает головной элемент
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Deque Interface</h1>
+                Реализует интервейс Queue.Добавляет функции, с помощью которых легко использовать коллекцию
+                как очередь (First-In-First-Out) либо как стэк (Last-In-First-Out)
+                <pre>
+                    <code class="java">
+                        void add*(E e);
+                        boolean offer*(E e);
+                        E remove*();
+                        E poll*();
+                        E get*();
+                        E peek*();
+                        void push(E e);
+                        E pop();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>LinkedList</h1>
+                <h2>Пример использования</h2>
+                <pre>
+                    <code class="java">
+        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+        queue.offer(0); // [1, 2, 3, 4, 0]
+        queue.poll();   // [2, 3, 4, 0]
+
+        Deque&lt;Integer&gt; stack = new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+        stack.pop(); // [2, 3, 4]
+        stack.push(0); // [0, 2, 3, 4]
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <h1>Хеширование:TBD</h1>
+        </section>
+
+        <section>
+            <section>
+                <h1>Set interface</h1>
+                <ul>
+                    <li>Реализует интерфейс <i>Collection</i></li>
+                    <li>может содержать только уникальные объекты</li>
+                    <li>Никаких новых методов не добавляет</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Set implementations - HashSet</h1>
+                <ul>
+                    <li>O(1) для всех базовых операций (add, remove, contains, size)</li>
+                    <li>Не гарантирует порядок элементов</li>
+                    <li>Производительность итерирования зависит от оптимальности capacity и load factor</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Set implementations - TreeSet</h1>
+                <ul>
+                    <li>O(log(n)) для всех базовых операций (add, remove, contains)</li>
+                    <li>Гарантирует, что элементы будут в располагаться в том порядке, в котором вы это определите</li>
+                    <li>Нет возможности тюнить производительность</li>
+                </ul>
+                Интерфейс SortedSet, который реализуется TreeSet'ом, добавляет следующие новые методы:
+                <pre>
+                    <code class="java">
+        Comparator&lt;? super E&gt; comparator();
+        SortedSet&lt;E&gt; subSet(E fromElement, E toElement);
+        SortedSet&lt;E&gt; headSet(E toElement);
+        SortedSet&lt;E&gt; tailSet(E fromElement);
+        E first();
+        E last();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Set implementations</h1>
+                <h2>hashCode() и equals()</h2>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Sorting</h1>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Map Interface</h1>
+                <ul>
+                    <li>Map это базовый интерфейс для всех структур данных, основанных на паре ключ-значение.
+                    <li>Map не реализует интерфейс Collection, он стоит особняком, однако является частью Java Collection Framework
+                    <li>Интерфейс описывает маппинг ключа на значение, гарантируя уникальность ключа
+                    <li>Операции могут быть разбиты на 3 группы: altering, querying, providing alternative views
+                </ul>
+            </section>
+            <section>
+                <h1>Map interface - altering functions</h1>
+                Позволяют добавлять или удалять пары ключ-значений из мапы
+                <pre>
+                    <code class="java">
+                        V put(K key, V value);
+                        V remove(Object key);
+                        void putAll(Map&lt;? extends K, ? extends V&gt; m);
+                        void clear();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Map interface - querying functions</h1>
+                Позволяют проверять содержимое мапы
+                <pre>
+                    <code class="java">
+                        V get(Object key);
+                        boolean containsValue(Object value);
+                        boolean containsKey(Object key);
+                        boolean isEmpty();
+                        int size();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Map interface - Views operations</h1>
+                Позволяют работать с группами ключей или значений как с коллекцией объектов
+                <pre>
+                    <code class="java">
+        Set&lt;K&gt; keySet();
+        Collection&lt;V&gt; values();
+        Set&lt;Map.Entry&lt;K, V&gt;&gt; entrySet();
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Map implementation - HashMap</h1>
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                </ul>
+            </section>
+            <section>
+                <h1>Map implementation - TreeMap</h1>
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                </ul>
+            </section>
         </section>
     </div>
 </div>
@@ -47,7 +426,7 @@
 <script>
     Reveal.initialize({
 
-        controls: false,// Display controls in the bottom right corner
+        controls: true,// Display controls in the bottom right corner
         progress: true,	// Display a presentation progress bar
         history: false,// Push each slide change to the browser history
         keyboard: true,// Enable keyboard shortcuts for navigation
@@ -93,4 +472,3 @@
 </script>
 </body>
 </html>
-
