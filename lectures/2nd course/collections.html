@@ -64,7 +64,8 @@
         phones.add("2354234");
         phones.add(2351122);
         for (Object element : phones) {
-            String phoneNumber = (String) element; // ClassCastException on runtime
+            // ClassCastException on runtime
+            String phoneNumber = (String) element;
         }
                     </code>
                 </pre>
@@ -112,7 +113,8 @@ public class Pair&lt;K, V&gt; {
 }
 
 Pair&lt;Integer, String&gt; jan = new Pair&lt;&gt;(1, "January");
-Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // error
+Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
+// error
                     </code>
                 </pre>
             </section>
@@ -165,7 +167,8 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
         Collections.addAll(odds, 1, 2, 3, 4, 5, 6, 7);
         for (Integer odd : odds) {
             if (odd % 2 == 0) {
-                odds.remove(odd); // ConcurrentModificationException will thrown
+                // ConcurrentModificationException will thrown
+                odds.remove(odd);
             }
         }
                     </code>
@@ -266,12 +269,12 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 <h2>Пример:</h2>
                 <pre>
                     <code class="java">
-        List&lt;Integer&gt; fibs = new ArrayList&lt;&gt;();
-        Collections.addAll(fibs, 1, 1, 2, 3, 5, 8, 13, 21, 34);
-        ListIterator&lt;Integer&gt; iterator = fibs.listIterator(fibs.size());
-        while (iterator.hasPrevious()) {
-            System.out.println(iterator.previous());
-        }
+List&lt;Integer&gt; fibs = new ArrayList&lt;&gt;();
+Collections.addAll(fibs, 1, 1, 2, 3, 5, 8, 13, 21, 34);
+ListIterator&lt;Integer&gt; iterator = fibs.listIterator(fibs.size());
+while (iterator.hasPrevious()) {
+    System.out.println(iterator.previous());
+}
                     </code>
                 </pre>
             </section>
@@ -325,11 +328,11 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 Расширяет интерфей Collection, позволяя реализовать поведение First-In-First-Out
                 <pre>
                     <code class="java">
-                        boolean offer(E e); // добавляет в конец
-                        E remove(); // возвращает и удаляет головной элемент
-                        E poll(); // возвращает и удаляет головной элемент
-                        E element(); // возвращает головной элемент
-                        E peek(); // возвращает головной элемент
+        boolean offer(E e); // добавляет в конец
+        E remove(); // возвращает и удаляет головной элемент
+        E poll(); // возвращает и удаляет головной элемент
+        E element(); // возвращает головной элемент
+        E peek(); // возвращает головной элемент
                     </code>
                 </pre>
             </section>
@@ -339,14 +342,14 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 как очередь (First-In-First-Out) либо как стэк (Last-In-First-Out)
                 <pre>
                     <code class="java">
-                        void add*(E e);
-                        boolean offer*(E e);
-                        E remove*();
-                        E poll*();
-                        E get*();
-                        E peek*();
-                        void push(E e);
-                        E pop();
+        void add*(E e);
+        boolean offer*(E e);
+        E remove*();
+        E poll*();
+        E get*();
+        E peek*();
+        void push(E e);
+        E pop();
                     </code>
                 </pre>
             </section>
@@ -355,20 +358,16 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 <h2>Пример использования</h2>
                 <pre>
                     <code class="java">
-        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
-        queue.offer(0); // [1, 2, 3, 4, 0]
-        queue.poll();   // [2, 3, 4, 0]
+Queue&lt;Integer&gt; queue =new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+queue.offer(0); // [1, 2, 3, 4, 0]
+queue.poll();   // [2, 3, 4, 0]
 
-        Deque&lt;Integer&gt; stack = new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
-        stack.pop(); // [2, 3, 4]
-        stack.push(0); // [0, 2, 3, 4]
+Deque&lt;Integer&gt; stack =new LinkedList&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+stack.pop(); // [2, 3, 4]
+stack.push(0); // [0, 2, 3, 4]
                     </code>
                 </pre>
             </section>
-        </section>
-
-        <section>
-            <h1>Хеширование:TBD</h1>
         </section>
 
         <section>
@@ -432,10 +431,10 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 Позволяют добавлять или удалять пары ключ-значений из мапы
                 <pre>
                     <code class="java">
-                        V put(K key, V value);
-                        V remove(Object key);
-                        void putAll(Map&lt;? extends K, ? extends V&gt; m);
-                        void clear();
+        V put(K key, V value);
+        V remove(Object key);
+        void putAll(Map&lt;? extends K, ? extends V&gt; m);
+        void clear();
                     </code>
                 </pre>
             </section>
@@ -444,11 +443,11 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
                 Позволяют проверять содержимое мапы
                 <pre>
                     <code class="java">
-                        V get(Object key);
-                        boolean containsValue(Object value);
-                        boolean containsKey(Object key);
-                        boolean isEmpty();
-                        int size();
+        V get(Object key);
+        boolean containsValue(Object value);
+        boolean containsKey(Object key);
+        boolean isEmpty();
+        int size();
                     </code>
                 </pre>
             </section>
@@ -488,7 +487,7 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // err
     objects.put(new Object(), 1);
     objects.put(new Object(), 2);
     System.out.println(objects);
-    // {java.lang.Object@be9340=0, java.lang.Object@1bbea67=2, java.lang.Object@1b56bda=1}
+// {java.lang.Object@be9340=0, java.lang.Object@1bbea67=2, java.lang.Object@1b56bda=1}
                     </code>
                 </pre>
             </section>
