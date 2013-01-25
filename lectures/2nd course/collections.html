@@ -53,6 +53,71 @@
                 <img src="collections.files/main-diagram.png">
             </section>
         </section>
+
+        <section>
+            <section>
+                <h1>Generics (Обобщенные типы)</h1>
+                <h3>Опасносте с типизацией</h3>
+                <pre>
+                    <code class="java">
+        Collection phones = new ArrayList();
+        phones.add("2354234");
+        phones.add(2351122);
+        for (Object element : phones) {
+            String phoneNumber = (String) element; // ClassCastException on runtime
+        }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Generics (Обобщенные типы)</h1>
+                <h3>Безопасносте</h3>
+                <pre>
+                    <code class="java">
+        Collection phones = new ArrayList();
+        phones.add("2354234");
+        phones.add(2351122);
+        for (Object element : phones) {
+            if (element instanceof String) {
+                String phoneNumber = (String) element;
+            }
+        }
+                    </code>
+                </pre>
+
+            </section>
+            <section>
+                <h1>Generics (Обобщенные типы)</h1>
+                <h3>Коллекция с типизацией</h3>
+                <pre>
+                    <code class="java">
+        Collection&lt;String&gt; phones = new ArrayList&lt;&gt;();
+        phones.add("2354234");
+        phones.add(2351122); // compilation error
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Generics. Пример</h1>
+                <pre>
+                    <code class="java">
+public class Pair&lt;K, V&gt; {
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+Pair&lt;Integer, String&gt; jan = new Pair&lt;&gt;(1, "January");
+Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February"); // error
+                    </code>
+                </pre>
+            </section>
+        </section>
+
         <section>
             <section>
                 <h1>Collection interface</h1>
@@ -401,20 +466,51 @@
             <section>
                 <h1>Map implementation - HashMap</h1>
                 <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
+                    <li>O(1) для всех базовых операций (put, remove, containsKey, size)</li>
+                    <li>Не гарантирует порядок элементов</li>
+                    <li>Производительность итерирования зависит от оптимальности capacity и load factor</li>
                 </ul>
             </section>
             <section>
                 <h1>Map implementation - TreeMap</h1>
                 <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
+                    <li>O(log(n)) для всех базовых операций (put, remove, containsKey)</li>
+                    <li>Гарантирует, что элементы будут в располагаться в том порядке, в котором вы это определите</li>
+                    <li>Нет возможности тюнить производительность</li>
                 </ul>
+            </section>
+            <section>
+                <h1>HashMap example</h1>
+                <pre>
+                    <code class="java">
+    Map&lt;Object, Integer&gt; objects = new HashMap&lt;&gt;();
+    objects.put(new Object(), 0);
+    objects.put(new Object(), 1);
+    objects.put(new Object(), 2);
+    System.out.println(objects);
+    // {java.lang.Object@be9340=0, java.lang.Object@1bbea67=2, java.lang.Object@1b56bda=1}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>TreeMap example</h1>
+                <pre>
+                    <code class="java">
+    Map&lt;String, Integer&gt; month = new TreeMap&lt;&gt;();
+    month.put("Jan", 0);
+    month.put("Feb", 1);
+    month.put("March", 2);
+    System.out.println(month); // {Feb=1, Jan=0, March=2}
+                    </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Collections</h1>
+            </section>
+            <section>
+                <h1>Arrays</h1>
             </section>
         </section>
     </div>
