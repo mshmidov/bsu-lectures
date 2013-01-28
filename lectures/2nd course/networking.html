@@ -74,15 +74,15 @@
 
                                 <pre><code class="java">public class Socket {
 
-            public Socket(String host, int port);
+public Socket(String host, int port);
 
-            public InputStream getInputStream() throws IOException;
+public InputStream getInputStream() throws IOException;
 
-            public OutputStream getOutputStream() throws IOException;
+public OutputStream getOutputStream() throws IOException;
 
-            public synchronized void close() throws IOException;
+public synchronized void close() throws IOException;
 
-        }</code></pre>
+}</code></pre>
             </section>
 
             <section>
@@ -91,27 +91,27 @@
                 <h2>Пример использования</h2>
 
                                 <pre><code class="java long">Socket socket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+PrintWriter out = null;
+BufferedReader in = null;
 
-        try {
-            socket = new Socket("some host", 7);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+try {
+    socket = new Socket("some host", 7);
+    out = new PrintWriter(socket.getOutputStream(), true);
+    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            out.println("request");
-            final String response = in.readLine();
+    out.println("request");
+    final String response = in.readLine();
 
-        } catch (UnknownHostException e) {
-            System.err.println(e);
-        } catch (IOException e) {
-            System.err.println(e);
+} catch (UnknownHostException e) {
+    System.err.println(e);
+} catch (IOException e) {
+    System.err.println(e);
 
-        } finally {
-            close(out);
-            close(in);
-            close(socket);
-        }</code></pre>
+} finally {
+    close(out);
+    close(in);
+    close(socket);
+}</code></pre>
             </section>
         </section>
 
@@ -131,23 +131,23 @@
 
                             <pre><code class="java">public class InetAddress implements java.io.Serializable {
 
-            public static InetAddress[] getAllByName(String host)
-                throws UnknownHostException;
+public static InetAddress[] getAllByName(String host)
+    throws UnknownHostException;
 
-            public String getHostAddress();
-            public String getHostName();
-            public String getCanonicalHostName();
+public String getHostAddress();
+public String getHostName();
+public String getCanonicalHostName();
 
         }</code></pre>
 
             <h2>Пример использования</h2>
                             <pre><code class="java long">final InetAddress[] addresses = InetAddress.getAllByName("google.com");
 
-        for (InetAddress address : addresses) {
-            System.out.println("host address: " + address.getHostAddress());
-            System.out.println("host name: " + address.getHostName());
-            System.out.println("canonical host name: " + address.getCanonicalHostName());
-        }</code></pre>
+for (InetAddress address : addresses) {
+    System.out.println("host address: " + address.getHostAddress());
+    System.out.println("host name: " + address.getHostName());
+    System.out.println("canonical host name: " + address.getCanonicalHostName());
+}</code></pre>
 
         </section>
 
@@ -169,18 +169,18 @@
 
                                 <pre><code class="java">public final class URL implements java.io.Serializable {
 
-            public URL(String protocol, String host, int port, String file)
-                throws MalformedURLException;
+public URL(String protocol, String host, int port, String file)
+    throws MalformedURLException;
 
-            public URL(String spec)
-                throws MalformedURLException;
+public URL(String spec)
+    throws MalformedURLException;
 
-            public URLConnection openConnection()
-                throws java.io.IOException;
+public URLConnection openConnection()
+    throws java.io.IOException;
 
-            public final InputStream openStream()
-                throws java.io.IOException;
-        }</code></pre>
+public final InputStream openStream()
+    throws java.io.IOException;
+}</code></pre>
             </section>
 
             <section>
@@ -189,24 +189,23 @@
                 <h2>Пример использования</h2>
                                 <pre><code class="java long">final URL url = new URL("http", "google.com", "/intl/en/about/");
 
-        BufferedReader stream = null;
+BufferedReader stream = null;
 
-        try {
-            stream = new BufferedReader(new InputStreamReader(url.openStream()));
+try {
+    stream = new BufferedReader(new InputStreamReader(url.openStream()));
 
-            String line;
+    String line;
 
-            while((line = stream.readLine()) != null) {
-                System.out.println(line);
-            }
+    while((line = stream.readLine()) != null) {
+        System.out.println(line);
+    }
 
-        } catch (IOException e) {
-            System.out.println(e);
+} catch (IOException e) {
+    System.out.println(e);
 
-        } finally {
-            close(stream);
-        }
-                                </code></pre>
+} finally {
+    close(stream);
+}</code></pre>
             </section>
 
         </section>
@@ -228,19 +227,19 @@
 
                             <pre><code class="java">public abstract class URLConnection {
 
-            public void setRequestProperty(String key, String value);
+    public void setRequestProperty(String key, String value);
 
-            public String getHeaderField(String name);
+    public String getHeaderField(String name);
 
-            public void setDoInput(boolean doinput);
+    public void setDoInput(boolean doinput);
 
-            public void setDoOutput(boolean dooutput);
+    public void setDoOutput(boolean dooutput);
 
-            public InputStream getInputStream() throws IOException;
+    public InputStream getInputStream() throws IOException;
 
-            public OutputStream getOutputStream() throws IOException;
+    public OutputStream getOutputStream() throws IOException;
 
-        }</code></pre>
+}</code></pre>
 
             <h2>java.net.HttpURLConnection</h2>
             <ul>
@@ -326,9 +325,9 @@
             <section>
                 <h1>Задачи (5/6)</h1>
 
-                <h2>Подсчёт слов в файле (8 баллов)</h2>
+                <h2>Подсчёт слов в файле (9 баллов)</h2>
 
-                <p>Программа должна считывать в память содержимое существующего в интернете текстового файла, разбивать его на
+                <p>Программа должна считывать содержимое существующего в интернете текстового файла, разбивать его на
                     слова и
                     подсчитывать количество повторов каждого слова. Результат подсчёта сохранять в текстовый файл.
                     Имена файлов могут быть фиксированно заданы в тексте программы.</p>
@@ -345,9 +344,6 @@
 
                 <h3>Дополнительные баллы:</h3>
                 <ul>
-                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
-                        перезаписать файл или прекратить исполнение программы.
-                    </li>
                     <li>Решить задачу универсальным алгоритмом для любого набора разделителей.</li>
                 </ul>
             </section>
