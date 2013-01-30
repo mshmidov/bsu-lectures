@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Collections API</title>
+    <title>Java Collections Framework</title>
 
-    <meta name="description" content="Java Collections API presentation">
+    <meta name="description" content="Java Collections Framework presentation">
     <meta name="author" content="Sergey Krauchenia">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -24,9 +24,13 @@
     </script>
 
     <!--[if lt IE 9]>
-    <script src="reveal/lib/js/html5shiv.js"></script>
+    <script src="reveal/lib/js/html5shiv.js" type="text/javascript"></script>
     <![endif]-->
-
+    <style>
+        .pleft {
+            text-align: left
+        }
+    </style>
 </head>
 
 <body>
@@ -604,7 +608,94 @@ class Customer implements Comparable&lt;Customer&gt; {
         <section>
             <section>
                 <h1>Задачи (1/?)</h1>
-                <h2></h2>
+                <h3>Подсчет слов</h3>
+                <p class="pleft">
+                    <b>Входные данные:</b> строка (например текст книги)
+                    <b>Выходные данные:</b> список чаще всего встречающихся 20-ти слов с информацией о кол-ве повторений,
+                    отсортированный в порядке убывания
+                </p>
+                <p class="pleft">
+                    <b>*</b> Тестовые данные можно получить, вызвав метод TaskDataUtil.bookText("war_and_peace.txt") из
+                    модуля <b>collections</b>
+                </p>
+            </section>
+            <section>
+                <h1>Задача (2/?)</h1>
+                <p class="pleft" style="font-size: 32px">
+                    Дано целое число. Представте его в двоичной системе.Используйте последовательность, начиная с единицы
+                    (19 = 10011). Сдвигайте побитово вправо на один бит по циклу (последняя цифра становится первой, а все
+                    остальные сдвигаются на одну позицию вправо) - 10011, 11001, 11100, 01110, 00111, 10011
+                    до тех пор, пока не получите изначальное число. <b>Выберите максимальное число</b>
+                </p>
+            </section>
+            <section>
+                <h1>Задача (3/?)</h1>
+                <h3>Реализуйте следующую функцию:</h3>
+                <pre>
+                    <code class="java">
+/**
+* Возвращает новый список с чередующимися элементами из
+* s1 и s2, начиная с s1. Если списки разной длины,
+* то лишние элементы добавляются в конец
+* Прим: s1=[a,b,c,d] s2=[e,f,g,h,i,j,k,l]
+*       result=[a,e,b,f,c,g,d,h,i,j,k,l]
+*/
+List&lt;Character&gt; laceLists(List&lt;Character&gt; s1, List&lt;Character&gt; s2) {
+    return list;
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Задача (4/?)</h1>
+                <h3>Реализуйте слудующую функцию:</h3>
+                <pre>
+                    <code class="java">
+/**
+* Находит наибольшую увеличивающуюся последовательность
+* @param seq последовательность
+* @return наибольшая увеличивающаяся
+*         подпоследовательность
+*/
+List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
+    return result;
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Задача (5/?)</h1>
+                <h3>Реализуйте следующую функцию:</h3>
+                <pre>
+                    <code class="java">
+/**
+* Метод осуществляет разбор и вычисление выражения,
+* записанного в обратной польской нотации
+* @param rpnExp выражение в ОПН
+* @return результат вычисления
+*/
+double executeReversePolishNotation(String rpnExp) {
+    return 0;
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Задача (6/?)</h1>
+                <h3>Реализуйте слудующую функцию:</h3>
+                <pre>
+                    <code class="java">
+    /**
+    * Преобразовывает из инфиксной нотации в обратную
+    * польскую нотацию
+    * @param infExp выражение в инфиксной нотации
+    * @return выражение в ОПН
+    */
+    String convertNotation(String infExp) {
+        return "";
+    }
+                    </code>
+                </pre>
             </section>
         </section>
     </div>
