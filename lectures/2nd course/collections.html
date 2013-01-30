@@ -57,7 +57,7 @@
         <section>
             <section>
                 <h1>Generics (Обобщенные типы)</h1>
-                <h3>Опасносте с типизацией</h3>
+                <h3>Опасность с типизацией</h3>
                 <pre>
                     <code class="java">
         Collection phones = new ArrayList();
@@ -72,7 +72,7 @@
             </section>
             <section>
                 <h1>Generics (Обобщенные типы)</h1>
-                <h3>Безопасносте</h3>
+                <h3>Безопасно</h3>
                 <pre>
                     <code class="java">
         Collection phones = new ArrayList();
@@ -144,19 +144,6 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
                     </code>
                 </pre>
             </section>
-            <section>
-                <h1>Collection interface interface</h1>
-                <h2>Group operations</h2>
-                <pre>
-                    <code class="java">
-        boolean containsAll(Collection&lt;T&gt; collection);
-        boolean addAll(Collection&lt;T&gt; collection);
-        void clear()
-        void removeAll(Collection&lt;T&gt; collection);
-        void retainAll(Collection&lt;T&gt; collection);
-                    </code>
-                </pre>
-            </section>
 
             <section>
                 <h1>Iterator interface</h1>
@@ -191,6 +178,19 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
                     </code>
                 </pre>
             </section>
+            <section>
+                <h1>Collection interface</h1>
+                <h2>Group operations</h2>
+                <pre>
+                    <code class="java">
+        boolean containsAll(Collection&lt;T&gt; collection);
+        boolean addAll(Collection&lt;T&gt; collection);
+        void clear()
+        void removeAll(Collection&lt;T&gt; collection);
+        void retainAll(Collection&lt;T&gt; collection);
+                    </code>
+                </pre>
+            </section>
         </section>
 
         <section>
@@ -211,7 +211,7 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
             </section>
             <section>
                 <h1>List interface - subList (1/2)</h1>
-                <p>Лист также предоставляет возможность работать с подмножеством</p>
+                <p>List также предоставляет возможность работать с частью списка</p>
                 <pre>
                     <code class="java">
         List&lt;E&gt; subList(int fromIndex, int toIndex);
@@ -221,7 +221,7 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
 
             <section>
                 <h1>List interface - subList (2/2)</h1>
-                <div>Важно помнить, что, изменяя подмножество (add, remove, set), изменяется также и список</div>
+                <div>Важно помнить, что, изменяя часть списка (add, remove, set), изменяется также исходный список</div>
                 <pre>
                     <code class="java">
         List&lt;Integer&gt; even = new ArrayList&lt;&gt;();
@@ -240,7 +240,7 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
             <section>
                 <h1>List Iterator</h1>
                 <p>ListIterator расширяет интерфейс Iterator и добавляет возможность двунаправленного доступа, а также
-                добавление и изменение элемента коллекции</p>
+                добавления и изменения элемента коллекции</p>
                 <pre>
                     <code class="java">
         // методы для получения ListIterator из листа
@@ -282,26 +282,26 @@ while (iterator.hasPrevious()) {
                 <h1>ArrayList и LinkedList</h1>
 
                 <div class="fragment roll-in">
-                    <h2>ArrayList лучше использовать если:</h2>
+                    <h2>ArrayList лучше использовать в случаях:</h2>
                     <ul>
-                        <li>Random access</li>
-                        <li>Добавление элементов только в конец</li>
-                        <li>Удаление только последних элементов</li>
+                        <li>Произвольного доступа</li>
+                        <li>Добавления элементов только в конец</li>
+                        <li>Удаления только последних элементов</li>
                     </ul>
                 </div>
                 <div class="fragment roll-in">
-                    <h2>LinkedList лучше использовать если:</h2>
+                    <h2>LinkedList лучше использовать в случаях:</h2>
                     <ul>
-                        <li>Удаление или добавление не последнего элемента</li>
-                        <li>Доступ к элементам в списке только последовательно</li>
+                        <li>Удаления или добавления не последнего элемента</li>
+                        <li>Только последовательного доступа к элементам списка</li>
                     </ul>
                 </div>
             </section>
             <section>
-                <h1>Сложности операций</h1>
+                <h1>Алгоритмическая сложность операций</h1>
                 <table>
                     <tr>
-                        <th>f</th>
+                        <th>Операция</th>
                         <th>LinkedList</th>
                         <th>ArrayList</th>
                     </tr>
@@ -309,10 +309,10 @@ while (iterator.hasPrevious()) {
                         <td>get</td><td>O(n)</td><td>O(1)</td>
                     </tr>
                     <tr>
-                        <td>add(i,o)</td><td>O(n)</td><td>O(n)</td>
+                        <td>add(i,obj)</td><td>O(n)</td><td>O(n)</td>
                     </tr>
                     <tr>
-                        <td>add(o)</td><td>O(1)</td><td>O(1) или O(n)</td>
+                        <td>add(obj)</td><td>O(1)</td><td>O(1) или O(n)</td>
                     </tr>
                     <tr>
                         <td>remove</td><td>O(n)</td><td>O(n)</td>
@@ -325,7 +325,7 @@ while (iterator.hasPrevious()) {
         <section>
             <section>
                 <h1>Queue Interface</h1>
-                Расширяет интерфей Collection, позволяя реализовать поведение First-In-First-Out
+                Расширяет интерфейс Collection, позволяя реализовать поведение First-In-First-Out
                 <pre>
                     <code class="java">
         boolean offer(E e); // добавляет в конец
@@ -338,11 +338,11 @@ while (iterator.hasPrevious()) {
             </section>
             <section>
                 <h1>Deque Interface</h1>
-                Реализует интервейс Queue.Добавляет функции, с помощью которых легко использовать коллекцию
-                как очередь (First-In-First-Out) либо как стэк (Last-In-First-Out)
+                Расширяет интерфейс Queue.Добавляет функции, с помощью которых легко использовать коллекцию
+                как очередь (First-In-First-Out) либо как стек (Last-In-First-Out)
                 <pre>
                     <code class="java">
-        void add*(E e);
+        void addFirst(E e); void addLast(E e);
         boolean offer*(E e);
         E remove*();
         E poll*();
@@ -372,10 +372,91 @@ stack.push(0); // [0, 2, 3, 4]
 
         <section>
             <section>
+                <h1>Sorting</h1>
+                <pre>
+                    <code class="java">
+        List&lt;Integer&gt; primes = new ArrayList&lt;&gt;();
+        Collections.addAll(primes, 11, 7, 5, 2, 3, 13);
+        System.out.println(primes); // [11, 7, 5, 2, 3, 13]
+        Collections.sort(primes);
+        System.out.println(primes); // [2, 3, 5, 7, 11, 13]
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Sorting</h1>
+                <h3>Predefined natural ordering</h3>
+                <ul>
+                    <li>Byte, Double, Float, Integer, Long, Short - <b>Numerical</b></li>
+                    <li>Character - <b>Numerical by Unicode value</b></li>
+                    <li>Date - <b>Chronological</b></li>
+                    <li>File - <b>Numerical</b> by Unicode value of file path</li>
+                    <li>String - <b>Numerical by Unicode value of chars</b></li>
+                </ul>
+            </section>
+            <section>
+                <h1>Sorting</h1>
+                <h3>Customized ordering</h3>
+                <pre>
+                    <code class="java">
+class DescIntComparator implements Comparator&lt;Integer&gt; {
+    public int compare(Integer o1, Integer o2) {
+        return o2 - o1;
+    }
+}
+
+List&lt;Integer&gt; primes = new ArrayList&lt;&gt;();
+Collections.addAll(primes, 11, 7, 5, 2, 3, 13);
+System.out.println(primes); // [11, 7, 5, 2, 3, 13]
+Collections.sort(primes, new DescIntComparator());
+System.out.println(primes); // [13, 11, 7, 5, 3, 2]
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Sorting</h1>
+                <p>Comparable interface (1/2). Используется, когда у класса есть естественный порядок</p>
+                <pre>
+                    <code class="java">
+class Customer implements Comparable&lt;Customer&gt; {
+    private String name;
+    Customer(String name) {
+        this.name = name;
+    }
+    public int compareTo(Customer o) {
+        return this.name.compareTo(o.name);
+    }
+    public String toString() {
+        return this.name;
+    }
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Sorting</h1>
+                <p>Comparable interface (2/2)</p>
+                <pre>
+                    <code class="java">
+    List&lt;Customer&gt; customers = new ArrayList&lt;&gt;();
+    customers.add(new Customer("General Electric"));
+    customers.add(new Customer("Disney Land"));
+    customers.add(new Customer("BBC"));
+    Collections.sort(customers);
+
+    // [BBC, Disney Land, General Electric]
+    System.out.println(customers);
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
                 <h1>Set interface</h1>
                 <ul>
                     <li>Реализует интерфейс <i>Collection</i></li>
-                    <li>может содержать только уникальные объекты</li>
+                    <li>Может содержать только уникальные объекты</li>
                     <li>Никаких новых методов не добавляет</li>
                 </ul>
             </section>
@@ -391,10 +472,13 @@ stack.push(0); // [0, 2, 3, 4]
                 <h1>Set implementations - TreeSet</h1>
                 <ul>
                     <li>O(log(n)) для всех базовых операций (add, remove, contains)</li>
-                    <li>Гарантирует, что элементы будут в располагаться в том порядке, в котором вы это определите</li>
-                    <li>Нет возможности тюнить производительность</li>
+                    <li>Гарантирует, что элементы будут располагаться в том порядке, в котором вы это определите (Comparable interface)</li>
+                    <li>Нет возможности оптимизировать производительность</li>
                 </ul>
-                Интерфейс SortedSet, который реализуется TreeSet'ом, добавляет следующие новые методы:
+            </section>
+            <section>
+                <h1>SortedSet interface</h1>
+                Интерфейс SortedSet, который реализуется TreeSet'ом, добавляет следующие методы:
                 <pre>
                     <code class="java">
         Comparator&lt;? super E&gt; comparator();
@@ -407,28 +491,33 @@ stack.push(0); // [0, 2, 3, 4]
                 </pre>
             </section>
             <section>
-                <h1>Set implementations</h1>
-                <h2>hashCode() и equals()</h2>
-            </section>
-        </section>
-        <section>
-            <section>
-                <h1>Sorting</h1>
+                <h1>TreeSet example</h1>
+                <pre>
+                    <code class="java">
+        Set&lt;Customer&gt; customers = new TreeSet&lt;&gt;();
+        customers.add(new Customer("General Electric"));
+        customers.add(new Customer("Disney Land"));
+        customers.add(new Customer("BBC"));
+
+        // [BBC, Disney Land, General Electric]
+        System.out.println(customers);
+                    </code>
+                </pre>
             </section>
         </section>
         <section>
             <section>
                 <h1>Map Interface</h1>
                 <ul>
-                    <li>Map это базовый интерфейс для всех структур данных, основанных на паре ключ-значение.
+                    <li>Map - это базовый интерфейс для всех структур данных, основанных на паре ключ-значение.
                     <li>Map не реализует интерфейс Collection, он стоит особняком, однако является частью Java Collection Framework
-                    <li>Интерфейс описывает маппинг ключа на значение, гарантируя уникальность ключа
+                    <li>Интерфейс описывает отображение (mapping) ключа на значение, гарантируя уникальность ключа
                     <li>Операции могут быть разбиты на 3 группы: altering, querying, providing alternative views
                 </ul>
             </section>
             <section>
                 <h1>Map interface - altering functions</h1>
-                Позволяют добавлять или удалять пары ключ-значений из мапы
+                Позволяют добавлять или удалять пары ключ-значений из Map
                 <pre>
                     <code class="java">
         V put(K key, V value);
@@ -440,10 +529,10 @@ stack.push(0); // [0, 2, 3, 4]
             </section>
             <section>
                 <h1>Map interface - querying functions</h1>
-                Позволяют проверять содержимое мапы
+                Позволяют проверять содержимое Map
                 <pre>
                     <code class="java">
-        V get(Object key);
+        V get(Object key); // не использовать для проверки наличия значения по ключу!
         boolean containsValue(Object value);
         boolean containsKey(Object key);
         boolean isEmpty();
@@ -467,15 +556,15 @@ stack.push(0); // [0, 2, 3, 4]
                 <ul>
                     <li>O(1) для всех базовых операций (put, remove, containsKey, size)</li>
                     <li>Не гарантирует порядок элементов</li>
-                    <li>Производительность итерирования зависит от оптимальности capacity и load factor</li>
+                    <li>Производительность обхода Map зависит от оптимальности capacity и load factor</li>
                 </ul>
             </section>
             <section>
                 <h1>Map implementation - TreeMap</h1>
                 <ul>
                     <li>O(log(n)) для всех базовых операций (put, remove, containsKey)</li>
-                    <li>Гарантирует, что элементы будут в располагаться в том порядке, в котором вы это определите</li>
-                    <li>Нет возможности тюнить производительность</li>
+                    <li>Гарантирует, что элементы будут располагаться в том порядке, в котором вы это определите (Comparable interface)</li>
+                    <li>Нет возможности оптимизировать производительность</li>
                 </ul>
             </section>
             <section>
@@ -510,6 +599,12 @@ stack.push(0); // [0, 2, 3, 4]
             </section>
             <section>
                 <h1>Arrays</h1>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Задачи (1/?)</h1>
+                <h2></h2>
             </section>
         </section>
     </div>
