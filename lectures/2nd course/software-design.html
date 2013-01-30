@@ -233,39 +233,107 @@
 
 <section>
 
+    <h1>Шаблоны проектирования</h1>
+
+    <p class="thesis">Шаблон проектирования &mdash; это архитектурная конструкция, демонстрирующая определённый
+        общепринятый подход к решению группы типовых задач в проектировании.</p>
+
+    <p class="thesis">Если методологии &mdash; это философия разработки, то шаблоны &mdash; это конкретные технические
+        стандарты.</p>
+
+    <h2>Фундаментальная книга:</h2>
+    <ul>
+        <li>Gamma, Helm, Johnson, Vlissides (1995). Design Patterns: Elements of Reusable Object-Oriented Software
+        </li>
+    </ul>
+
+    <p class="thesis">Все последующие шаблоны приводятся для примера.</p>
+
+</section>
+
+<section>
+    <h1>Шаблон MVC (Model&ndash;View&ndash;Controller)</h1>
+
+    <p class="thesis">Приложение удобно делить на три изолированные функциональные части:</p>
+    <dl>
+        <dt>Модель</dt>
+        <dd>Классы, описывающие предметную область задачи</dd>
+        <dt>Представление</dt>
+        <dd>Пользовательский интерфейс</dd>
+        <dt>Контроллер</dt>
+        <dd>Логика приложения</dd>
+    </dl>
+
+</section>
+
+<section>
     <section>
+        <h1>Шаблон Decorator (1/3)</h1>
 
-        <h1>Patterns (1/)</h1>
+        <p class="thesis">Существует возможность расширить функциональность объекта без изменения класса, прозрачно для
+            его клиентов.</p>
 
-        <p class="thesis">Шаблон проектирования &mdash; это архитектурная конструкция, демонстрирующая определённый
-            общепринятый подход к решению группы типовых задач в проектировании.</p>
-
-        <h1>Фундаментальная книга:</h1>
-        <ul>
-            <li>Gamma, Erich; Richard Helm, Ralph Johnson, and John Vlissides (1995). Design Patterns: Elements of
-                Reusable Object-Oriented Software
-            </li>
-        </ul>
+        <img src="software-design.files/decorator.png" alt="Шаблон Decorator - диаграмма классов" width="392"
+             height="421">
     </section>
 
     <section>
-        <h1>Patterns (2/)</h1>
+        <h1>Шаблон Decorator (2/3)</h1>
 
-        <h2>MVC (Model&ndash;View&ndash;Controller)</h2>
+        <pre><code class="java">public interface A {
+    String getName();
+}
 
-        <p class="thesis">Приложение удобно делить на три изолированные функциональные части:</p>
-        <dl>
-            <dt>Модель</dt>
-            <dd>Классы, описывающие предметную область задачи</dd>
-            <dt>Представление</dt>
-            <dd>Пользовательский интерфейс</dd>
-            <dt>Контроллер</dt>
-            <dd>Логика приложения</dd>
-        </dl>
+public final class AImpl implements A {
 
+    @Override
+    public String getName() {
+        return "My name is A";
+    }
+}</code></pre>
+
+        <pre><code class="java">public class ADecorator implements A {
+
+    private final A decoratedObject;
+
+    public ADecorator(A decoratedObject) {
+        this.decoratedObject = decoratedObject;
+    }
+
+    @Override
+    public String getName() {
+        return decoratedObject.getName(); // делегирование метода
+    }
+}</code></pre>
     </section>
 
+    <section>
+        <h1>Шаблон Decorator (3/3)</h1>
+        <pre><code class="java">public class OneADecorator extends ADecorator {
 
+    public OneADecorator(A decoratedObject) {
+        super(decoratedObject);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName() + " decorated with Decorator 1"; // дополняем поведение
+    }
+}</code></pre>
+
+        <pre><code class="java">public class AnotherADecorator extends ADecorator {
+
+    public AnotherADecorator(A decoratedObject) {
+        super(decoratedObject);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName() + " decorated with Decorator 2"; // дополняем поведение
+    }
+}</code></pre>
+    </section>
+    
 </section>
 
 </div>
