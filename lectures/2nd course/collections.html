@@ -346,14 +346,14 @@ while (iterator.hasPrevious()) {
                 как очередь (First-In-First-Out) либо как стек (Last-In-First-Out)
                 <pre>
                     <code class="java">
-        void addFirst(E e); void addLast(E e);
-        boolean offer*(E e);
-        E remove*();
-        E poll*();
-        E get*();
-        E peek*();
-        void push(E e);
-        E pop();
+    void addFirst(E e);         void addLast(E e);
+    boolean offerFirst(E e);    boolean offerLast(E e);
+    E removeFirst();            E removeLast();
+    E pollFirst();              E pollLast();
+    E getFirst();               E getLast();
+    E peekFirst();              E peekLast();
+    void push(E e);
+    E pop();
                     </code>
                 </pre>
             </section>
@@ -599,10 +599,81 @@ class Customer implements Comparable&lt;Customer&gt; {
         </section>
         <section>
             <section>
-                <h1>Collections</h1>
+                <h1>Collections (1/2)</h1>
+                <div style="font-size: 22px; line-height: 24px;">
+                <ul>
+                    <li><b>max/min</b> - возвращает максимальный/минимальный элемент в соответствии с естественным порядком.
+                    Все элементы должны реализовывать интерфейс Comparable</li>
+                    <li><b>addAll</b></li>
+                    <pre>
+                        <code class="java">
+        Set&lt;Integer&gt; nums = new HashSet&lt;&gt;();
+        nums.add(3);
+        nums.add(4);
+        nums.add(5);
+        nums.add(1);
+
+        Set&lt;Integer&gt; nums1 = new HashSet&lt;&gt;();
+        Collections.addAll(nums1, 3, 4, 5, 1);
+                        </code>
+                    </pre>
+                    <li><b>copy(dest, source)</b> - копирует элементы одного списка в другой</li>
+                    <li><b>emptySet, emptyList, emptyMap</b> - возвращает пустое множество, список или Map соответственно</li>
+                </ul>
+                </div>
             </section>
             <section>
-                <h1>Arrays</h1>
+                <h1>Collections (2/2)</h1>
+                <div style="font-size: 22px; line-height: 24px;">
+                    <ul>
+                        <li><b>frequency</b> - возвращает число вхождений заданного элемента в переданной коллекции</li>
+                        <li><b>reverse</b> - переворачивает порядок элементов списка</li>
+                        <li><b>shuffle</b> - перемешивает элементы списка в случайном порядке</li>
+                        <li><b>swap</b> - меняет два элемента из списка местами</li>
+                        <li><b>unmodifiableCollection</b> - возвращает обертку коллекции, которая предотвращает ее изменение</li>
+                        <li><b>binarySearch</b> - ищет заданный элемент в списке, используя алгоритм бинарного поиска</li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h1>Arrays (1/2)</h1>
+                <div style="font-size: 22px; line-height: 24px;">
+                    <ul>
+                        <li><b>sort</b> - сортирует элементы массива в соответствии</li>
+                        <li><b>binarySearch</b> - ищет заданный элемент в массиве, используя алгоритм бинарного поиска</li>
+                        <li><b>asList</b> - создает список на основе переданного перечисления</li>
+                        <pre>
+                            <code class="java">
+        List&lt;Integer&gt; integers = Arrays.asList(1, 2, 3, 4, 5, 5);
+                            </code>
+                        </pre>
+                        <li><b>copyOf</b> - делает копию заданного массива с заданной длиной</li>
+                        <pre>
+                            <code class="java">
+        int[] nums = Arrays.copyOf(new int[]{1, 2, 3, 4, 5}, 8);
+        System.out.println(Arrays.toString(nums)); // [1, 2, 3, 4, 5, 0, 0, 0]
+                            </code>
+                        </pre>
+                        <li><b>toString</b> - возвращает строковое предствление массива</li>
+                        <li><b></b> - </li>
+                        <li><b></b> - </li>
+                        <li><b></b> - </li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h1>Arrays (2/2)</h1>
+                <div style="font-size: 22px; line-height: 24px;">
+                    <ul>
+                        <li><b>copyOfRange</b> - копирует элементы массива в заданном диапазоне</li>
+                        <pre>
+                            <code class="java">
+        int[] nums = Arrays.copyOfRange(new int[]{1, 2, 3, 4, 5}, 3, 10);
+        System.out.println(Arrays.toString(nums)); // [4, 5, 0, 0, 0, 0, 0]
+                            </code>
+                        </pre>
+                    </ul>
+                </div>
             </section>
         </section>
         <section>
