@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Application configuration</title>
+
+    <meta name="description" content="Application configuration">
+    <meta name="author" content="Sergey Krauchenia">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+    <style>
+        .pleft {
+            text-align: left
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+<div class="slides">
+<section>
+    <h1>Application configuration</h1>
+</section>
+    <section>
+        <h1>Что не следует хардкодить?</h1>
+        <ul>
+            <li>Параметры приложения</li>
+            <ul>
+                <li>пути в файловой системе</li>
+                <li>сетевые адреса других приложений</li>
+                <li>расположение базы данных и т. п.</li>
+            </ul>
+            <li>Интернационализация</li>
+            <ul>
+                <li>сообщения пользователю на разных языках</li>
+            </ul>
+            <li>Хранение шаблонов</li>
+            <ul>
+                <li>формат чисел, дат, денежных единиц и др.</li>
+                <li>формат документов, сообщений и др.</li>
+            </ul>
+        </ul>
+    </section>
+    <section>
+        <section>
+            <h1>Console</h1>
+            <h3>How to run program with initial parameters:</h3>
+            <pre>
+                <code class="java">
+    public class Echo {
+        public static void main (String[] args) {
+            for (String s: args) {
+                System.out.println(s);
+            }
+        }
+    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Console</h1>
+            <img src="application-configuration.files/console-args.png" height="110px">
+        </section>
+        <section>
+            <h1>Console</h1>
+            <h3>Обработка числовых аргументов:</h3>
+            <pre>
+                <code class="java" style="font-size: 15px;">
+        public static void main(String[] args) {
+            if (args.length > 0) {
+                try {
+                    int firstArg = Integer.parseInt(args[0]);
+                } catch (NumberFormatException e) {
+                    System.err.println("Argument must be an integer");
+                }
+            } else {
+                System.err.println("Please, provide any number");
+            }
+        }
+                </code>
+            </pre>
+        </section>
+    </section>
+    <section>
+        <section>
+            <h1>Properties files</h1>
+            <ul>
+                <li>текстовый файл в кодировке ISO-8859-1</li>
+                <li>стандартное расширение .properties</li>
+                <li>данные хранятся в формате key=value</li>
+                <li>для экранирования символов используется \</li>
+                <li>можно указывать вместо символа его код, например, \u1234</li>
+                <li>строка начинающаяся с символа # или ! считается комментарием</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Properties files</h1>
+            <pre>
+                <code class="property">
+        #Some comment here
+        abc_key=123
+        example1.key1=value
+        example2.foo.key1=Something different
+        #Not encoded characters
+        example3.encoded.value1=Русский текст
+        #This text is encoded properly
+        example3.encoded.value2=Chinese text \u4F60\u597D
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Properties files</h1>
+            <h3>Класс java.util.Properties</h3>
+            <ul>
+                <li>Предназначен для работы с properties файлами</li>
+                <li>Метод <b>load</b> предназначен для чтения properties из InputStream.</li>
+                <li>Метод <b>store</b> предназначен для сохранения properties в OutputStream.</li>
+                <li>Метод <b>getProperty</b> предназначен для получения значения по ключу.</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Properties files</h1>
+            <pre>
+                <code class="java">
+Properties properties = new Properties();
+
+String file = "test.properties";
+ClassLoader cl = PropertiesExample.class.getClassLoader();
+InputStream stream = cl.getResourceAsStream(file);
+try {
+    properties.load(stream);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+for (Map.Entry entry : properties.entrySet()) {
+    System.out.println(entry);
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Properties files</h1>
+            <h3>Результат работы</h3>
+            <pre>
+                <code class="java">
+        abc_key=123
+        example2.foo.key1=Something different
+        example1.key1=value
+        example3.encoded.value2=Chinese text 你好
+        example3.encoded.value1=Ð ÑÑÑÐºÐ¸Ð¹ ÑÐµÐºÑÑ
+                </code>
+            </pre>
+        </section>
+    </section>
+    <section>
+        <section>
+            <h1>Resource Bundle</h1>
+            <ul>
+                <li>Семейство Properties файлов, хранящих данные для нескольких локалей.</li>
+                <li>Имя файлов в bundle состоит базовой части + суффикс локали.
+                    Например:
+                    <pre>
+        MyResources.properties
+        MyResources_de.properties
+                    </pre>
+                </li>
+                <li>Каждый properties файл в bundle содержит значения свойств в данной локали</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Resource Bundle</h1>
+            <h3>Пример bundle</h3>
+            <ul>
+                <li>bundles/demo_bundle.properties</li>
+                <pre>
+    messages.greeting=Default Greeting
+    messages.information=Time message
+                </pre>
+                <li>bundles/demo_bundle_en_US.properties</li>
+                <pre>
+    messages.greeting=Hello
+    messages.information=Time
+                </pre>
+                <li>bundles/demo_bundle_ru_RU.properties</li>
+                <pre>
+messages.greeting=\u041f\u0440\u0438\u0432\u0435\u0442
+messages.information=\u0412\u0440\u0435\u043c\u044f
+                </pre>
+            </ul>
+        </section>
+        <section>
+            <h1>Resource Bundle</h1>
+            <h3>java.util.ResourceBundle</h3>
+            <ul>
+                <li>Предназначен для получения данных из bundle</li>
+                <li><b>ResourceBundle.getBundle(String baseName, Locale locale)</b> загружает bundle и возвращает объект класса ResourceBundle</li>
+                <li><b>ResourceBundle.getString(String key)</b>  получить значение свойства в bundle по ключу.</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Resource Bundle</h1>
+            <pre>
+                <code class="java" style="font-size: 15px;">
+public static void main(String[] args) {
+    testBundle("bundles.demo_bundle", Locale.US);
+    testBundle("bundles.demo_bundle", new Locale("ru", "RU"));
+}
+
+private static void testBundle(String bundleBaseName, Locale locale) {
+    ResourceBundle bundle;
+    bundle = ResourceBundle.getBundle(bundleBaseName, locale);
+    String value = bundle.getString("messages.greeting");
+
+    System.out.println(locale + " [messages.greeting] = " + value);
+}
+                </code>
+            </pre>
+        </section>
+    </section>
+</div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
+</html>
