@@ -618,7 +618,7 @@ class Customer implements Comparable&lt;Customer&gt; {
                         </code>
                     </pre>
                     <li><b>copy(dest, source)</b> - копирует элементы одного списка в другой</li>
-                    <li><b>emptySet, emptyList, emptyMap</b> - возвращает пустое множество, список или Map соответственно</li>
+                    <li><b>empty{Set,List,Map}</b> - возвращает пустое множество, список или Map соответственно</li>
                 </ul>
                 </div>
             </section>
@@ -627,7 +627,7 @@ class Customer implements Comparable&lt;Customer&gt; {
                 <div style="font-size: 22px; line-height: 24px;">
                     <ul>
                         <li><b>frequency</b> - возвращает число вхождений заданного элемента в переданной коллекции</li>
-                        <li><b>reverse</b> - переворачивает порядок элементов списка</li>
+                        <li><b>reverse</b> - меняет порядок элементов списка на противоположный</li>
                         <li><b>shuffle</b> - перемешивает элементы списка в случайном порядке</li>
                         <li><b>swap</b> - меняет два элемента из списка местами</li>
                         <li><b>unmodifiableCollection</b> - возвращает обертку коллекции, которая предотвращает ее изменение</li>
@@ -639,7 +639,7 @@ class Customer implements Comparable&lt;Customer&gt; {
                 <h1>Arrays (1/2)</h1>
                 <div style="font-size: 22px; line-height: 24px;">
                     <ul>
-                        <li><b>sort</b> - сортирует элементы массива в соответствии</li>
+                        <li><b>sort</b> - сортирует элементы массива в естественном порядке</li>
                         <li><b>binarySearch</b> - ищет заданный элемент в массиве, используя алгоритм бинарного поиска</li>
                         <li><b>asList</b> - создает список на основе переданного перечисления</li>
                         <pre>
@@ -647,7 +647,7 @@ class Customer implements Comparable&lt;Customer&gt; {
         List&lt;Integer&gt; integers = Arrays.asList(1, 2, 3, 4, 5, 5);
                             </code>
                         </pre>
-                        <li><b>copyOf</b> - делает копию заданного массива с заданной длиной</li>
+                        <li><b>copyOf</b> - создает копию заданного массива с заданной длиной</li>
                         <pre>
                             <code class="java">
         int[] nums = Arrays.copyOf(new int[]{1, 2, 3, 4, 5}, 8);
@@ -655,9 +655,6 @@ class Customer implements Comparable&lt;Customer&gt; {
                             </code>
                         </pre>
                         <li><b>toString</b> - возвращает строковое предствление массива</li>
-                        <li><b></b> - </li>
-                        <li><b></b> - </li>
-                        <li><b></b> - </li>
                     </ul>
                 </div>
             </section>
@@ -693,8 +690,8 @@ class Customer implements Comparable&lt;Customer&gt; {
             <section>
                 <h1>Задача (2/?)</h1>
                 <p class="pleft" style="font-size: 32px">
-                    Дано целое число. Представте его в двоичной системе.Используйте последовательность, начиная с единицы
-                    (19 = 10011). Сдвигайте побитово вправо на один бит по циклу (последняя цифра становится первой, а все
+                    Дано целое число. Представьте его в двоичной системе.Игнорируйте незначащие нули
+                    (пример: 19 = 10011). Сдвигайте побитово вправо на один бит по циклу (последняя цифра становится первой, а все
                     остальные сдвигаются на одну позицию вправо) - 10011, 11001, 11100, 01110, 00111, 10011
                     до тех пор, пока не получите изначальное число. <b>Выберите максимальное число</b>
                 </p>
@@ -719,13 +716,14 @@ List&lt;Character&gt; laceLists(List&lt;Character&gt; s1, List&lt;Character&gt; 
             </section>
             <section>
                 <h1>Задача (4/?)</h1>
-                <h3>Реализуйте слудующую функцию:</h3>
+                <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
 /**
-* Находит наибольшую увеличивающуюся последовательность
+* Находит наибольшую возрастающую подпоследовательность
+* пример:
 * @param seq последовательность
-* @return наибольшая увеличивающаяся
+* @return наибольшая возрастающая
 *         подпоследовательность
 */
 List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
