@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Clean code</title>
+
+    <meta name="description" content="Clean code presentation">
+    <meta name="author" content="Sergey Krauchenia">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+    <style>
+        .pleft {
+            text-align: left
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+<div class="slides">
+<section>
+    <h1>Clean code</h1>
+</section>
+<section>
+    <h1>Почему читабельность кода важна?</h1>
+    <ul>
+        <li>Легко читать. (с) К.О.</li>
+        <li>Легко понимать</li>
+        <li>Легко выявлять ошибки</li>
+        <li>Легко поддерживать существующий код</li>
+    </ul>
+</section>
+<section>
+    <section>
+        <h1>Признаки плохой читабельности кода</h1>
+        <ul>
+            <li>Длинный метод</li>
+            <li>Длинные коментарии внутриметода</li>
+            <li>Магические числа</li>
+            <li>Абстрактные названия</li>
+            <li>Цепочки объявления переменных</li>
+            <li>Горизонтальный скрол</li>
+            <li>Неявная область видимости</li>
+            <li>Излишние префиксы</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Длинные коментарии внутри метода</h1>
+        <pre>
+            <code class="java">
+    ...
+    int id = 5;
+    int shift = 3;
+    int result = id << shift;
+    // преобразовываем результат в строку
+    // и читаем из файла сохраненный сериализованный
+    // объект.
+    String fileName = result + "_student";
+    ...
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Магические числа</h1>
+    <pre>
+        <code class="java">
+    // wrong
+    public void setPassword(String password) {
+        if (password.length() > 7) {
+            throw new InvalidParameterException("password");
+        }
+    }
+
+    // correct
+    public static final int MAX_PASSWORD_SIZE = 7;
+
+    public void setPassword(String password) {
+        if (password.length() > MAX_PASSWORD_SIZE) {
+            throw new InvalidParameterException("password");
+        }
+    }
+        </code>
+    </pre>
+    </section>
+    <section>
+        <h1>Абстрактные названия (1/2)</h1>
+        <pre>
+            <code class="java">
+    // wrong
+    int days;
+    // correct
+    int daysSinceCreation;
+    int daysSinceLastModification;
+    int durationInDays;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Абстрактные названия (2/2)</h1>
+        <p class="pleft">
+            Короткие имена можно использовать в случае, когда время жизни переменной тоже коротко.
+        </p>
+        <pre>
+            <code class="java">
+    for (int i = 0; i < array.length; i++) {
+        // bla bla
+    }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Цепочки объявления переменных</h1>
+        <pre>
+            <code class="java">
+    // wrong
+    int id, count, year;
+
+    // correct
+    int id;
+    int count;
+    int year;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Неявная область видимости (1/2)</h1>
+        <p class="pleft">
+            java.util.ArrayList – форматирование сохранено
+        </p>
+        <pre>
+            <code class="java">
+public void ensureCapacity(int minCapacity) {
+    modCount++;
+    int oldCapacity = elementData.length;
+    if (minCapacity > oldCapacity) {
+        Object oldData[] = elementData;
+        int newCapacity = (oldCapacity * 3)/2 + 1;
+            if (newCapacity < minCapacity)
+        newCapacity = minCapacity;
+        elementData = (E[])new Object[newCapacity];
+        System.arraycopy(oldData, 0, elementData, 0, size);
+    }
+    }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Неявная область видимости (2/2)</h1>
+        <pre>
+            <code class="java">
+    // wrong
+    if (a == b)
+        System.out.println("Where am I?");
+
+    // correct
+    if (a == b) {
+        System.out.println("I'm inside of 'if'!");
+    }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Нельзя располагать выражение и код на одном уровне</h1>
+        <pre>
+            <code class="java">
+    // wrong
+    if(someCondition) {processExec();}
+    else {goToErrorHandler();}
+
+    // correct
+    if (someCondition) {
+        processExec();
+    }
+    else {
+        goToErrorHandler();
+    }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1></h1>
+    </section>
+</section>
+<section>
+    <section>
+        <h1>Приемы повышения читабельности кода</h1>
+        <ul>
+            <li>Правильное выставление пробелов</li>
+            <li>Группировка логических выражений скобками</li>
+            <li>Разбитие сложных выражений на более мелкие</li>
+            <li>Группировка логически связанных блоков кода с помощью пустой строки</li>
+            <li>Используйте принятый порядок объявлений в классе</li>
+            <li>Самодокументируемый код</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Правильное выставление пробелов</h2>
+        <pre>
+            <code class="java">
+                foo( 3+5,9 ); // wrong/ugly
+                foo(3 + 5, 9); // correct
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Группировка логических выражений скобками</h2>
+        <pre>
+            <code class="java">
+    foo(n, 4) < customerCount && parentId != null
+
+    (foo(n, 4) < customerCount) && (parentId != null)
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Разбитие сложных выражений на более мелкие</h2>
+        <pre>
+            <code class="java" style="font-size: 15px;">
+    // wrong
+    int result = foo(id, Math.acos(12))*bar(13*foo(id,Math.asin(3)));
+
+    // correct
+    int a = foo(id, Math.acos(12));
+    int b = foo(id, Math.asin(3));
+    int c = bar(13 * b);
+    int result = a * c;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Группировка логически связанных блоков кода с помощью пустой строки (1/2)</h2>
+        <pre>
+            <code class="java">
+    List&lt;Integer&gt; primes = new ArrayList&lt;&gt;(3);
+    primes.add(5);
+    primes.add(7);
+    primes.add(3);
+
+    Collections.sort(primes);
+    Collections.reverse(primes);
+
+    System.out.println(primes);
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Группировка логически связанных блоков кода с помощью пустой строки (2/2)</h2>
+        <h3>Но не стоит это делать везде</h3>
+        <pre>
+            <code class="java">
+    doThis();
+
+    thenThis();
+
+    andThis();
+
+    andThisInTheEnd();
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Используйте принятый порядок объявлений в классе</h2>
+        <ol type="1">
+            <li>Константы (public, protected, package, private)</li>
+            <li>Поля</li>
+            <li>Конструкторы</li>
+            <li>Методы</li>
+            <li>Внутренние классы</li>
+        </ol>
+    </section>
+    <section>
+        <h2>Самодокументируемый код (1/3)</h2>
+        <pre>
+            <code class="java" style="font-size: 15px;">
+public List&lt;Customer&gt; getCustomers(List&lt;Form&gt; customerForms) {
+    List&lt;Long&gt; ids = new ArrayList&lt;&gt;(customerForms.size());
+    for (Form form : customerForms) {
+        ids.add(form.getCustomerId());
+    }
+    List&lt;Customer&gt; customers = customerDao.getCustomersByIds(ids);
+    Iterator&lt;Customer&gt; iterator = customers.iterator();
+    while (iterator.hasNext()) {
+        Customer customer = iterator.next();
+        if(customer.getFullName() == null) {
+            iterator.remove();
+        }
+    }
+    return customers;
+}
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Самодокументируемый код (2/3)</h2>
+        <pre>
+            <code class="java" style="font-size: 15px;">
+public List&lt;Customer&gt; getCustomers(List&lt;Form&gt; customerForms) {
+    List&lt;Long&gt; ids = exposeCustomerIds(customerForms);
+    List&lt;Customer&gt; customers = customerDao.getCustomersByIds(ids);
+    removeUnnamedCustomers(customers);
+
+    return customers;
+}
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Самодокументируемый код (3/3)</h2>
+        <pre>
+            <code class="java" style="font-size: 15px;">
+private void removeUnnamedCustomers(List&lt;Customer&gt; customers) {
+    Iterator&lt;Customer&gt; iterator = customers.iterator();
+    while (iterator.hasNext()) {
+        Customer customer = iterator.next();
+        if(customer.getFullName() == null) {
+            iterator.remove();
+        }
+    }
+}
+
+private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
+    List&lt;Long&gt; ids = new ArrayList&lt;Long&gt;(customerForms.size());
+    for (Form form : customerForms) {
+        ids.add(form.getCustomerId());
+    }
+    return ids;
+}
+            </code>
+        </pre>
+    </section>
+</section>
+<section>
+    <section>
+        <h1>Типичные ошибки</h1>
+        <ul>
+            <li>Избыточность применения статичных полей и методов</li>
+            <li>Процедурный стиль программирования</li>
+            <li>Игнорирования пакетирования и Naming convention</li>
+            <li>Привязка к конкретной реализации</li>
+            <li>Пренебрежение идентификаторами доступа</li>
+            <li>Использование коллекции Vector</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Избыточность применения статичных полей и методов</h2>
+        <ul>
+            <li>Статичный метод не должен быть привязан к данным</li>
+            <li>Использование для объявления констант, только если enum не подходит</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Процедурный стиль программирования</h2>
+        <ul>
+            <li>Дробить код программы на методы</li>
+            <li>Если метод не вмещается на страницу экрана – это всегда признак плохого кода</li>
+            <li>Общие по функционалу методы выделять в новые сущности, порождая классы</li>
+        </ul>
+    </section>
+    <section style="font-size: 24px;">
+        <h2>Игнорирования пакетирования и Naming convention</h2>
+        <ul>
+            <li>Пакеты именуются с помощью иерархического шаблона имен</li>
+            <pre>
+        by.bsu.myprogram
+            </pre>
+            <li>Классы именуются в стиле CamelCase</li>
+            <pre>
+        MyClass
+            </pre>
+            <li>Методы и переменные в стиле camelCase</li>
+            <pre>
+        myMethod
+            </pre>
+            <li>Константы пишутся в верхнем регистре</li>
+            <pre>
+        DEFAULT_USER_ID
+            </pre>
+        </ul>
+    </section>
+    <section>
+        <h2>Привязка к реализации</h2>
+        <pre>
+            <code class="java">
+    List&lt;String&gt; correct = new ArrayList&lt;&gt;();
+
+    ArrayList&lt;String&gt; wrong = new ArrayList&lt;&gt;();
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Спецификаторы доступа</h2>
+        <ul>
+            <li>Нельзя забывать, что спецификаторы доступа помогают реализовать один из принципов ООП – инкапсуляцию</li>
+            <li>Поле класса должно быть приватным. Если нужно обеспечить его изменяемость или доступ к
+                нему – используйте спец. методы</li>
+            <li>Если вы делаете метод доступным (не private), то тем самым вы гарантируете,
+                что будете поддерживать его. Если кто-то начнет его использовать, то удалить
+                его уже так просто не получится</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Спецификаторы доступа</h2>
+        <pre>
+            <code class="java">
+    public class Student {
+        // wrong
+        public int id;
+        // correct
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+            </code>
+        </pre>
+    </section>
+</section>
+<section>
+    <section>
+        <h1>Именование</h1>
+        <ul>
+            <li>Именование классов, методов, а главное переменных обычно занимает больше
+                времени, чем написание самого кода. Именование очень важно для понимания
+                чужого кода, т.к. читать код часто сложнее, чем писать</li>
+            <li>Переменная, метод или класс должны иметь понятное название, по которому
+                можно судить о их назначении</li>
+            <li>Умеренная длина</li>
+            <li>Спецификаторы – count и index вместо num</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Именование</h1>
+        <p class="pleft">
+            Не нужно контекст класса в именах переменных и методов
+        </p>
+        <pre>
+            <code class="java">
+    // wrong
+    public class Customer {
+        private int customerId;
+    }
+
+    // correct
+    public class Customer {
+        private int id;
+    }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Именование</h1>
+        <p class="pleft">
+            Не используйте излишние префиксы
+        </p>
+        <pre>
+            <code class="java">
+    // wrong
+    List&lt;Student&gt; studentList;
+
+    // correct
+    List&lt;Student&gt; students;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Именование</h1>
+        <ul>
+            <li>Избегать артиклей и предлогов в именах – a, an, the, of, to и т.д.</li>
+            <pre>
+                <code class="java">
+    int theHeightOfTheDoor; // wrong
+    int doorHeight;         // correct
+                </code>
+            </pre>
+            <li>Не изобретайте сокращения. (e.g. FCNTL for File control)</li>
+            <li>Не используйте венгерскую нотацию</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Именование</h1>
+        <p class="pleft">
+            Избегайте абстрактных названий
+        </p>
+        <pre>
+            <code class="java">
+    // wrong
+    int days;
+    // correct
+    int daysSinceCreation;
+    int daysSinceLastModification;
+    int durationInDays;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Именование</h1>
+        <p class="pleft">
+            Короткие имена можно использовать в случае, когда время жизни переменной тоже коротко.
+        </p>
+        <pre>
+            <code class="java">
+    for (int i = 0; i < array.length; i++) {
+        // bla bla
+    }
+            </code>
+        </pre>
+    </section>
+</section>
+<section>
+    <h1>Вопросы?</h1>
+</section>
+</div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
+</html>
