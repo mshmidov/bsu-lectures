@@ -37,15 +37,187 @@
 
             <section>
 
-                <h1>Web applications in Java</h1>
+                <h1>Web applications in Java part 1</h1>
 
+                <p class="thesis">Web-приложения на данный момент доминируют на рынке ПО.</p>
+
+                <p class="thesis">Опыт разработки web-приложений пригодится и на быстро растущем рынке мобильных
+                    приложений.</p>
 
             </section>
 
             <section>
-                <h1>HTTP - основа WWW</h1>
-                request/response cycle
-                html
+                <h1>Клиент-серверная архитектура</h1>
+
+                <h2>Толстый клиент</h2>
+
+                <p class="thesis">В данной модели сервер отвечает за хранение данных, организацию и разграничение
+                    доступа к ним. Клиент выполняет большую часть вычислительной работы.</p>
+
+                <p>Преимущества:</p>
+                <ul>
+                    <li>Высокая скорость обработки данных.</li>
+                    <li>&laquo;Родной&raquo; пользовательский интерфейс.</li>
+                </ul>
+                <p>Недостатки:</p>
+                <ul>
+                    <li>Сложность обновления клиентского ПО.</li>
+                    <li>Необходимость поддерживать версии для разных ОС.</li>
+                </ul>
+
+            </section>
+
+            <section>
+                <h1>Клиент-серверная архитектура</h1>
+
+                <h2>Тонкий web-клиент</h2>
+
+                <p class="thesis">В данной модели вычислениями занимается в основном сервер. Клиент отображает
+                    интерфейс, запрашивает данные и минимально манипулирует ими.</p>
+
+                <p>Преимущества:</p>
+                <ul>
+                    <li>Клиенту нужен только браузер.</li>
+                    <li>Одна версия ПО годится для любой ОС.</li>
+                    <li>Новая версия мгновенно становится доступна всем.</li>
+                </ul>
+                <p>Недостатки:</p>
+                <ul>
+                    <li>Необходимо решать проблемы масштабирования серверов.</li>
+                    <li>Полная зависимость клиента от работоспособности сетевого подключения.</li>
+                </ul>
+
+            </section>
+
+            <section>
+                <h1>Технический стек веб-приложения</h1>
+
+                <dl>
+                    <dt>Интерфейс</dt>
+                    <dd><abbr title="Hypertext Markup Language">HTML</abbr> + <abbr
+                            title="Cascading Stylesheets">CSS</abbr> + JavaScript
+                    </dd>
+                    <dt>Коммуникация с сервером</dt>
+                    <dd><abbr title="Hypertext Transfer Protocol">HTTP</abbr> + <abbr
+                            title="JavaScript Object Notation">JSON</abbr> или <abbr title="Extensible Markup Language">XML</abbr>
+                    </dd>
+                    <dt>Серверная логика</dt>
+                    <dd>Java, PHP, Python, Ruby и множество других языков программирования</dd>
+                </dl>
+
+            </section>
+
+            <section>
+                <section>
+                    <h1>HTTP (1/5)</h1>
+
+                    <p class="thesis">HTTP &mdash; это протокол обмена данными между клиентом и сервером по
+                        принципу &laquo;запрос&ndash;ответ&raquo;</p>
+
+                    <p class="thesis">HTTP определяет список стандартных типов запроса (глаголов)</p>
+
+                    <p class="thesis">HTTP определяет список стандартных кодов ответа</p>
+
+                    <p class="thesis">HTTP&ndash;сообщение &mdash; это простой текст</p>
+
+                </section>
+
+                <section>
+                    <h1>HTTP (2/5)</h1>
+                    <h2>Глаголы</h2>
+                    <dl>
+                        <dt>GET</dt>
+                        <dd>Запрашивает у сервера ресурс</dd>
+                        <dt>POST</dt>
+                        <dd>Отправляет на сервер данные</dd>
+                        <dt>HEAD</dt>
+                        <dd>Запрашивет у сервера заголовки ресурса</dd>
+                        <dt>OPTIONS</dt>
+                        <dd>Запрашивает у сервера список глаголов, применимых к ресурсу</dd>
+                        <dt>PUT</dt>
+                        <dd>Предлагает серверу сохранить передаваемые данные в качестве нового ресурса</dd>
+                        <dt>DELETE</dt>
+                        <dd>Предлагает серверу удалить ресурс</dd>
+                    </dl>
+
+                </section>
+
+                <section>
+                    <h1>HTTP (3/5)</h1>
+
+                    <h2>Статусы (коды ответа)</h2>
+                    <ul>
+                        <li>1xx &mdash; информационные</li>
+                        <li>2xx &mdash; успешные</li>
+                        <li>3xx &mdash; перенаправление</li>
+                        <li>4xx &mdash; ошибки клиента</li>
+                        <li>5xx &mdash; ошибки сервера</li>
+                    </ul>
+
+                    <p>Наиболее частые статусы:</p>
+                    <ul>
+                        <li>200 OK</li>
+                        <li>403 Forbidden</li>
+                        <li>404 Not Found</li>
+                        <li>502 Bad Gateway</li>
+                        <li>504 Gateway Timeout</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h1>HTTP (4/5)</h1>
+
+                    <h2>Пример запроса</h2>
+
+                    <p>Начальная строка:</p>
+                    <pre><code>GET / HTTP/1.1</code></pre>
+                    <p>Заголовки</p>
+                    <pre><code>Host: www.isup.me
+Connection: keep-alive
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.68 Safari/537.17
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8,ru;q=0.6
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3</code></pre>
+                    <p>Обязательная пустая строка</p>
+                    <pre><code><br></code></pre>
+                    <p>Тело сообщения (необязательно)</p>
+                    <pre><code>[Его в нашем случае и нет. В случае POST-запроса здесь были бы данные.]</code></pre>
+
+                </section>
+
+                <section>
+                    <h1>HTTP (5/5)</h1>
+
+                    <h2>Пример ответа</h2>
+
+
+                    <p>Начальная строка:</p>
+                    <pre><code>HTTP/1.1 200 OK</code></pre>
+
+                    <p>Заголовки</p>
+                    <pre><code>Server: nginx/1.2.1
+Date: Fri, 08 Feb 2013 11:04:05 GMT
+Content-Type: text/html;charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Status: 200
+Content-Encoding: gzip</code></pre>
+                    <p>Обязательная пустая строка</p>
+                    <pre><code><br></code></pre>
+                    <p>Тело сообщения</p>
+                    <pre><code>&lt;html&gt;
+    &lt;head&gt;
+        ...
+    &lt;/head&gt;
+    &lt;body&gt;
+        ...
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </section>
+
             </section>
 
             <section>
@@ -59,22 +231,8 @@
             </section>
 
             <section>
-                <h1>Сессии</h1>
-                cookies
-            </section>
-
-            <section>
-                <h1>Безопасность</h1>
-                authentication, https
-            </section>
-
-            <section>
                 <h1>J2EE</h1>
                 servlet containers and application servers
-            </section>
-
-            <section>
-                <h1>MVC - ключевой шаблон J2EE</h1>
             </section>
 
             <section>
@@ -82,11 +240,18 @@
             </section>
 
             <section>
+                <h1>Web-приложение в Java</h1>
+                структура, web.xml
+            </section>
+
+            <section>
+                <h1>Tomcat</h1>
+            </section>
+
+            <section>
                 <h1>JSP</h1>
             </section>
-            <section>
-                <h1></h1>
-            </section>
+
         </div>
     </div>
 
