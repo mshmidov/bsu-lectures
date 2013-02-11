@@ -146,12 +146,12 @@
 Properties properties = new Properties();
 
 String file = "test.properties";
-ClassLoader cl = PropertiesExample.class.getClassLoader();
+ClassLoader cl = this.getClass().getClassLoader();
 InputStream stream = cl.getResourceAsStream(file);
 try {
     properties.load(stream);
 } catch (IOException e) {
-    e.printStackTrace();
+    throw new RuntimeException();
 }
 
 for (Map.Entry entry : properties.entrySet()) {
