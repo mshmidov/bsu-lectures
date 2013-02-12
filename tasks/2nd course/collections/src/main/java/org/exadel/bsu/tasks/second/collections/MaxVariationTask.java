@@ -15,6 +15,7 @@ public class MaxVariationTask {
      * @return максимальная вариация исходного числа
      */
     public Integer execute(Integer number) {
+        // TODO: put your code here
         return 0;
     }
 }

@@ -18,6 +18,7 @@ public class LaceListsTask {
      * @return объединенный список
      */
     public List<Character> execute(List<Character> s1, List<Character> s2) {
+        // TODO: put your code here
         return null;
     }
 }
