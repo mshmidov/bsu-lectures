@@ -26,7 +26,7 @@ public class TaskDataUtil {
             Path bookPath = Paths.get(TaskDataUtil.class.getClassLoader().getResource(bookName).toURI());
             List<String> lines = Files.readAllLines(bookPath, cs);
             for (String line : lines) {
-                text.append(line);
+                text.append(line).append(" ");
             }
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();

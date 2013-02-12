@@ -1,5 +1,6 @@
 package org.exadel.bsu.tasks.second.collections;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,11 +10,13 @@ public class MostPopularWordsTask {
 
     /**
      * Возвращает список чаще всего встречающихся 20-ти слов с информацией
-     * о кол-ве повторений, отсортированный в порядке убывания
+     * о кол-ве повторений, отсортированный в порядке убывания. Слова "Привет" и "привеТ"
+     * считаются одинаковыми.
+     *
      * @param text - текст для обработки
      * @return top 20
      */
-    public Map<String, Integer> execute(String text) {
+    public List<Map.Entry<String,Integer>> execute(String text) {
         return null;
     }
 }
