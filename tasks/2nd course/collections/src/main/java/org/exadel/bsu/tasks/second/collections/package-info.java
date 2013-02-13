@@ -1,10 +1,8 @@
 /**
  * Чтобы получить зачет по данной теме надо решить следующие задачи:
  * Обязательно: SortStudentsTask
- * Плюс на выбор либо:
- *          2 задачи из LaceListsTask, LongestIncreasingSubsequenceTask, MostPopularWordsTask, MaxVariationTask
- *          либо
- *          1 задачу из ReversePolishNotationConverterTask, ReversePolishNotationExecutorTask
+ * Плюс на выбор две задачи из:
+ *      LaceListsTask, LongestIncreasingSubsequenceTask, MostPopularWordsTask, MaxVariationTask, NurseryRhymeTask
  *
  * При решении задач постарайтесь учитывать разные сценарии,
  * когда входные аргументы null, пустые, отрицательные и прочие нетипичные ситуации

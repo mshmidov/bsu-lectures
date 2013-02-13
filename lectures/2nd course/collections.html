@@ -708,7 +708,7 @@ class Customer implements Comparable&lt;Customer&gt; {
 * Прим: s1=[a,b,c,d] s2=[e,f,g,h,i,j,k,l]
 *       result=[a,e,b,f,c,g,d,h,i,j,k,l]
 */
-List&lt;Character&gt; laceLists(List&lt;Character&gt; s1, List&lt;Character&gt; s2) {
+List&lt;Character&gt; execute(List&lt;Character&gt; s1, List&lt;Character&gt; s2) {
     return list;
 }
                     </code>
@@ -726,7 +726,7 @@ List&lt;Character&gt; laceLists(List&lt;Character&gt; s1, List&lt;Character&gt; 
 * @return наибольшая возрастающая
 *         подпоследовательность
 */
-List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
+List&lt;Integer&gt; execute(List&lt;Integer&gt; seq) {
     return result;
 }
                     </code>
@@ -737,7 +737,7 @@ List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
                 <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
-    /**
+   /**
     * Отсортировать студентов по lastName и firstName
     * пример:
     *      Абрамов Алексей
@@ -749,6 +749,30 @@ List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
     */
     public void execute(List&lt;Student&gt; unsortedStudents) {
 
+    }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h1>Задача (6/?)</h1>
+                <h3>Реализуйте следующую функцию:</h3>
+                <pre>
+                    <code class="java">
+   /**
+    * Считалочка.
+    * Дан массив чисел. Необходимо удалить циклически
+    * каждое число в позиции М, пока не останется одно
+    * число, которое и возвращает метод
+    *
+    * @param numbers - массив целых чисел
+    * @param positionForDelete - позиция для удаления
+    * @return оставшееся число
+    * @throws IllegalArgumentException если numbers
+    *   это пустой массив либо null,
+    *   или positionForDelete == 0
+    */
+    public Integer execute(Integer[] numbers, int positionForDelete) {
+        return null;
     }
                     </code>
                 </pre>
@@ -766,6 +790,7 @@ List&lt;Integer&gt; findLongestIncreasingSubsequence(List&lt;Integer&gt; seq) {
                     <li>LongestIncreasingSubsequenceTask</li>
                     <li>MostPopularWordsTask</li>
                     <li>MaxVariationTask</li>
+                    <li>NurseryRhymeTask</li>
                 </ul>
                 <p class="pleft">
                     При решении задач постарайтесь учитывать разные сценарии, когда входные
