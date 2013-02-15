@@ -173,7 +173,7 @@
                     <p>Начальная строка:</p>
                     <pre><code>GET / HTTP/1.1</code></pre>
                     <p>Заголовки</p>
-                    <pre><code>Host: www.isup.me
+                    <pre><code class="HTTP">Host: www.isup.me
 Connection: keep-alive
 Cache-Control: max-age=0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -195,10 +195,10 @@ Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3</code></pre>
 
 
                     <p>Начальная строка:</p>
-                    <pre><code>HTTP/1.1 200 OK</code></pre>
+                    <pre><code class="HTTP">HTTP/1.1 200 OK</code></pre>
 
                     <p>Заголовки</p>
-                    <pre><code>Server: nginx/1.2.1
+                    <pre><code class="HTTP">Server: nginx/1.2.1
 Date: Fri, 08 Feb 2013 11:04:05 GMT
 Content-Type: text/html;charset=utf-8
 Transfer-Encoding: chunked
@@ -221,28 +221,95 @@ Content-Encoding: gzip</code></pre>
             </section>
 
             <section>
-                <h1>Web-приложения</h1>
-                static pages are evolved into web apps
+                <section>
+                    <h1>Передача данных на сервер (1/3)</h1>
+                    <h2>Query string (для GET-запросов)</h2>
+                    <pre><code class="HTTP">http://en.wikipedia.org/w/index.php?search=http&title=Special%3ASearch&fulltext=1</code></pre>
+                    <ul>
+                        <li>После имени ресурса ставим вопрос</li>
+                        <li>Перечисляем параметры в формате &laquo;ключ=значение&raquo;</li>
+                        <li>Разделяем параметры амперсандом</li>
+                        <li>Заменяем не-ASCII символы на их коды по стандарту URL encoding</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Передача данных на сервер (2/3)</h1>
+                    <h2><abbr title="Representational State Transfer">REST</abbr>ful URLs (для GET и POST-запросов)</h2>
+                    <pre><code class="HTTP">http://en.wikipedia.org/search/fulltext/http</code></pre>
+                    <ul>
+                        <li>На сервере нет физического ресурса, соответствующего данному URL</li>
+                        <li>Вместо этого серверное приложение обрабатывает URL, выделяя из него параметры</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Передача данных на сервер (3/3)</h1>
+                    <h2>POST-параметры (для POST-запросов)</h2>
+                    <pre><code class="HTTP">POST http://en.wikipedia.org/w/index.php HTTP/1.1
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.68 Safari/537.17
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 45
+
+search=http&title=Special%3ASearch&fulltext=1</code></pre>
+                    <ul>
+                        <li>Параметры формируются так же, как в случае query string</li>
+                        <li>Параметры отправляются в теле POST-запроса</li>
+                    </ul>
+
+                </section>
             </section>
 
             <section>
-                <h1>Передача данных на сервер</h1>
-                POST and GET
+                <h1>Серверные приложения</h1>
+                <p>Серверное ПО состоит как правило из двух характерных частей:</p>
+                <dl>
+                    <dt>Веб-сервер</dt>
+                    <dd>Контейнер, в котором &laquo;крутятся&raquo; ваши приложения. Берёт на себя однообразную техническую работу.</dd>
+                    <dt>Приложение</dt>
+                    <dd>Ваш код, решающий ваши задачи.</dd>
+                </dl>
+
+               <p>В Java это выглядит так:</p>
+                <dl>
+                    <dt>Веб-сервер</dt>
+                    <dd>Apache Tomcat, Glassfish, JBoss AS, и.т.п.</dd>
+                    <dt>Приложение</dt>
+                    <dd>Java-классы, специальным образом упакованные в war-архив</dd>
+                </dl>
+
             </section>
 
             <section>
-                <h1>J2EE</h1>
-                servlet containers and application servers
+                <h1>WAR</h1>
+                <ul>
+                    <li>.war&ndash;файл &mdash; это zip&ndash;файл, в котором лежат классы, страницы и другие
+                        файлы, необходимые для работы веб-приложения.</li>
+                    <li>war&ndash;файл должен иметь определённую структуру:
+                        <dl>
+                            <dt>/WEB-INF/</dt>
+                            <dd>Всё, что находится в этом каталоге, защищено от прямого доступа из сети. Здесь находится
+                                основная часть приложения.</dd>
+                            <dt>/WEB-INF/web.xml</dt>
+                            <dd>В этом файле содержатся ключевые настройки вашего приложения.</dd>
+                            <dt>/WEB-INF/classes/</dt>
+                            <dd>В этом каталоге находятся скомпилированные классы java&ndash;приложения.</dd>
+                            <dt>/WEB-INF/lib/</dt>
+                            <dd>В этом каталоге находятся jar&ndash;библиотеки, необходимые приложению.</dd>
+                        </dl>
+                        Снаружи каталога WEB-INF обычно кладут веб-страницы, скрипты, стили и другой статический контент.
+                    </li>
+                    <li>Все java&ndash;сервера умеют работать с организованным таким образом war&ndash;файлами.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>web.xml</h1>
             </section>
 
             <section>
                 <h1>Servlet API</h1>
             </section>
 
-            <section>
-                <h1>Web-приложение в Java</h1>
-                структура, web.xml
-            </section>
+
 
             <section>
                 <h1>Tomcat</h1>
