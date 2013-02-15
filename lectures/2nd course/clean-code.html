@@ -56,7 +56,7 @@
         <h1>Признаки плохой читабельности кода</h1>
         <ul>
             <li>Длинный метод</li>
-            <li>Длинные коментарии внутриметода</li>
+            <li>Длинные коментарии внутри метода</li>
             <li>Магические числа</li>
             <li>Абстрактные названия</li>
             <li>Цепочки объявления переменных</li>
@@ -191,8 +191,7 @@ public void ensureCapacity(int minCapacity) {
     // correct
     if (someCondition) {
         processExec();
-    }
-    else {
+    } else {
         goToErrorHandler();
     }
             </code>
@@ -354,7 +353,7 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
     <section>
         <h1>Типичные ошибки</h1>
         <ul>
-            <li>Избыточность применения статичных полей и методов</li>
+            <li>Избыточность применения статических полей и методов</li>
             <li>Процедурный стиль программирования</li>
             <li>Игнорирования пакетирования и Naming convention</li>
             <li>Привязка к конкретной реализации</li>
@@ -365,7 +364,7 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
     <section>
         <h2>Избыточность применения статичных полей и методов</h2>
         <ul>
-            <li>Статичный метод не должен быть привязан к данным</li>
+            <li>Статический метод не должен быть привязан к данным</li>
             <li>Использование для объявления констант, только если enum не подходит</li>
         </ul>
     </section>
@@ -456,7 +455,7 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
     <section>
         <h1>Именование</h1>
         <p class="pleft">
-            Не нужно контекст класса в именах переменных и методов
+            Не нужно дублировать контекст класса в именах переменных и методов
         </p>
         <pre>
             <code class="java">
