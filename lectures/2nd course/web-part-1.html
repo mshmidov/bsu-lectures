@@ -328,12 +328,72 @@ search=http&title=Special%3ASearch&fulltext=1</code></pre>
             </section>
 
             <section>
-                <h1>Servlet API</h1>
+                <section>
+                    <h1>Servlet API (1/2)</h1>
+                    <h2>javax.servlet.http.HttpServlet</h2>
+                    <p class="thesis">Http&ndash;сервлет - это класс, предназначенный для обслуживания входящих HTTP&ndash;запросов.</p>
+                    <pre><code class="java">public abstract class HttpServlet extends GenericServlet
+        implements java.io.Serializable {
+
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
+
+        protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
+
+        protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
+
+        protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
+
+        protected void service(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException;
+
+    }</code></pre>
+                </section>
+
+                <section>
+                    <h1>Servlet API (2/2)</h1>
+                    <pre><code class="java">@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+
+    final String name = request.getParameter("name");
+    response.getWriter().write("&lt;html&gt;&lt;body&gt;" + name + "&lt;/body&gt;&lt;/html&gt;");
+}</code></pre>
+                </section>
             </section>
 
-
             <section>
-                <h1>Tomcat</h1>
+
+                <section>
+                   <h1>Apache Tomcat (1/2)</h1>
+                   <p><a href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p>
+
+                    <ul>
+                        <li>Простой и надёжный контейнер сервлетов</li>
+                        <li>Реализует стандарты Java Servlet и JavaServer Pages</li>
+                        <li>Очень популярен</li>
+                        <li>Легко развернуть и настроить</li>
+                    </ul>
+
+                </section>
+
+                <section>
+                    <h1>Apache Tomcat (1/2)</h1>
+                    <h2>Установка</h2>
+
+                    <ol>
+                        <li>Ставим Java</li>
+                        <li>Скачиваем и распаковываем tomcat</li>
+                        <li>Запускать: bin/startup.bat</li>
+                        <li>war&ndash;файлы класть в каталог webapp</li>
+                        <li>Приложения доступны по адресу http://localhost:8080/{имя war&ndash;файла}/</li>
+                        <li>Останавливать: bin/shutdown.bat</li>
+                    </ol>
+                </section>
+
             </section>
 
             <section>
