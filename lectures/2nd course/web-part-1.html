@@ -303,12 +303,33 @@ search=http&title=Special%3ASearch&fulltext=1</code></pre>
 
             <section>
                 <h1>web.xml</h1>
+                <pre><code class="xml">&lt;!DOCTYPE web-app PUBLIC
+"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+"http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
+
+&lt;web-app&gt;
+    &lt;display-name&gt;Web Demo Application&lt;/display-name&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.exadel.lectures.second.web.hello.HelloServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/hello.html&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+&lt;/web-app&gt;</code></pre>
             </section>
 
             <section>
                 <h1>Servlet API</h1>
             </section>
-
 
 
             <section>
