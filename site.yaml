@@ -1,6 +1,6 @@
 application: fpmi2013
 version: master
-runtime: python20
+runtime: python27
 api_version: 1
 threadsafe: true
 
@@ -18,5 +18,10 @@ handlers:
   static_dir: static/view
 
 - url: /
-  static_files: /\1
-  upload: /
+  static_files: index.html
+  upload: index.html
+
+- url: /(.*)
+  static_files: \1
+  upload: (.*)
+
