@@ -64,6 +64,16 @@ nav ul, nav ol {
     list-style-image: none;
 }
 
+.content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.content {
+    background-color: #FFFFFF;
+}
+
 .clearfix:before, .clearfix:after {
 	content: " ";
 	display: table;
