@@ -68,8 +68,12 @@
                     <pre><code class="java">public abstract class InputStream {
 
     public abstract int read() throws IOException;
+    // вернёт прочитанный байт
+    // или -1 как признак конца файла
 
     public int read(byte b[]) throws IOException;
+    // вернёт количество прочитанных байт
+    // или -1 как признак конца файла
 
     public long skip(long n) throws IOException;
 
