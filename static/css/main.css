@@ -8,6 +8,7 @@ html, body {
 }
 
 .container {
+    padding: 20px 0px;
     background-color: #0b326a;
 }
 
@@ -28,7 +29,6 @@ footer {
 }
 
 .content-wrapper {
-
     max-width: 1200px;
     margin: 0 auto;
 }
