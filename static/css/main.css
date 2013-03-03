@@ -2,12 +2,13 @@
 
 html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Open Sans", sans-serif;
 }
 
-body {
+.container {
     background-color: #0b326a;
-    margin: 20px 0px 0px 0px;
-    padding: 0px;
 }
 
 header {
@@ -19,19 +20,17 @@ header {
     max-width: 1280px;
 }
 
-.container {
-    font-family: "Open Sans", sans-serif;
-    max-width: 1200px;
-    margin: 0 auto;
-
-}
-
 footer {
     min-height: 150px;
-    height: 100%;
     margin-top: -30px;
     background: rgba(0, 0, 0, 0.25);
     box-shadow: inset 0 5px 18px rgba(0, 0, 0, 0.6);
+}
+
+.content-wrapper {
+
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 nav#top {
