@@ -1,16 +1,35 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
-body {
-    background-color: #0b326a;
+html, body {
+    height: 100%;
 }
 
-#exadel-header {
+body {
+    background-color: #0b326a;
+    margin: 20px 0px 0px 0px;
+    padding: 0px;
+}
+
+header {
     display: block;
     background: #0b326a url("../images/exadel-logo.png") no-repeat right;
     height: 40px;
     line-height: 40px;
     color: #f7fbfc;
-    padding-left: 0.5em;
+    max-width: 1280px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer {
+    min-height: 150px;
+    height: 100%;
+    margin-top: -30px;
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 5px 18px rgba(0,0,0,0.6);
 }
 
 nav#main {
@@ -19,8 +38,6 @@ nav#main {
     border-right: 1px solid rgba(2, 2, 2, 0.28);
     border-left: 1px solid rgba(2, 2, 2, 0.28);
     border-top: 1px solid rgba(250, 250, 250, 0.27);
-    -webkit-box-shadow: rgba(255,255,255,0.3) 0 1px 0, rgba(0,0,0,0.3) 0 -1px 0;
-    box-shadow: rgba(255,255,255,0.3) 0 1px 0, rgba(0,0,0,0.3) 0 -1px 0;
     -webkit-box-shadow: 0 0 3px rgba(1, 1, 1, 0.7);
     box-shadow: 0 0 5px rgba(1, 1, 1, 0.7);
 }
@@ -33,14 +50,14 @@ nav#main ul {
     padding-bottom: 10px;
 }
 
-nav#main li a:hover, nav#main li.current a {
-	background: none;
-	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0, 0.4), rgba(255,255,255,0.1) 0 1px 0;
-	box-shadow: inset 0 0 5px rgba(0,0,0, 0.4), rgba(255,255,255,0.1) 0 1px 0;
-	border-radius: 4px;
-	border: 1px solid rgba(0,0,0,0.25);
-	color: #fff;
-	text-shadow: rgba(0, 0, 0, 0.796875) 0px -1px 0px, rgba(255, 255, 255, 0.296875) 0px 0px 10px;
+nav#main li a:hover, nav#main li.active a {
+    background: none;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.1) 0 1px 0;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.1) 0 1px 0;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 0.796875) 0px -1px 0px, rgba(255, 255, 255, 0.296875) 0px 0px 10px;
 }
 
 nav#main li {
@@ -62,25 +79,26 @@ nav#main li a {
 nav ul, nav ol {
     list-style: none;
     list-style-image: none;
-}
-
-.content-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+    -webkit-padding-start: 20px;
 }
 
 .content {
-    background-color: #FFFFFF;
+    background-color: white;
+    -webkit-box-shadow: -3px 0 5px -3px rgba(1, 1, 1, 0.87), 3px 0 5px -3px rgba(1, 1, 1, 0.87);
+    box-shadow: -3px 0 5px 0px rgba(1, 1, 1, 0.87), 3px 0 5px -3px rgba(1, 1, 1, 0.87);
+    padding: 20px 10px;
+    border-top: 1px solid #333;
+    border-radius: 0 0 10px 10px;
+    position: relative;
 }
 
 .clearfix:before, .clearfix:after {
-	content: " ";
-	display: table;
+    content: " ";
+    display: table;
 }
 
 .clearfix:after {
-	clear: both;
+    clear: both;
 }
 
 
