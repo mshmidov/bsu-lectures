@@ -129,12 +129,12 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
                 <h1>Collection interface</h1>
                 <h2>Methods:</h2>
                 <pre><code class="java">
-        boolean add(T element);
-        boolean remove(T element);
+        boolean add(E e);
+        boolean remove(Object o);
         int size();
         boolean isEmpty();
-        boolean contains(T element);
-        Iterator&lt;T&gt; iterator();
+        boolean contains(Object o);
+        Iterator&lt;E&gt; iterator();
                 </code>
                 </pre>
             </section>
@@ -143,7 +143,7 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
                 <pre>
                     <code class="java">
         boolean hasNext();
-        T next();
+        E next();
         void remove();
                     </code>
                 </pre>
@@ -187,11 +187,11 @@ Pair&lt;Integer, String&gt; foo = new Pair&lt;&gt;("Second", "February");
                 <h2>Group operations</h2>
                 <pre>
                     <code class="java">
-        boolean containsAll(Collection&lt;T&gt; collection);
-        boolean addAll(Collection&lt;T&gt; collection);
+        boolean containsAll(Collection&lt;E&gt; collection);
+        boolean addAll(Collection&lt;E&gt; collection);
         void clear()
-        void removeAll(Collection&lt;T&gt; collection);
-        void retainAll(Collection&lt;T&gt; collection);
+        void removeAll(Collection&lt;E&gt; collection);
+        void retainAll(Collection&lt;E&gt; collection);
                     </code>
                 </pre>
             </section>
@@ -675,7 +675,7 @@ class Customer implements Comparable&lt;Customer&gt; {
         </section>
         <section>
             <section>
-                <h1>Задачи (1/?)</h1>
+                <h1>Задачи (1/6)</h1>
                 <h3>Подсчет слов</h3>
                 <p class="pleft">
                     <b>Входные данные:</b> строка (например текст книги)
@@ -688,7 +688,7 @@ class Customer implements Comparable&lt;Customer&gt; {
                 </p>
             </section>
             <section>
-                <h1>Задача (2/?)</h1>
+                <h1>Задача (2/6)</h1>
                 <p class="pleft" style="font-size: 32px">
                     Дано целое число. Представьте его в двоичной системе.Игнорируйте незначащие нули
                     (пример: 19 = 10011). Сдвигайте побитово вправо на один бит по циклу (последняя цифра становится первой, а все
@@ -697,7 +697,7 @@ class Customer implements Comparable&lt;Customer&gt; {
                 </p>
             </section>
             <section>
-                <h1>Задача (3/?)</h1>
+                <h1>Задача (3/6)</h1>
                 <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
@@ -715,7 +715,7 @@ List&lt;Character&gt; execute(List&lt;Character&gt; s1, List&lt;Character&gt; s2
                 </pre>
             </section>
             <section>
-                <h1>Задача (4/?)</h1>
+                <h1>Задача (4/6)</h1>
                 <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
@@ -733,7 +733,7 @@ List&lt;Integer&gt; execute(List&lt;Integer&gt; seq) {
                 </pre>
             </section>
             <section>
-                <h1>Задача (5/?)</h1>
+                <h1>Задача (5/6)</h1>
                 <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
@@ -754,7 +754,7 @@ List&lt;Integer&gt; execute(List&lt;Integer&gt; seq) {
                 </pre>
             </section>
             <section>
-                <h1>Задача (6/?)</h1>
+                <h1>Задача (6/6)</h1>
                 <h3>Реализуйте следующую функцию:</h3>
                 <pre>
                     <code class="java">
@@ -801,8 +801,19 @@ List&lt;Integer&gt; execute(List&lt;Integer&gt; seq) {
                 </p>
             </section>
             <section>
+                <h3>Подготовка к решению задач (для любителей Netbeans):</h3>
+                <ul>
+                    <li>File --> Open project</li>
+                    <li>Выберите папку с задачами и тестами (collections)</li>
+                    <li>Готово</li>
+                </ul>
+            </section>
+            <section>
                 <h3>Подготовка к решению задач:</h3>
                 <h3>Создайте проект (в примере показана Intellij IDEA)</h3>
+                <p class="pleft">
+                    <b>File --> New Project...</b>
+                </p>
                 <img src="collections.files/ca1.png">
             </section>
             <section>
@@ -820,6 +831,13 @@ List&lt;Integer&gt; execute(List&lt;Integer&gt; seq) {
             <section>
                 <img src="collections.files/ca6.png">
             </section>
+        </section>
+        <section>
+            <p class="pleft"><b>Skype</b>: siarhei_krauchenia</p>
+            <p class="pleft"><b>Lecture url</b>:</p>
+            <p class="pleft" style="font-size: 23px;">http://fpmi2013.appspot.com/lectures/2nd%20course/collections.html</p>
+            <p class="pleft"><b>Intellij IDEA</b>:</p>
+            <p class="pleft" style="font-size: 23px;">http://confluence.jetbrains.com/display/IDEADEV/IDEA+12.1+EAP</p>
         </section>
     </div>
 </div>
