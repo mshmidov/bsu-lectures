@@ -27,26 +27,26 @@ public class MostPopularWordsTest {
     private Object[][] data() {
         return new Object[][]{
                 new Object[] {"war_and_peace.txt", new ArrayList<Map.Entry<String, Integer>>() {{
-                    add(new AbstractMap.SimpleEntry<>("и", 14484));
-                    add(new AbstractMap.SimpleEntry<>("в", 6940));
-                    add(new AbstractMap.SimpleEntry<>("не", 5886));
-                    add(new AbstractMap.SimpleEntry<>("он", 5211));
-                    add(new AbstractMap.SimpleEntry<>("что", 5023));
-                    add(new AbstractMap.SimpleEntry<>("на", 4152));
-                    add(new AbstractMap.SimpleEntry<>("с", 3907));
-                    add(new AbstractMap.SimpleEntry<>("как", 2900));
-                    add(new AbstractMap.SimpleEntry<>("его", 2675));
-                    add(new AbstractMap.SimpleEntry<>("к", 2222));
-                    add(new AbstractMap.SimpleEntry<>("я", 2163));
-                    add(new AbstractMap.SimpleEntry<>("но", 2015));
-                    add(new AbstractMap.SimpleEntry<>("все", 1868));
-                    add(new AbstractMap.SimpleEntry<>("это", 1798));
-                    add(new AbstractMap.SimpleEntry<>("она", 1742));
-                    add(new AbstractMap.SimpleEntry<>("было", 1629));
-                    add(new AbstractMap.SimpleEntry<>("так", 1431));
-                    add(new AbstractMap.SimpleEntry<>("был", 1292));
-                    add(new AbstractMap.SimpleEntry<>("князь", 1282));
-                    add(new AbstractMap.SimpleEntry<>("а", 1271));
+                    add(new AbstractMap.SimpleEntry<>("и", 14516));
+                    add(new AbstractMap.SimpleEntry<>("в", 6950));
+                    add(new AbstractMap.SimpleEntry<>("не", 5893));
+                    add(new AbstractMap.SimpleEntry<>("он", 5261));
+                    add(new AbstractMap.SimpleEntry<>("что", 5068));
+                    add(new AbstractMap.SimpleEntry<>("на", 4156));
+                    add(new AbstractMap.SimpleEntry<>("с", 3913));
+                    add(new AbstractMap.SimpleEntry<>("как", 2935));
+                    add(new AbstractMap.SimpleEntry<>("его", 2685));
+                    add(new AbstractMap.SimpleEntry<>("к", 2226));
+                    add(new AbstractMap.SimpleEntry<>("я", 2200));
+                    add(new AbstractMap.SimpleEntry<>("но", 2024));
+                    add(new AbstractMap.SimpleEntry<>("все", 1886));
+                    add(new AbstractMap.SimpleEntry<>("это", 1842));
+                    add(new AbstractMap.SimpleEntry<>("она", 1764));
+                    add(new AbstractMap.SimpleEntry<>("было", 1634));
+                    add(new AbstractMap.SimpleEntry<>("так", 1455));
+                    add(new AbstractMap.SimpleEntry<>("был", 1295));
+                    add(new AbstractMap.SimpleEntry<>("а", 1291));
+                    add(new AbstractMap.SimpleEntry<>("князь", 1289));
                 }}},
 
                 new Object[] {"empty_book.txt", new ArrayList<Map.Entry<String, Integer>>()},

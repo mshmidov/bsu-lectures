@@ -398,6 +398,17 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
 
             <section>
                 <h1>JSP</h1>
+                <pre><code class="jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+                    &lt;%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello using JSP&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello&lt;c:if test="${not empty param.name}"&gt; &lt;c:out value=" ${param.name}"/&gt;&lt;/c:if&gt;!!!&lt;/h1&gt;
+    &lt;p&gt;Response to &lt;c:out value="${pageContext.request.method}"/&gt; request&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
             </section>
 
         </div>
