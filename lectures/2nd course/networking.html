@@ -371,6 +371,35 @@ try {
                 </ul>
             </section>
         </section>
+        <section>
+            <section>
+            <h1>Proxy</h1>
+            Нужно задать 2 параметра, чтобы указать прокси, который будет использоваться
+            http protocol handler'ом
+            <ul>
+                <li><b>http.proxyHost/https.proxyHost</b>: имя хоста прокси-сервера</li>
+                <li><b>http.proxyPort/https.proxyHost</b>: порт (по умолчанию http - 80, https - 443)</li>
+            </ul>
+            Пример как использовать:
+            <pre>
+                <code>
+        java -Dhttp.proxyHost=webcache.mydomain.com GetURL
+                </code>
+            </pre>
+            </section>
+            <section>
+                <h1>Proxy authentication</h1>
+                <pre>
+                    <code class="java">
+Authenticator.setDefault(new Authenticator() {
+    public PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication("User", "password".toCharArray());
+    }
+});
+                    </code>
+                </pre>
+            </section>
+        </section>
     </div>
 </div>
 
@@ -380,7 +409,7 @@ try {
 <script>
     Reveal.initialize({
 
-        controls: false,// Display controls in the bottom right corner
+        controls: true,// Display controls in the bottom right corner
         progress: true,	// Display a presentation progress bar
         history: false,// Push each slide change to the browser history
         keyboard: true,// Enable keyboard shortcuts for navigation
