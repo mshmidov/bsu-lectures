@@ -179,7 +179,7 @@ for (Map.Entry entry : properties.entrySet()) {
             <h1>Resource Bundle</h1>
             <ul>
                 <li>Семейство Properties файлов, хранящих данные для нескольких локалей.</li>
-                <li>Имя файлов в bundle состоит базовой части + суффикс локали.
+                <li>Имя файлов в bundle состоит из базовой части + суффикс локали.
                     Например:
                     <pre>
         MyResources.properties
@@ -195,8 +195,8 @@ for (Map.Entry entry : properties.entrySet()) {
             <ul>
                 <li>bundles/demo_bundle.properties</li>
                 <pre>
-    messages.greeting=Default Greeting
-    messages.information=Time message
+    messages.greeting=Hello
+    messages.information=Time
                 </pre>
                 <li>bundles/demo_bundle_en_US.properties</li>
                 <pre>
@@ -229,8 +229,7 @@ public static void main(String[] args) {
 }
 
 private static void testBundle(String bundleBaseName, Locale locale) {
-    ResourceBundle bundle;
-    bundle = ResourceBundle.getBundle(bundleBaseName, locale);
+    ResourceBundle bundle = ResourceBundle.getBundle(bundleBaseName, locale);
     String value = bundle.getString("messages.greeting");
 
     System.out.println(locale + " [messages.greeting] = " + value);
