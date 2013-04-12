@@ -55,12 +55,12 @@
     <section>
         <h1>Признаки плохой читабельности кода</h1>
         <ul>
-            <li>Длинный метод</li>
+            <li><b>Д</b>линный метод</li>
             <li>Длинные коментарии внутри метода</li>
             <li>Магические числа</li>
             <li>Абстрактные названия</li>
             <li>Цепочки объявления переменных</li>
-            <li>Горизонтальный скрол</li>
+            <li><b>Г</b>оризонтальный скрол</li>
             <li>Неявная область видимости</li>
             <li>Излишние префиксы</li>
         </ul>
@@ -82,22 +82,39 @@
         </pre>
     </section>
     <section>
-        <h1>Магические числа</h1>
+        <h1>Магические числа (1/3)</h1>
     <pre>
         <code class="java">
     // wrong
-    public void setPassword(String password) {
-        if (password.length() > 7) {
-            throw new InvalidParameterException("password");
-        }
+    for (int i = 1; i < 52; i++) {
+        int j = i + new Random().nextInt(53 - i) - 1;
+        Collections.swap(list, i, j);
     }
-
-    // correct
-    public static final int MAX_PASSWORD_SIZE = 7;
-
-    public void setPassword(String password) {
-        if (password.length() > MAX_PASSWORD_SIZE) {
-            throw new InvalidParameterException("password");
+        </code>
+    </pre>
+    </section>
+    <section>
+        <h1>Магические числа (2/3)</h1>
+    <pre>
+        <code class="java">
+    // better
+    int maxDeckSize = 52;
+    for (int i = 1; i < maxDeckSize; i++) {
+        int j = i + new Random().nextInt(maxDeckSize + 1 - i) - 1;
+        Collections.swap(list, i, j);
+    }
+        </code>
+    </pre>
+    </section>
+    <section>
+        <h1>Магические числа (3/3)</h1>
+    <pre>
+        <code class="java">
+    // the best
+    void shuffle(List&lt;Integer&gt; deck, int maxDeckSize) {
+        for (int i = 1; i < maxDeckSize; i++) {
+            int j = i + new Random().nextInt(maxDeckSize + 1 - i) - 1;
+            Collections.swap(deck, i, j);
         }
     }
         </code>
@@ -196,9 +213,6 @@ public void ensureCapacity(int minCapacity) {
     }
             </code>
         </pre>
-    </section>
-    <section>
-        <h1></h1>
     </section>
 </section>
 <section>
@@ -358,7 +372,7 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
             <li>Игнорирования пакетирования и Naming convention</li>
             <li>Привязка к конкретной реализации</li>
             <li>Пренебрежение идентификаторами доступа</li>
-            <li>Использование коллекции Vector</li>
+            <li><b>И</b>спользование коллекции Vector</li>
         </ul>
     </section>
     <section>
@@ -529,6 +543,31 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
             </code>
         </pre>
     </section>
+</section>
+<section>
+    <h1>Полезно почитать</h1>
+    <ul>
+        <li>Code convension: <a href="http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html">http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html</a></li>
+        <li>Code complete by Steve McConnell</li>
+        <li>Refactoring by Martin Fowler</li>
+    </ul>
+</section>
+<section>
+    <h1>Code formatting in IDE</h1>
+    <h2>Горячие клавиши</h2>
+    <ul>
+        <li><b>Eclipse</b>: ctrl + shift + F</li>
+        <li><b>IDEA</b>: ctrl + alt + L</li>
+        <li><b>Netbeans</b>: alt + shift + F</li>
+    </ul>
+</section>
+<section>
+    <h1>Introduce var, method, field, constant</h1>
+    <ul>
+        <li><b>Eclipse</b>: alt + shift + {v, m, e, c}</li>
+        <li><b>IDEA</b>: ctrl + alt + {v, m, f, c}</li>
+        <li><b>Netbeans</b>: alt + shift + {v, m, e, c}</li>
+    </ul>
 </section>
 <section>
     <h1>Вопросы?</h1>
