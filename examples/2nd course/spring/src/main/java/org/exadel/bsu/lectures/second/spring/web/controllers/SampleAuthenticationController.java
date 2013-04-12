@@ -21,8 +21,6 @@ public class SampleAuthenticationController {
 
         final ModelAndView modelAndView = new ModelAndView();
 
-        //modelAndView.addObject(authentication);
-
         modelAndView.setViewName((authentication.isUserLogged())
                                  ? "existing-user"
                                  : "redirect:/user/login");
@@ -34,7 +32,6 @@ public class SampleAuthenticationController {
     public ModelAndView getLogon(@ModelAttribute Authentication authentication) {
         final ModelAndView modelAndView = new ModelAndView();
 
-        //modelAndView.addObject(authentication);
         modelAndView.setViewName((authentication.isUserLogged())
                                  ? "redirect:/user"
                                  : "login");
@@ -50,7 +47,6 @@ public class SampleAuthenticationController {
             authentication.setUser(new User(userName));
         }
 
-        //modelAndView.addObject(authentication);
         modelAndView.setViewName("redirect:/user");
 
         return modelAndView;
@@ -62,7 +58,6 @@ public class SampleAuthenticationController {
 
         authentication.setUser(null);
 
-        //modelAndView.addObject(authentication);
         modelAndView.setViewName("redirect:/user");
 
         sessionStatus.setComplete();
