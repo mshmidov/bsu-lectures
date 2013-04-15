@@ -8,5 +8,14 @@
     <artifactId>all-2nd-course-examples</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    
+
+    <modules>
+        <module>application-configuration</module>
+        <module>collections</module>
+        <module>networking</module>
+        <module>software-design</module>
+        <module>spring</module>
+        <module>web</module>
+    </modules>
+
 </project>
