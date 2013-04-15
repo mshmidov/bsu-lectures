@@ -13,6 +13,7 @@
 
     <modules>
         <module>collections</module>
+        <module>midtest</module>
     </modules>
 
 </project>
