@@ -3,6 +3,7 @@ package org.exadel.bsu.tasks.second.midtest;
 import com.google.common.collect.Sets;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -19,5 +20,9 @@ public class WordSequenceAnswersRegistrant {
 
     public void wipeAnswers(String studentId) {
         students.remove(studentId);
+    }
+
+    public Set<String> getAll() {
+        return Collections.unmodifiableSet(students);
     }
 }

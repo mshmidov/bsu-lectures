@@ -38,6 +38,10 @@ public class RequestSequenceController {
         String studentId = StudentIdConstructor.construct(studentName, request.getRemoteAddr());
         String textFileName = textStudentMapper.get(studentId);
 
+        if (textFileName == null) {
+            throw new IllegalStateException("First you should acquire text");
+        }
+
         boolean sequenceValid =  wordSequenceValidator.validate(textFileName, word1, word2, word3, word4, word5);
         if (sequenceValid) {
             response.setStatus(200);
