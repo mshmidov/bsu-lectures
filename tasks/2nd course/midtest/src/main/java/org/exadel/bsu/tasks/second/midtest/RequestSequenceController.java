@@ -1,6 +1,8 @@
 package org.exadel.bsu.tasks.second.midtest;
 
 import org.exadel.bsu.tasks.second.midtest.text.TextStudentMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class RequestSequenceController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestSequenceController.class);
 
     @Autowired
     private WordSequenceValidator wordSequenceValidator;
@@ -40,9 +44,11 @@ public class RequestSequenceController {
 
         boolean sequenceValid =  wordSequenceValidator.validate(textFileName, word1, word2, word3, word4, word5);
         if (sequenceValid) {
+            LOGGER.info("{} passed successfully!", studentId);
             response.setStatus(200);
             answersStorage.register(studentId);
         } else {
+            LOGGER.info("{} failed!", studentId);
             response.setStatus(500);
             answersStorage.wipeAnswers(studentId);
         }

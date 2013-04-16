@@ -21,7 +21,7 @@ import java.util.Set;
 public class MostPopularTextProcessor implements TextProcessor<List<String>> {
 
     @Value("#{properties.chartCapacity}")
-    private int chartCapacity;
+    private int chartCapacity = 5;
 
     @Override
     @Cacheable("most-popular-text-processor-cache")

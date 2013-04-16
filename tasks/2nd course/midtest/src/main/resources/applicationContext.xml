@@ -28,6 +28,14 @@
         <constructor-arg>
             <list>
                 <value>texts/james.gosling.txt</value>
+                <value>texts/java.txt</value>
+                <value>texts/java.script.txt</value>
+                <value>texts/donatello.txt</value>
+                <value>texts/leonardo.txt</value>
+                <value>texts/michelangelo.txt</value>
+                <value>texts/raphael.txt</value>
+                <value>texts/settignano.txt</value>
+                <value>texts/ie.txt</value>
             </list>
         </constructor-arg>
     </bean>
