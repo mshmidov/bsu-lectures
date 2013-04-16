@@ -1,9 +1,8 @@
 package org.exadel.bsu.tasks.second.midtest;
 
 import org.apache.commons.io.IOUtils;
-import org.exadel.bsu.tasks.second.midtest.text.TextStudentMapper;
 import org.exadel.bsu.tasks.second.midtest.text.TextFileNamesContainer;
-import org.exadel.bsu.tasks.second.midtest.util.StudentIdConstructor;
+import org.exadel.bsu.tasks.second.midtest.text.TextStudentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +29,10 @@ public class AcquiringTextController {
     @Autowired
     private TextStudentMapper bookStudentMapper;
 
-    @RequestMapping("{studentName}/text")
-    public void acquireText(@PathVariable("studentName") String studentName,
+    @RequestMapping("{studentId}/text")
+    public void acquireText(@PathVariable("studentId") String studentId,
                             HttpServletResponse response, HttpServletRequest request) throws IOException {
         String bookFile = bookUserMappingContainer.pickUpNameRandomly();
-        String studentId = StudentIdConstructor.construct(studentName, request.getRemoteAddr());
         LOGGER.info("Book <{}> picked up randomly for <{}>", bookFile, studentId);
         bookStudentMapper.put(studentId, bookFile);
         InputStream stream = this.getClass().getClassLoader().getResourceAsStream(bookFile);
