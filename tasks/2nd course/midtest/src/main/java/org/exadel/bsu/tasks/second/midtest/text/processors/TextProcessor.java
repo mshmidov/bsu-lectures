@@ -5,5 +5,5 @@ package org.exadel.bsu.tasks.second.midtest.text.processors;
  */
 public interface TextProcessor<RESULT> {
 
-    RESULT process(String textFileName);
+    RESULT process(String text);
 }
