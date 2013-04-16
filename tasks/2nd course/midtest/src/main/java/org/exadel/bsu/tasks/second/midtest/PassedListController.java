@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Simple index page controller serving hello.jsp file 
+ * @author skrauchenia
  */
 @Controller
 public class PassedListController {
@@ -25,11 +25,7 @@ public class PassedListController {
     @Autowired
     private WordSequenceAnswersStorage answersRegistrant;
 
-    /**
-     * Simply serves hello.jsp
-     * @return view with name 'hello'
-     */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ModelAndView handleRequest() {
         ModelAndView modelAndView = new ModelAndView("passed-list");
         List<Map.Entry<Object,Object>> students = Lists.newArrayList(answersRegistrant.getAll());
