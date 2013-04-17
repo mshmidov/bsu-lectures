@@ -18,4 +18,9 @@
            timeToIdleSeconds="10000" timeToLiveSeconds="259200"
            memoryStoreEvictionPolicy="LRU" />
 
+    <cache name="student-coder" eternal="false"
+           maxElementsInMemory="300" overflowToDisk="true" diskPersistent="false"
+           timeToIdleSeconds="10000" timeToLiveSeconds="259200"
+           memoryStoreEvictionPolicy="LRU" />
+
 </ehcache>
