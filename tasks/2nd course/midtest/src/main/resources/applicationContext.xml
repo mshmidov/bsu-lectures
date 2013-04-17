@@ -40,4 +40,41 @@
         </constructor-arg>
     </bean>
 
+    <bean id="bookFilesForSorting" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <value>texts/p1.txt</value>
+                <value>texts/p2.txt</value>
+                <value>texts/p3.txt</value>
+                <value>texts/p4.txt</value>
+                <value>texts/p5.txt</value>
+                <value>texts/p6.txt</value>
+                <value>texts/p7.txt</value>
+                <value>texts/p8.txt</value>
+                <value>texts/p9.txt</value>
+                <value>texts/p10.txt</value>
+                <value>texts/p11.txt</value>
+                <value>texts/p12.txt</value>
+                <value>texts/p13.txt</value>
+                <value>texts/p14.txt</value>
+                <value>texts/p15.txt</value>
+                <value>texts/p16.txt</value>
+                <value>texts/p17.txt</value>
+                <value>texts/p18.txt</value>
+                <value>texts/p19.txt</value>
+                <value>texts/p20.txt</value>
+                <value>texts/p21.txt</value>
+                <value>texts/p22.txt</value>
+                <value>texts/p23.txt</value>
+                <value>texts/p24.txt</value>
+                <value>texts/p25.txt</value>
+                <value>texts/p26.txt</value>
+                <value>texts/p27.txt</value>
+                <value>texts/p28.txt</value>
+                <value>texts/p29.txt</value>
+                <value>texts/p30.txt</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
 </beans>

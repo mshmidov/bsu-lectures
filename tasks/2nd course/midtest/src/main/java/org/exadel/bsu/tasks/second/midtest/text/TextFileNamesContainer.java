@@ -14,10 +14,10 @@ public class TextFileNamesContainer {
 
     @Autowired
     // TODO: should be changed to List. For some reason spring don't want to work with List O.o
-    private ArrayList<String> bookFiles;
+    private ArrayList<String> bookFilesForSorting;
     private Random random = new Random();
 
     public String pickUpNameRandomly() {
-        return bookFiles.get(random.nextInt(bookFiles.size()));
+        return bookFilesForSorting.get(random.nextInt(bookFilesForSorting.size()));
     }
 }
