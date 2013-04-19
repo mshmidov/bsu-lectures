@@ -15,6 +15,7 @@
         <module>networking</module>
         <module>software-design</module>
         <module>spring</module>
+        <module>hibernate</module>
         <module>web</module>
     </modules>
 
