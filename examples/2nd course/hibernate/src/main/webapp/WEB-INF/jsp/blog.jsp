@@ -28,8 +28,15 @@
 
     <s:forEach items="${posts}" var="post">
         <article>
-            <h1><s:out value="${post.name}" /></h1>
+            <h1><a href="/blog/post/${post.id}"><s:out value="${post.name}" /></a></h1>
             <p><s:out value="${post.text}" /></p>
+
+
+
+            <form action="/blog/post/${post.id}/delete" method="post">
+               <input type="submit" value="delete post" />
+
+            </form>
         </article>
         <hr>
     </s:forEach>

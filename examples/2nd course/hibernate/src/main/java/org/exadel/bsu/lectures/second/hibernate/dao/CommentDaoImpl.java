@@ -1,11 +1,30 @@
 package org.exadel.bsu.lectures.second.hibernate.dao;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mshmidov
- * Date: 4/19/13
- * Time: 3:57 PM
- * To change this template use File | Settings | File Templates.
- */
-public class CommentDaoImpl implements CommentDao {
+import org.exadel.bsu.lectures.second.hibernate.model.Comment;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collections;
+import java.util.List;
+
+@Repository
+public class CommentDaoImpl extends AbstractDao<Comment, String> implements CommentDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    protected CommentDaoImpl() {
+        super(Comment.class);
+    }
+
+    @Override
+    public List<Comment> list() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 }

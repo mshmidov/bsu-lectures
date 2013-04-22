@@ -26,6 +26,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>org.exadel.bsu.lectures.second.hibernate.model.Post</value>
+                <value>org.exadel.bsu.lectures.second.hibernate.model.Comment</value>
             </list>
         </property>
         <property name="hibernateProperties">
