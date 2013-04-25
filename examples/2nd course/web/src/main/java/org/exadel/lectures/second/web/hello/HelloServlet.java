@@ -17,7 +17,7 @@ public final class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final String name = request.getParameter("name");
+        String name = request.getParameter("name");
         response.getWriter().write(
                 String.format(HTML, getSafeName(name), "GET"));
     }
@@ -26,16 +26,13 @@ public final class HelloServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final String name = request.getParameter("name");
+        String name = request.getParameter("name");
         response.getWriter().write(
                 String.format(HTML, getSafeName(name), "POST"));
     }
 
     private String getSafeName(String name) {
-
-            return (name == null)
-                   ? ""
-                   : ' ' + name;
+        return (name == null) ? "" : ' ' + name;
 
     }
 }
