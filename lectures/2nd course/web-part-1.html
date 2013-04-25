@@ -395,22 +395,45 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
                 </section>
 
             </section>
-
+        <section>
             <section>
-                <h1>JSP</h1>
+                <h1>Java Service Pages</h1>
+                <ul>
+                    <li>Технология, позволяющая комбинировать статический и динамический контент</li>
+                    <li>Предоставляет большой набор тэгов</li>
+                    <li>EL (Expression Language)</li>
+                    <li>Высокая производительность за счет трансляции кода страницы в java-code и его
+                    последующей компиляции в байт-код</li>
+                </ul>
+            </section>
+            <section>
+                <h1>hello.jsp</h1>
                 <pre><code class="jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-                    &lt;%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %&gt;
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Hello using JSP&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
-    &lt;h1&gt;Hello&lt;c:if test="${not empty param.name}"&gt; &lt;c:out value=" ${param.name}"/&gt;&lt;/c:if&gt;!!!&lt;/h1&gt;
+    &lt;h1&gt;Hello
+        &lt;c:if test="${not empty param.name}"&gt;
+            &lt;c:out value=" ${param.name}"/&gt;
+        &lt;/c:if&gt;
+        !!!&lt;/h1&gt;
     &lt;p&gt;Response to &lt;c:out value="${pageContext.request.method}"/&gt; request&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
             </section>
-
+        </section>
+        <section>
+            <h2>Полезные ссылки:</h2>
+            <ul>
+                <li><a href="http://www.w3.org">w3.org</a> - Консорциум Всемирной паутины</li>
+                <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">w3.org/Protocols/rfc2616/rfc2616.html</a> - HTTP spec</li>
+                <li><a href="http://www.w3schools.com">w3schools.com</a> - хороший справочный ресурс по html, css, js</li>
+                <li><a href="http://htmlbook.ru">htmlbook.ru</a> - русскоязычный хороший справочный ресурс</li>
+            </ul>
+        </section>
         </div>
     </div>
 
