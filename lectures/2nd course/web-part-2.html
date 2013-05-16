@@ -165,6 +165,152 @@ public class DemoServlet extends HttpServlet {
                 <li>јтрибут method Ц как отправить данные. ћожет принимать значени€ get либо post</li>
             </ul>
         </section>
+        <section>
+            <h1>ѕол€ формы</h1>
+            <pre>
+                <code class="html">
+    &lt;input type="text" value="Sergey" name="userName"&gt;
+                </code>
+            </pre>
+            <ul>
+                <li>јтрибут type Ц тип пол€, принимает значени€:</li>
+                    <ul>
+                        <li>text Ц текстовое поле</li>
+                        <li>radio -  переключатель</li>
+                        <li>checkbox Ц компонент checkbox</li>
+                        <li>password Ц поле дл€ ввода парол€</li>
+                        <li>submit Ц кнопка, инициирующа€ отправку данных</li>
+                        <li>и др./li>
+                    </ul>
+                <li>јтрибут value Ц значение пол€ формы, которое будет показано на экране</li>
+                <li>јтрибут name Ц им€ пол€ формы, используетс€ браузером при отправке данных</li>
+            </ul>
+        </section>
+        <section>
+            <pre>
+                <code class="html">
+    &lt;form action="${pageContext.request.contextPath}/login" method="post"&gt;
+        &lt;input name="login" value="admin"/&gt;&lt;br&gt;
+        &lt;input name="pwd" type="password"/&gt;&lt;br&gt;
+        &lt;input name="avatar" type="file"/&gt;&lt;br&gt;
+
+        &lt;input type="submit" value="Create"/&gt;
+    &lt;/form&gt;
+                </code>
+                </pre>
+        </section>
+        <section>
+            <h1>–езультат</h1>
+            <img src="web-2.files/inputs-result.png">
+        </section>
+
+        <section>
+            <h1>ѕолучение данных на сервере</h1>
+            <ul>
+                <li>ѕол€ формы передаютс€ как параметр запроса. <b>ServletRequest.getParameter</b> можно использовать дл€ получени€ параметра</li>
+                <li>»нформацию о методе можно получить использу€ <b>HttpServletRequest.getMethod</b> в методе service а также переопределив соответсвующий метод (doGet, doPost)</li>
+            </ul>
+        </section>
+        <section>
+            <h1>edit.jsp</h1>
+            <pre>
+                <code class="html">
+&lt;form id="myform" method="post" action="${pageContext.request.contextPath}/demo/person" &gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Id(Required)&lt;/td&gt;
+        &lt;td&gt;&lt;input id="id" name="personId" value="${person.id}"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;First Name(Required)&lt;/td&gt;
+        &lt;td&gt;&lt;input id="firstName" name="personFirstName" value="${person.firstName}"/&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;button onclick="return validateAndSubmit();"&gt;Save&lt;/button&gt;
+&lt;/form&gt;
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>–езультат</h1>
+            <img src="web-2.files/edit-form-results.png">
+        </section>
+        <section>
+            <h1>ќбработка на сервере</h1>
+            <pre>
+                <code class="java">
+public class DemoServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Construct object from parameter
+        Person person = new Person();
+        String id = request.getParameter("personId");
+        person.setId(Integer.parseInt(id));
+        person.setFirstName(request.getParameter("personFirstName"));
+        person.setLastName(request.getParameter("personLastName"));
+
+        //TODO: save the object in the DB/XML file/etc.
+
+        request.setAttribute("person", person);
+        RequestDispatcher dispatcher =
+        request.getRequestDispatcher("/WEB-INF/views/result.jsp");
+        dispatcher.forward(request, response);
+    }
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>–езультат</h1>
+            <img src="web-2.files/view-output-result.png">
+        </section>
+    </section>
+
+    <section id="unicode-section">
+        <section>
+        <h1>Unicode символы</h1>
+        <h3>TOMCAT_HOME/conf/server.xml</h3>
+        <pre>
+            <code class="xml">
+&lt;Connector port="8080" protocol="HTTP/1.1"
+              connectionTimeout="20000
+              redirectPort="8443"
+              URIEncoding="UTF-8"/&gt;
+            </code>
+        </pre>
+        <h3>TOMCAT_HOME/conf/web.xml</h3>
+        <pre>
+            <code class="xml">
+&lt;filter&gt;
+    &lt;filter-name&gt;setCharacterEncodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.apache.catalina.filters.SetCharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;encoding&lt;/param-name&gt;
+        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;async-supported&gt;true&lt;/async-supported&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;setCharacterEncodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+            </code>
+        </pre>
+        </section>
+        <section>
+            <h1>Ёкранирование спецсимволов</h1>
+            <ul>
+                <li>ƒанные, отображаемые на HTML странице не должны содержать спецсимволов. ƒл€ вывода спецсимволов необходимо их экранировать(&lt; &gt; Е)</li>
+                <li>ќдин из мозможных способов Ц использование специальных библиотек, например, JSTL
+                    <ul>
+                        <li>–азместить  jstl-1.2.jar в WEB-INF/lib</li>
+                        <li>»спользовать JSP тег &lt;c:out&gt;. ƒанный тег обрабатываетс€ на сервере.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
     </section>
 
     <section id="internationalization-section">
