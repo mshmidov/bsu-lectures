@@ -9,19 +9,58 @@
         <servlet-name>hello</servlet-name>
         <servlet-class>org.exadel.lectures.second.web.hello.HelloServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/hello.html</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>forward-to-jsp</servlet-name>
         <servlet-class>org.exadel.lectures.second.web.hello.ForwardToJspServlet</servlet-class>
     </servlet>
-
-    <servlet-mapping>
-        <servlet-name>hello</servlet-name>
-        <url-pattern>/hello.html</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>forward-to-jsp</servlet-name>
         <url-pattern>/forward-to-jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- Demo servlet-->
+    <servlet>
+        <servlet-name>demoServlet</servlet-name>
+        <servlet-class>org.exadel.lectures.second.web.part2.DemoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>demoServlet</servlet-name>
+        <url-pattern>/demo/person/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Image servlet-->
+    <servlet>
+        <servlet-name>imageServlet</servlet-name>
+        <servlet-class>org.exadel.lectures.second.web.part2.ImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>imageServlet</servlet-name>
+        <url-pattern>/dynamic/images/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- File servlet-->
+    <servlet>
+        <servlet-name>fileServlet</servlet-name>
+        <servlet-class>org.exadel.lectures.second.web.part2.FileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>fileServlet</servlet-name>
+        <url-pattern>/dynamic/files/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Upload servlet-->
+    <servlet>
+        <servlet-name>uploadServlet</servlet-name>
+        <servlet-class>org.exadel.lectures.second.web.part2.UploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>uploadServlet</servlet-name>
+        <url-pattern>/servlet/upload/*</url-pattern>
     </servlet-mapping>
     
     <welcome-file-list>

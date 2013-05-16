@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Web applications in Java</title>
+
+    <meta name="author" content="Maxim Shmidov">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+<div class="slides">
+
+    <section>
+        <h1>Web applications in Java part 2</h1>
+    </section>
+
+    <section id="mvc-section">
+        <section>
+            <h1>Model-View-Controller (MVC)</h1>
+        <span class="thesis">
+            Основная цель применения – отделить логику от представления
+        </span>
+            <ul>
+                <li><b>Model</b> - данные и методы для работы с ними</li>
+                <li><b>View</b> - отвечает за отображение информации</li>
+                <li><b>Controller</b> - обеспечивает связь между пользователем и системой (ввод данных
+                    пользователем и навигация, использует модель и представление)
+                </li>
+            </ul>
+        </section>
+        <section>
+            <img src="web-2.files/mvc-diagram.jpg" style="width:40%;height:40%;">
+        </section>
+        <section>
+            <h1>Преимущества MVC</h1>
+            <ul>
+                <li>К одной Model можно присоединить разные View</li>
+                <i>Пример: данные могут быть представлены в виде HTML страницы для браузера или PDF отчёта</i>
+                <li>Одни и те же Model и View могут быть использованны разными Controller</li>
+                <i>упрощается создание страниц с похожей функциональностью</i>
+                <li>Разделение труда разработчиков – Model и View часто могут разрабатываться независимо.</li>
+            </ul>
+        </section>
+    </section>
+
+    <section id="app-navigation-section">
+        <section>
+            <h1>Навигация</h1>
+            <h2>Основные способы навигации в web приложении Java:</h2>
+            <ul>
+                <li>Redirect</li>
+                <li>Forward</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Redirect</h1>
+            <ul>
+                <li>Сервер отправляет браузеру указание перейти на другой URL</li>
+                <li>В качестве адреса перехода может быть указан любой URL</li>
+                <li>Браузер получает указание о переходе и осуществляет открытие указанного URL (соответсвенно меняется ардесная строка)</li>
+                <li><b>HttpServletResponse.sendRedirect(location)</b></li>
+            </ul>
+        </section>
+        <section>
+            <h1>Forward</h1>
+            <ul>
+                <li>Cервлет/JSP могут делегировать обработку запроса другому сервлету/JSP, причём только в рамках данного web приложения.</li>
+                <li>Компонент (сервлет/JSP) который будет осуществлять обрабоку действует в рамках того же самого запроса.</li>
+                <li>Браузер не знает про делегацию обработки</li>
+                <li><b>ServletRequest.getRequestDispatcher(url) и RequestDispatcher.forward(request, response)</b></li>
+                <li>Информацию между объектами можно передавать используя <b>ServletRequest.setAttribute</b></li>
+            </ul>
+        </section>
+        <section>
+            <h1>Пример сервлета</h1>
+            <pre>
+                <code class="java">
+public class DemoServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        Person person = new Person();
+        if (id != null) {
+            person = getPersonById(Integer.parseInt(id));
+        }
+        request.setAttribute("person", person);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/edit.jsp");
+        dispatcher.forward(request, response);
+    }
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Пример: edit.jsp</h1>
+            <pre>
+                <code class="jsp">
+&lt;html&gt;
+    &lt;body&gt;
+    ...
+        &lt;form id="myform" action="&lt;%=request.getContextPath()%&gt;/demo/person" method="post"&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Id(Required)&lt;/td&gt;
+                &lt;td&gt;&lt;input id="id" name="personId" value="${person.id}"/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        ...
+        &lt;/table&gt;
+
+        &lt;button onclick="return validateAndSubmit();"&gt;Save&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                </code>
+            </pre>
+        </section>
+        <section>
+            <img src="web-2.files/forward-example.png">
+        </section>
+    </section>
+
+    <section id="data-transfer-section">
+        <section>
+            <h1>Передача данных из браузера</h1>
+        </section>
+        <section>
+            <h1>Тег &lt;form&gt;</h1>
+            <pre>
+                <code class="jsp">
+&lt;form action="&lt;%=request.getContextPath()%&gt;/demo/person" method="post"&gt;
+    ...
+&lt;/form&gt;
+                </code>
+            </pre>
+            <ul>
+                <li>Форма для отправки данных</li>
+                <li>Атрибут action – куда отправить данные</li>
+                <li>Атрибут method – как отправить данные. Может принимать значения get либо post</li>
+            </ul>
+        </section>
+    </section>
+
+    <section id="internationalization-section">
+
+    </section>
+
+    <section id="validation-section">
+
+    </section>
+
+    <section id="session-section">
+
+    </section>
+</div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
+</html>
