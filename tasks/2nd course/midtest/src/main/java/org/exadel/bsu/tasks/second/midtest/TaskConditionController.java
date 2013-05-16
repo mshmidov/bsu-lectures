@@ -11,7 +11,7 @@ public class TaskConditionController {
 
     @RequestMapping("/")
     public String infoForMainGroup() {
-        return "alter-group-info";
+        return "main-group-info";
     }
 
 }
