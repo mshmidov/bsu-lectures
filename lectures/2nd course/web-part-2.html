@@ -1,5 +1,4 @@
 <!doctype html>
-<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -146,6 +145,125 @@ public class DemoServlet extends HttpServlet {
         </section>
     </section>
 
+    <section id="el-section">
+        <section>
+            <h1>JSP - Expression Language (EL)</h1>
+            <pre>
+                <code class="jsp">
+    ${expr}
+                </code>
+            </pre>
+            <ul>
+                <li>Получение доступа к полям бина</li>
+                <pre>
+                    <code class="jsp">
+    ${user.name}
+                    </code>
+                </pre>
+                <li>Арифметические операции</li>
+                <pre>
+                    <code class="jsp">
+&lt;jsp:setProperty name="box" property="perimeter" value="${2*box.width+2*box.height}"/&gt;
+                    </code>
+                </pre>
+            </ul>
+        </section>
+        <section>
+            <h1>Доступные операторы</h1>
+            <ul>
+                <li><b>.</b> - Access a bean property or Map entry</li>
+                <li><b>[]</b> - Access an array or List element</li>
+                <li><b>( )</b> - Group a subexpression to change the evaluation order</li>
+                <li><b>+ - * / %</b> - Arithmetic operators</li>
+                <li><b>==</b> - Test for equality </li>
+                <li><b>!=</b> - Test for inequality</li>
+                <li><b>&lt; </b> -Test for less than </li>
+                <li>И т.д.</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Зарезервированные слова</h1>
+            <ul>
+                <li>lt, le, gt, ge</li>
+                <li>eq, ne, true, false</li>
+                <li>and, or, not, instanceof</li>
+                <li>div, mod, empty, null</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Список объектов, неявно доступных на странице JSP</h2>
+            <ul>
+                <li><b>pageScope, requestScope, sessionScope, applicationScope</b> - Scoped variables</li>
+                <li><b>param</b> - Request parameters as strings</li>
+                <li><b>paramValues</b> - Request parameters as collections of strings</li>
+                <li><b>header</b> - HTTP request headers as strings</li>
+                <li><b>headerValues</b> - HTTP request headers as collections of strings</li>
+                <li><b>cookie</b> - Cookie values</li>
+                <li><b>pageContext</b> - The JSP PageContext object for the current page</li>
+            </ul>
+            <pre>
+                <code class="jsp">
+        ${paramValues.myParam[0]}
+        ${paramValues['myParam'][0]}
+        ${param.myParam}
+        ${param['myParam']}
+                </code>
+            </pre>
+        </section>
+    </section>
+
+    <section id="jstl-section">
+        <section>
+            <h1>JSP - Standard Tag Library (JSTL)</h1>
+            <ul>
+                <li>Core Tags</li>
+                <li>Formatting tags</li>
+                <li>и т.д.</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Подключение tld</h1>
+            <pre>
+                <code class="html">
+&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
+                </code>
+            </pre>
+            <span>Библиотека <b>jstl-1.2.jar</b> должна быть доступна на classpath</span>
+        </section>
+        <section>
+            <h1>Core Tags</h1>
+            <ul>
+                <li><b>&lt;c:out&gt;</b> - Делает вывод содержимого</li>
+                <li><b>&lt;c:set&gt;</b> - Кладет значение в 'scope'</li>
+                <li><b>&lt;c:if&gt;</b> - Условный тэг, тело которого исполняется, только если 'test' true</li>
+                <li><b>&lt;c:choose&gt;</b> - Способ реализовать if/else if/else</li>
+                <li><b>&lt;c:forEach&gt;</b> - Итерация по Iterable объекту</li>
+                <li><b>&lt;c:redirect&gt;</b> - Осуществляет редирект</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Core Tags examples</h1>
+            <pre>
+                <code class="xml">
+&lt;c:if test="${empty param.name and param.action == 'search'}"&gt;
+    &lt;c:out value="${user.name}"/&gt;
+    &lt;c:choose&gt;
+        &lt;c:when test="${user.admin}"&gt;
+            &lt;c:forEach items="${fileList}" var="file"&gt;
+                &lt;c:out value="${file.name}"/&gt;
+            &lt;/c:forEach&gt;
+        &lt;/c:when&gt;
+        &lt;c:otherwise&gt;
+            &lt;c:redirect url="http://google.com"/&gt;
+        &lt;/c:otherwise&gt;
+    &lt;/c:choose&gt;
+&lt;/c:if&gt;
+                </code>
+            </pre>
+        </section>
+    </section>
+
     <section id="data-transfer-section">
         <section>
             <h1>Передача данных из браузера</h1>
@@ -180,7 +298,7 @@ public class DemoServlet extends HttpServlet {
                         <li>checkbox – компонент checkbox</li>
                         <li>password – поле для ввода пароля</li>
                         <li>submit – кнопка, инициирующая отправку данных</li>
-                        <li>и др./li>
+                        <li>и др.</li>
                     </ul>
                 <li>Атрибут value – значение поля формы, которое будет показано на экране</li>
                 <li>Атрибут name – имя поля формы, используется браузером при отправке данных</li>
@@ -304,7 +422,7 @@ public class DemoServlet extends HttpServlet {
             <ul>
                 <li>Данные, отображаемые на HTML странице не должны содержать спецсимволов. Для вывода спецсимволов
                     необходимо их экранировать(<b>&amp;lt; &amp;gt</b>; …)</li>
-                <li>Один из мозможных способов – использование специальных библиотек, например, JSTL
+                <li>Один из возможных способов – использование специальных библиотек, например, JSTL
                     <ul>
                         <li>Разместить  jstl-1.2.jar в WEB-INF/lib</li>
                         <li>Использовать JSP тег &lt;c:out&gt;. Данный тег обрабатывается на сервере.</li>
@@ -371,9 +489,13 @@ public class DemoServlet extends HttpServlet {
     &lt;/fmt:bundle&gt;
                 </code>
             </pre>
-    Предполагается, что в classpath существует файл /pages/mybundle.properties:<br>
-        test.title=Localization example<br>
-        test.description=Welcome
+    Предполагается, что в classpath существует файл /pages/mybundle.properties:
+            <pre>
+                <code class="property">
+    test.title=Localization example
+    test.description=Welcome
+               </code>
+            </pre>
         </section>
     </section>
 
@@ -443,7 +565,6 @@ function validateAndSubmit() {
                     <ul type="circle">
                         <li>Name – имя Cookie</li>
                         <li>Domain – имя сервера</li>
-                        <li>Path – относительный путь</li>
                         <li>MaxAge – через какое время Cookiе считать недействительным</li>
                         <li>Value – значение, которое нужно сохранить</li>
                     </ul>
@@ -470,7 +591,7 @@ function validateAndSubmit() {
                 используя плагины или использовать внешние приложения.</li>
         </ul>
     </section>
-    <section>
+    <section id="examples-section">
         <section>
             <h1>Примеры</h1>
         </section>
@@ -600,6 +721,85 @@ public class FileServlet extends HttpServlet {
             <h3>Файл с сервера</h3>
             <img src="web-2.files/download-example-text-file.png">
         </section>
+
+        <section>
+            <h1>Upload File example (1/3)</h1>
+            <h3>fileUploadExample.jsp</h3>
+            <pre>
+                <code class="html">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;File example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;form action="${pageContext.request.contextPath}/servlet/upload" method="post" enctype="multipart/form-data"&gt;
+    &lt;input type="file" name="myfile"/&gt;&lt;br&gt;
+
+    &lt;input type="submit"/&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Upload File example (2/3)</h1>
+            <h3>UploadServlet</h3>
+            <pre>
+                <code class="java">
+@MultipartConfig
+public class UploadServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Collection&lt;Part&gt; parts = request.getParts();
+        for (Part part : parts) {
+            String contentType = part.getContentType();
+            System.out.println("contentType = " + contentType);
+
+            System.out.println("file = " + getFileName(part));
+
+            InputStream stream = part.getInputStream();
+            String content = readAsString(stream);
+            System.out.println("content = " + content);
+        }
+
+        response.getOutputStream().println("&lt;html&gt;&lt;body&gt;The file has been uploaded&lt;/body&gt;&lt;/html&gt;");
+    }
+
+    private String readAsString(InputStream stream) throws IOException {
+        String result = "";
+        InputStreamReader inputReader = new InputStreamReader(stream);
+        BufferedReader reader = new BufferedReader(inputReader);
+        while (reader.ready()) {
+            result += reader.readLine();
+        }
+
+        return result;
+    }
+
+    private String getFileName(Part part) {
+        String[] contentAttributes = part.getHeader("content-disposition").split(";");
+        for (String attribute : contentAttributes) {
+            if (attribute.trim().startsWith("filename")) {
+                String value = attribute.substring(attribute.indexOf('=') + 1).trim();
+                return value.replace("\"", "");
+            }
+        }
+
+    return null;
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Upload File example (3/3)</h1>
+            <h3>Страница</h3>
+            <img src="web-2.files/updaload-example-page.png"/>
+        </section>
+    </section>
+    <section>
+        <h1>Вопросы?</h1>
     </section>
 </div>
 </div>
