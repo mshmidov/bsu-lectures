@@ -798,6 +798,63 @@ public class UploadServlet extends HttpServlet {
             <img src="web-2.files/updaload-example-page.png"/>
         </section>
     </section>
+
+    <section id="security-section">
+        <section>
+            <h1>Basic Authentication</h1>
+            <ul>
+                <li>Логин/пароль запрашивает браузер</li>
+                <li>Полученные логин и пароль пересылаются серверу (при этом используется кодировка Base64)</li>
+                <li>Замечания
+                    <ul>
+                        <li>BASIC аутентификация поддерживается широким кругом приложений</li>
+                        <li>Кодировка Base64 ≠ Шифрование. Рекомендуется дополнительно использовать протокол HTTPS</li>
+                        <li>Не существует стандартного решения, чтобы сделать Log Out</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h1>Настройка сервера</h1>
+            <ul>
+                <li>Добавить пользователя в <b>tomcat-users.xml</b></li>
+            </ul>
+            <pre>
+                <code class="xml">
+&lt;tomcat-users&gt;
+    &lt;role rolename="administrator"/&gt;
+    &lt;user username="admin" password="11111" roles="administrator"/&gt;
+&lt;/tomcat-users&gt;
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Фрагмент web.xml (приложение)</h1>
+            <pre>
+                <code class="xml">
+&lt;!-- Security settings--&gt;
+&lt;security-constraint&gt;
+    &lt;web-resource-collection&gt;
+        &lt;web-resource-name&gt;securePages&lt;/web-resource-name&gt;
+        &lt;url-pattern&gt;/pages/secure/*&lt;/url-pattern&gt;
+    &lt;/web-resource-collection&gt;
+    &lt;auth-constraint&gt;
+        &lt;role-name&gt;administrator&lt;/role-name&gt;
+    &lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;
+&lt;login-config&gt;
+    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+    &lt;realm-name&gt;Demo for students&lt;/realm-name&gt;
+&lt;/login-config&gt;
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h1>Доступ к защищённым URL</h1>
+            <img src="web-2.files/security-access-example.png">
+        </section>
+    </section>
+
     <section>
         <h1>Вопросы?</h1>
     </section>
