@@ -1,0 +1,266 @@
+<!doctype html>
+
+<style type="text/css">
+    .red-text {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+
+    <title>Maven</title>
+
+    <meta name="author" content="Sergey Krauchenia">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+<div class="slides">
+
+<section>
+    <h1>Maven</h1>
+</section>
+
+<section>
+    <section>
+    <h1>Введение</h1>
+
+    </section>
+    <section>
+        <h1>Качество кода</h1>
+        <p class="fragment roll-in">Очень! Очень! Очень! важно писать аккуратно и как все, но за этим сложно следить.</p>
+        <p class="fragment roll-in">И если об этом постоянно думать, то времени на написание приложения совсем не остается. Что делать?</p>
+    </section>
+    <section>
+        <h1>CheckStyle</h1>
+        <h3>Проверка кода на соответствие общим правилам написания, например:</h3>
+        <ul>
+            <li>все управляющие конструкции должны иметь { ... }</li>
+            <li>длина строки не должна быть больше 120 символов</li>
+            <li>соглашение об именовании</li>
+            <li>очень большие (> 20 строк) или очень сложные методы</li>
+            <li>табулирование и пробелы</li>
+        </ul>
+    </section>
+    <section>
+        <h1>FindBugs</h1>
+        <h3>Поиск распростроненных ошибок в Java приложениях. Например:</h3>
+        <ul>
+            <li>не верно закрывается поток или соединение к базе</li>
+            <li>переопределен только один из методов hashСode, equals</li>
+            <li>вызов статического Calendar, DateFormat</li>
+            <li>исходя из других проверок может быть установленна что перемення null/not-null</li>
+        </ul>
+    </section>
+    <section>
+        <h1>FindBugs</h1>
+        <h3>Хотелось бы не наступать на одни и те же грабли дважды.</h3>
+        <ul>
+            <li>Когда-то FindBugs обнаружил ошибку в модели памяти Java</li>
+            <li>Более 350 проверок
+            <ul>
+                <li>Ошибки</li>
+                <li>Оптимизации</li>
+                <li>Дурной тон программирования</li>
+                <li>Ошибки многопоточности</li>
+            </ul>
+            </li>
+        </ul>
+    </section>
+    <section>
+        <h1>Качество кода</h1>
+        <h3>В процессе работы, мы постоянно видоизменяем код, в результате чего появляется:</h3>
+        <ul>
+            <li>мертвый код</li>
+            <li>слишком сложный код</li>
+            <li>дублирущийся код</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Почему это все так важно?</h1>
+        <p class="fragment roll-in">Потому что, <span class="red-text">80%</span> рабочего времени программист <span class="red-text">читает код</span></p>
+        <p class="fragment roll-in">Метод который не вмещается на экран (выпадает из области видимости) на 2 строки <span class="red-text">отлаживается в 2 раза дольше</span> чем тот кторый вмещается</p>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>Тестирование</h1>
+
+    </section>
+    <section>
+        <h1>Как вы работаете?</h1>
+        <img src="maven.files/testing-your-way.png"/>
+    </section>
+    <section>
+        <h1>Как я работаю?</h1>
+        <img src="maven.files/testing-my-way.png"/>
+    </section>
+    <section>
+        <h1>В чем преимущество?</h1>
+        Скорость!
+        <ul>
+            <li>Вы = Написать код + <b>50 раз запустить приложение</b> + исправления и отладка</li>
+            <li>Я = Написать код + <b>написать тесты</b> + исправления и отладка</li>
+        </ul>
+    </section>
+    <section>
+        <h1>В чем преимущество?</h1>
+        Надежность!
+        <ul>
+            <li>Вы - проверяете только то, что в данный момент пишите.</li>
+            <li>Тесты - проверяют <b>всё и всегда</b></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Покрытие</h1>
+        <ul>
+            <li>Показывает вам, что вы проверили и в чем вы можете быть уверены.</li>
+            <li>Указывает на потенциально не используюемый код.</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <h1>Все вместе для Web</h1>
+    <ul>
+        <li>Compile</li>
+        <li>CheckStyle</li>
+        <li>FindBugs</li>
+        <li>Tests</li>
+    </ul>
+    <h3>И только если все хорошо:</h3>
+    <ul>
+        <li>Package war</li>
+        <li>Deploy to tomcat</li>
+        <li>Run tomcat</li>
+    </ul>
+</section>
+
+<section>
+    <h1>Как со всем этим быть?</h1>
+</section>
+
+<section>
+    <section>
+        <h1>Maven</h1>
+        <p>Это Command Line инструмент сборки, который конфигурируется с помощью xml</p>
+
+        <ul>
+            <li>облегчает процесс сборки</li>
+            <li>облегчает управление жизненным циклом проекта</li>
+            <li>унифицирует структуру проекта</li>
+            <li>облегчает управление зависимостями</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Maven: фазы сборки</h1>
+        <ul>
+            <li>process-sources</li>
+            <li><b>compile</b></li>
+            <li>process-test-sources</li>
+            <li>test-compile</li>
+            <li><b>test</b></li>
+            <li><b>package</b></li>
+            <li>install / deploy</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Легко создавать новый проект</h1>
+        <pre>
+            <code class="console">
+> mvn archetype:generate
+    -DgroupId=com.mycompany.app
+    -DartifactId=my-webapp
+    -DarchetypeArtifactId=maven-archetype-webapp
+            </code>
+        </pre>
+        <img src="maven.files/web-generated-structure.png"/>
+    </section>
+    <section>
+        <h1>Структура проекта</h1>
+        <img src="maven.files/project-default-structure.png">
+    </section>
+</section>
+
+<section>
+    <h1>Вопросы?</h1>
+</section>
+</div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: false,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: false,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+</script>
+</body>
+</html>
