@@ -176,6 +176,87 @@
             <li>облегчает управление зависимостями</li>
         </ul>
     </section>
+
+    <section>
+        <h1>Принципы мавера</h1>
+        <ul>
+            <li class="fragment roll-in">Project oriented</li>
+            <li class="fragment roll-in">Convention over Configuration</li>
+            <li class="fragment roll-in">Dependency management</li>
+            <li class="fragment roll-in">Extensible through plug-ins</li>
+            <li class="fragment roll-in">Reuse through centralized repositories</li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Установка</h1>
+        <ul>
+            <li>Скачать <a href="http://ftp.byfly.by/pub/apache.org/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.zip">http://ftp.byfly.by/pub/apache.org/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.zip</a> </li>
+            <li>Распаковать куда удобно</li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Сделать доступным из консоли</h1>
+        <span>Добавить переменную среды JAVA_HOME, указывающую на директорию с JDK</span>
+        <span>Добавить &lt;mavenDir&gt;/bin в PATH</span>Добавить
+        <ul>
+            <li>linux: <b>export PATH=&lt;mavenDir&gt;/bin:$PATH</b></li>
+            <li>win: <b>set PATH=%PATH%;&lt;mavenDir&gt;/bin</b></li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Правильно ли я все сделал?</h1>
+        <pre>
+            <code class="console">
+        > mvn -v
+            </code>
+        </pre>
+        <img src="maven.files/maven_v.png">
+    </section>
+
+    <section>
+        <h1>Легко создавать новый проект</h1>
+        <pre>
+            <code class="console">
+> mvn archetype:generate -DarchetypeArtifactId=<b>maven-archetype-webapp</b> -DgroupId=com.mycompany.project -DartifactId=my-webapp
+            </code>
+        </pre>
+        <img src="maven.files/web-generated-structure.png"/>
+    </section>
+    <section>
+        <h1>Структура проекта</h1>
+        <img src="maven.files/project-default-structure.png">
+    </section>
+
+    <section>
+        <h1>Локальный репозиторий</h1>
+        <span>Все зависимости, скаченные ранее, размещаются в локальном репозитории.</span>
+        <br><span>Находится в <b>&lt;USER_HOME&gt;/.m2/repository</b></span>
+
+    </section>
+
+    <section>
+        <h1>Настройка proxy :)</h1>
+        <span>Добавьте следующий код в конфигурационный файл мавена (<b>&lt;mavenDir&gt;/conf/settings.xml</b>)</span>
+        <pre>
+            <code class="xml">
+    &lt;proxies&gt;
+        &lt;proxy&gt;
+            &lt;active&gt;true&lt;/active&gt;
+            &lt;protocol&gt;http&lt;/protocol&gt;
+            &lt;host&gt;proxy.somewhere.com&lt;/host&gt;
+            &lt;port&gt;8080&lt;/port&gt;
+            &lt;username&gt;proxyuser&lt;/username&gt;
+            &lt;password&gt;somepassword&lt;/password&gt;
+            &lt;nonProxyHosts&gt;*.google.com|ibiblio.org&lt;/nonProxyHosts&gt;
+        &lt;/proxy&gt;
+    &lt;/proxies&gt;
+            </code>
+        </pre>
+    </section>
+
     <section>
         <h1>Maven: фазы сборки</h1>
         <ul>
@@ -187,22 +268,6 @@
             <li><b>package</b></li>
             <li>install / deploy</li>
         </ul>
-    </section>
-    <section>
-        <h1>Легко создавать новый проект</h1>
-        <pre>
-            <code class="console">
-> mvn archetype:generate
-    -DgroupId=com.mycompany.app
-    -DartifactId=my-webapp
-    -DarchetypeArtifactId=maven-archetype-webapp
-            </code>
-        </pre>
-        <img src="maven.files/web-generated-structure.png"/>
-    </section>
-    <section>
-        <h1>Структура проекта</h1>
-        <img src="maven.files/project-default-structure.png">
     </section>
 </section>
 
