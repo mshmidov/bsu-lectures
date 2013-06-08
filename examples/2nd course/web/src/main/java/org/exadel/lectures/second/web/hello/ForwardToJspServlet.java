@@ -17,6 +17,6 @@ public class ForwardToJspServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("nameFromForward", request.getParameter("name"));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(FORWARD_URL);
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 }

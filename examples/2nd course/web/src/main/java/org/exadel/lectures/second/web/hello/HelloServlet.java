@@ -8,18 +8,17 @@ import java.io.IOException;
 
 public final class HelloServlet extends HttpServlet {
 
-    private static final String HTML = "<html><head><title>Hello</title></head><body>" +
-            "<h1>Hello%s!!</h1>" +
-            "<p>Response to %s request</p>"+
-            "</body></html>";
+    private static final String HTML = "<html><head><title>Hello</title></head><body>"
+            + "<h1>Hello%s!!</h1>"
+            + "<p>Response to %s request</p>"
+            + "</body></html>";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String name = request.getParameter("name");
-        response.getWriter().write(
-                String.format(HTML, getSafeName(name), "GET"));
+        response.getWriter().write(String.format(HTML, getSafeName(name), "GET"));
     }
 
     @Override
