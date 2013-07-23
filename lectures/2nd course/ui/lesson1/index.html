@@ -1,0 +1,552 @@
+﻿<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Exadel UI Training for students. Lesson 1: Introduction</title>
+
+		<meta name="author" content="Mantsevich Dzenis">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+        <script src="lib/js/raphael-min.js"></script>
+        <script src="lib/js/jquery.min.js"></script>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>UI</h1>
+					<h3>Lesson 1: Introduction to HTML, CSS.</h3>
+					<p style="text-align: right; font-size: 16px;">
+						Denis Mantsevich <br />
+						<script>
+							document.write( (new Date()).toDateString() );
+						</script>
+					</p>
+				</section>
+
+				<section>
+					<h2>Today</h2>
+					<ol>
+						<li> How browsers work. </li>
+						<li> The basic principles of HTML. </li>
+						<li> The basic principles of CSS. </li>
+						<li> QA </li>
+						<li> Homework </li>
+					</ol>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>How browsers work</h2>
+						<div>
+							<div id="how-browsers-work-http-req-resp">
+                                <img src="img/http.png" alt="" />
+							</div>
+						</div>
+					</section>
+                    <section>
+                        <h2>HTTP REQUEST</h2>
+                        <div>
+                            <pre><code>GET /path/file.html HTTP/1.0
+Cookie:_bizo_bzid=9df96611-0e65-43ca-a9e2-7001ec3500bd
+Host: tcpipguide.com
+Referer: http://google.com/
+User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+[blank line here]</code></pre>
+                        </div>
+                    </section>
+					<section>
+						<h2>How browsers work</h2>
+						<div>
+							<div id="how-browsers-work-http-req-resp">
+                                <img src="img/http.png" alt="" />
+							</div>
+						</div>
+					</section>
+                    <section>
+                        <h2>HTTP RESPONSE</h2>
+                        <div>
+                            <pre><code>HTTP/1.0 200 OK
+Date: Fri, 31 Dec 1999 23:59:59 GMT
+Content-Type: text/html
+Content-Length: 1354
+
+&lt;html>
+    &lt;body>
+        &lt;h1>This is my example!&lt;/h1>
+            .... any content....
+    &lt;/body>
+&lt;/html></code></pre>
+                        </div>
+                    </section>
+				</section>
+
+				<section>
+                    <section >
+					<h2>The basic principles of HTML.</h2>
+					<pre><code id="page-code">&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;title>My First Page&lt;/title>
+        &lt;meta charset="utf-8">
+        &lt;meta name="description" content="Lorem ipsum dolor.">
+        &lt;base href="http://mywebserver.bi/">
+        &lt;link type="text/css" rel="stylesheet" href="/css/global.css">
+        &lt;script type="text/javascript" src="/js/core.js">&lt;/script>
+    &lt;/head>
+    &lt;body class="single-page">
+        &lt;div id="header">
+            My First Page
+        &lt;/div>
+        &lt;div id="content" class="main-container red-font">
+            &lt;p>Hello &lt;strong>World&lt;/strong>!&lt;/p>
+        &lt;/div>
+        &lt;div id="footer">
+            Copyright 2013
+        &lt;/div>
+&lt;/body>
+&lt;/html></code></pre>
+                    </section>
+                    <section>
+                        <h2>&lt;!DOCTYPE></h2>
+						<p class="fragment fade-in" style="color: red" data-fragment-index="0">
+                            &lt;!DOCTYPE html>
+                        </p>
+                        <ul class="fragment fade-out" data-fragment-index="0">
+                            <li>HTML</li>
+                            <li>HTML 4.01 STRICT</li>
+                            <li>HTML 4.01 TRANSITIONAL</li>
+                            <li>HTML 4.01 FRAMESET</li>
+                            <li>XHTML 1.0 STRICT</li>
+                            <li>XHTML 1.0 TRANSITIONAL</li>
+                            <li>XHTML 1.0 FRAMESET</li>
+                            <li>XHTML 1.1</li>
+                        </ul>
+                    </section>
+					<section>
+						<h2>HTML</h2>
+						<script>
+							document.write("<pre><code>" + document.getElementById("page-code").innerHTML + "</pre></code>");
+						</script>
+					</section>
+                    <section data-state="somestate">
+                        <h2>HEAD</h2>
+						<pre><code id="page-code-head">&lt;head>
+        &lt;title>My First Page&lt;/title>
+        &lt;meta charset="utf-8">
+        &lt;meta name="description" content="Lorem ipsum dolor.">
+        &lt;base href="http://mywebserver.bi/">
+        &lt;link type="text/css" rel="stylesheet" href="/css/global.css">
+        &lt;script type="text/javascript" src="/js/core.js">&lt;/script>
+&lt;/head></code></pre>
+					<p class="fragment fade-in" data-fragemtn-index="0" style="background-color: #F01860">
+						&lt;base href="http://localhost:8080/myproject/">
+					</p>
+					<p class="fragment fade-in" data-fragemtn-index="1" style="background-color: #18A8F0">
+						&lt;img src="images/labuda.gif" alt="" />
+					</p>
+					<p class="fragment fade-in" data-fragemtn-index="1" style="background-color: #C4AE31">
+						http://localhost:8080/myproject/images/labuda.gif
+					</p>
+                    </section>
+                    <section>
+                        <h2>BODY</h2>
+						<pre><code>&lt;body class="single-page">
+        &lt;div id="header">
+            My First Page
+        &lt;/div>
+        &lt;div id="content" class="main-container red-font">
+            &lt;p>Hello &lt;strong>World&lt;/strong>!&lt;/p>
+        &lt;/div>
+        &lt;div id="footer">
+            Copyright 2013
+        &lt;/div>
+&lt;/body></code></pre>
+                    </section>
+					<section>
+						<h2>HTML</h2>
+						<script>
+							document.write("<pre><code>" + document.getElementById("page-code").innerHTML + "</pre></code>");
+						</script>
+					</section>					
+                    <section>
+                        <h2>DOCUMENT TREE</h2>
+						<img src="img/tree.png" />
+                    </section>
+                    <section>
+                        <h2>RENDER</h2>
+						<div class="fragment fade-out" data-fragment-index="0">
+							<div style="width: 414px; background-image: url('img/tree.png'); height: 383px; background-position: bottom right; float: left; zoom: 0.8;"></div>
+							<img src="img/view.png" style="zoom: 0.71; float: left; margin-left: 20px;margin-top: 0px;"/>
+						</div>
+						<div class="fragment fade-in" data-fragment-index="0" style="position: absolute;width:100%;">
+							<iframe width="420" height="315" src="http://youtube.com/embed/ZTnIxIA5KGw?rel=0" frameborder="0" allowfullscreen></iframe>
+						</div>
+                    </section>
+					
+				</section>
+
+				<section>
+					<section>
+						<h2>The basic principles of CSS</h2>
+						<h4>Box-model:</h4>
+						<img src="img/box.png" />
+					</section>
+					<section>
+					<h2>Display</h2>
+					<style>
+						table.list {
+							font-size: 70%;
+							line-height: 100%;
+						}
+						table.list tr td{
+							padding-bottom: 10px;
+							padding-top: 10px;
+							padding-left: 20px;
+						}
+						table.list tr td:first-child{
+							font-weight: bold;
+							background-color: #eee;
+							color: #000;
+							vertical-align: middle;
+							white-space: nowrap;
+							padding: 0px 20px;
+							text-align: right;
+							font-size: 120%;
+						}
+						table.display tr td:first-child:before{
+							content: "display: ";
+						}
+					</style>
+					<table class="list display">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td>block</td>
+							<td>Элемент показывается как блочный. Происходит перенос строк в начале и в конце содержимого. Внутри могут содержаться как блочые(block), так и встроенные элементы(inline).</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="1">
+							<td>inline</td>
+							<td>Элемент отображается как встроенный. Отменяет перенос строк в начале и в конце содержимого. Элементы находятся радом друг с другом. Внутри могут содержаться только inline элементы. </td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="2">
+							<td>inline-block</td>
+							<td>Это значение генерирует блочный элемент, который обтекается другими элементами веб-страницы подобно встроенному элементу. Внутри могут содержаться как блочые(block), так и встроенные элементы(inline).</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="3">
+							<td>list-item</td>
+							<td>Элемент выводится как блочный и добавляется маркер списка.</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="4">
+							<td>none</td>
+							<td>Временно удаляет элемент из документа. Занимаемое им место не резервируется и веб-страница формируется так, словно элемента и не было. </td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Position schemes</h2>
+					<ul>
+						<li class="fragment fade-in" data-fragment-index="0">Standard</li>
+						<li class="fragment fade-in" data-fragment-index="1">Float</li>
+						<li class="fragment fade-in" data-fragment-index="2">Absolute</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Standard position scheme</h2>
+					<style>
+						table.position tr td:first-child:before{
+							content: "position: ";
+						}
+					</style>
+					<table class="list position">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td>static</td>
+							<td>Стандарное расположение элемента на странице. Его позиция завист от других элементов и использование свойств left, top, right и bottom не приводит к каким-либо результатам.</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="1">
+							<td>relative</td>
+							<td>Под элемент резервируется место под его размеры, а положение элемента устанавливается относительно его исходного места. Добавление свойств left, top, right и bottom изменяет позицию элемента и сдвигает его в ту или иную сторону от первоначального расположения.</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Float position scheme</h2>
+					<style>
+						table.float tr td:first-child:before{
+							content: "float: ";
+						}
+					</style>
+					<table class="list position">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td>left</td>
+							<td>Выравнивает элемент по левому краю, а все остальные элементы обтекают его по правой стороне.</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="1">
+							<td>right</td>
+							<td>Выравнивает элемент по правому краю, а все остальные элементы обтекают его по левой стороне.</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Absolute position scheme</h2>
+					<table class="list position">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td>absolute</td>
+							<td>Положение элемента задается свойствами left, top, right и bottom, также на положение влияет значение свойства position родительского элемента. Так, если у родителя значение position установлено как static или родителя нет, то отсчет координат ведется от края окна браузера. Если у родителя значение position задано как fixed, relative или absolute, то отсчет координат ведется от края родительского элемента.</td>
+						</tr>
+						<tr  class="fragment fade-in" data-fragment-index="1">
+							<td>fixed</td>
+							<td>По своему действию это значение близко к absolute, но в отличие от него привязывается к указанной свойствами left, top, right и bottom точке на экране и не меняет своего положения при прокрутке веб-страницы.</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>CSS Rules</h2>
+					<ul>
+						<li style="margin-bottom: 20px;" class="fragment fade-in" data-fragment-index="0">
+							HTML attribute "style" (Inline)
+							<pre style="margin: 0px;width: 100%;"><code>&lt;form action="/mypage" method="POST" style="background-color: #ff0000;">
+	&lt;input type="text" name="mytext" />
+&lt;/form> </pre></code>
+						</li>
+						<li  style="margin-bottom: 20px;" class="fragment fade-in" data-fragment-index="1">
+							HTML tag "style" <br />
+							<pre style="margin: 0px;width: 100%;"><code>&lt;style>
+	/* css rules */
+&lt;/style> </pre></code>
+						</li>
+						<li  style="margin-bottom: 20px;" class="fragment fade-in" data-fragment-index="2">
+							HTML tag "link" <br />
+							<pre style="margin: 0px;width: 100%;"><code> &lt;link rel="stylesheet" type="text/css" href="/css/global.css"> </code></pre>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2>CSS Rules</h2>
+					<pre><code>selector1 {
+	cssProp1: val1;
+	cssProp2: val2;
+	cssProp3: val3;
+}
+
+selector2 {
+	cssProp1: val2;
+}</code></pre>
+				</section>
+				<section>
+					<h2>Selectors</h2>
+					<h4>Basic selectors</h4>
+					<table class="list">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td>tagname</td>
+							<td>Селектор по тегу. </td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="1">
+							<td>#elementId</td>
+							<td>Селектор по уникальному ID элемента. Задается с помощью аттрибута id.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="2">
+							<td>.className</td>
+							<td>Селктор по классу. В атрибуте class элемента могут указываться несколько значений через пробел. Классы могут повторяться у разных элементов.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="3">
+							<td>*</td>
+							<td>Выбирает все элементы.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="4">
+							<td>[attrName]</td>
+							<td>Селектор по аттрибуту. Найдет все элементы у которых присутствует данный аттрибут либо содержит нейкое определенное значение.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="5">
+							<td>selector:pseudoClass</td>
+							<td>Применяется если элемент находиться в определенном состоянии. Состояние определяется с помощью псевдокласса.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="6">
+							<td>selector:pseudoElement</td>
+							<td>Позволяет задать стиль для определенного места в элементе. Например для первой буквы или строки.</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Selectors</h2>
+					<h4>Basic selectors. Examples.</h4>
+					<script>
+						document.write("<pre><code>" + document.getElementById("page-code").innerHTML + "</pre></code>");
+					</script>
+				</section>
+				
+				<section>
+					<h2>Selectors</h2>
+					<h4>Combinations of selectors</h4>
+					<table class="list">
+						<tr class="fragment fade-in" data-fragment-index="0">
+							<td><color1>selector1</color1><tt style="white-space:pre;">   </tt>  <color2>selector2</color2></td>
+							<td>Контекстно-зависимый селектор. Ищет все элементы удовлетворяющие <color2>selector2</color2> и находящиеся внутри <color1>selector1</color1>.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="1">
+							<td><color1>selector1</color1><color2>selector2</color2></td>
+							<td>Выбор элементов, одновременно удовлетворяющие и <color1>selector1</color1> и <color2>selector2</color2>. Можно трактовать как условие с И.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="2">
+							<td><color1>selector1</color1>, <color2>selector2</color2></td>
+							<td>Выбор элементов, удовлетворяющих или <color1>selector1</color1> или <color2>selector2</color2>. Можно трактовать как условие с ИЛИ.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="3">
+							<td><color1>selector1</color1> + <color2>selector2</td>
+							<td>Стиль при такой записи применяется к <color2>selector2</color2>, но только в том случае, если он является братом для <color1>selector1</color1> и следует сразу после него.</td>
+						</tr>
+						<tr class="fragment fade-in" data-fragment-index="4">
+							<td><color1>selector1</color1> > <color2>selector2</td>
+							<td>Стиль применяется к <color2>selector2</color2>, но только в том случае, если он является дочерним для <color1>selector1</color1>.</td>
+						</tr>
+					</table>
+				</section>
+				
+				<section>
+					<h2>Selectors</h2>
+					<h4>Combinations of selectors. Examples.</h4>
+					<script>
+						document.write("<pre><code>" + document.getElementById("page-code").innerHTML + "</pre></code>");
+					</script>
+				</section>
+				
+				<section>
+					<h2>Style Inheritance</h2>
+					<pre><code>div {
+  font-size: 15px; // Шрифт поменяется для всего текста, который находиться внутри DIV
+  color: blue; // Шрифт станет синим
+  border: 1px solid blue; // Но граница станет голубой только для самого DIV!
+}
+.font-red {
+  color: red; // Переопределили правило!
+}</code></pre>
+				</section>
+				<style>
+					color1 {
+						color: #1186FA;
+					}
+					color2 {
+						color: #ED379E;
+					}
+				</style>
+				<section>
+					<h2>Priorities</h2>
+					<ol>
+						<li>Browser style. (Low priority)</li>
+						<li>User style. (Set in browser settings)</li>
+						<li>Author style. (Your styles)</li>
+						<li>Author style with !important. </li>
+						<li>User style with !important. (Hight priority)</li>
+					</ol>
+				</section>				
+				
+				<section>
+					<h2>CSS Specificity</h2>
+					<ol>
+						<li><color1>#elementId</color1> => <color2>100</color2></li>
+						<li><color1>.className</color1> OR <color1>:pseudoClass</color1> OR <color1>[attrName]</color1> => <color2>10</color2></li>
+						<li><color1>tagName</color1> OR <color1>:pseudoElement</color1> => <color2>1</color2></li>
+						<li>INLINE STYLE => <color2>1000</color2></li>
+					</ol>
+				</section>				
+				
+				<section>
+					<h2>CSS Specificity</h2>
+					<pre><code>*	{}
+li	{}
+li:first-line	{}
+ul li	{}
+ul ol+li	{}
+ul li.red	{}
+li.red.level	{}
+#t34	{}
+#content #wrap	{}
+					</code></pre>
+				</section>
+				
+				</section>
+
+				<section>
+					<h2>Question-answering</h2>
+				</section>
+				
+				<section>
+					<h1> Homework </h1>
+					<h3 style="float: left;clear: both;margin: 0px;">Tasks:</h3>
+					<ol style="float: left;clear: both;margin-bottom: 20px;">
+						<li>Explore all HTML tags</li>
+						<li>Explore all CSS properties</li>
+						<li>Read about block layout</li>
+						<li>Create simple page using block layout</li>
+					</ol>
+					<h3 style="float: left;clear: both;margin: 0px;">Resources:</h3>
+					<ul style="float: left;clear: both;">
+						<li><a href="http://www.htmlbook.ru/">http://www.htmlbook.ru/</a></li>
+						<li><a href="http://www.w3schools.com/">http://www.w3schools.com/</a></li>
+						<li><a href="http://www.w3.org/">http://www.w3.org/</a></li>
+					</ul>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                width: 960,
+                height: 700,
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
