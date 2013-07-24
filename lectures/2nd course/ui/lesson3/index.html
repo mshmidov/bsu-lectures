@@ -1,0 +1,641 @@
+﻿<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Exadel UI Training for students. Lesson 1: Introduction</title>
+
+		<meta name="author" content="Mantsevich Dzenis">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+        <script src="lib/js/raphael-min.js"></script>
+        <script src="lib/js/jquery.min.js"></script>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>UI</h1>
+					<h3>Lesson 3: Client-Side JavaScript.</h3>
+					<p style="text-align: right; font-size: 16px;">
+						Denis Mantsevich <br />
+						<script>
+							document.write( (new Date()).toDateString() );
+						</script>
+					</p>
+				</section>
+
+				<section>
+					<h2>Today</h2>
+					<ol>
+						<li> Overview </li>
+						<li> Window, DOM, Elements, AJAX </li>
+						<li> jQuery </li>
+						<li> QA </li>
+						<li> Homework</li>
+					</ol>
+				</section>
+
+				<section>
+					<section>
+						<h2>Overview.</h2>
+						<div>
+							<h3>Особенности</h3>
+							<ul>
+								<li>Разная реализация в различных браузерах</li>
+								<li>Нет доступа к файловой системе компьютера</li>
+								<li>Нельзя слать запросы на сторонние домены</li>
+								<li>Выполняется в один поток</li>
+								<li>Блокирует интерфейс браузера</li>
+								<li>Получить доступ можно только к уже созданным элементам</li>
+								<li>Событийно-ориентированное программирование</li>
+							</ul>
+						</div>
+					</section>
+					
+					<section>
+						<h2>Overview. Script.</h2>
+						<div>
+							<h3>Атрибуты тега <code>script</code></h3>
+							<ul>
+								<li><code>type</code> – Тип скрипта. Принято - <code>text/javascript</code>. Для шаблонов можно указывать <code>text/templates</code>.</li>
+								<li><code>src</code> – адрес к файлу со скриптом.</li>
+								<li><code>charset</code> – адрес к файлу со скриптом.</li>
+								<li><code>defer</code> – получение скрипта происходит асинхронно, но выполнение следует отложить до тех пора, пока страница не будет загружена целиком.(IE, Firefox)</li>
+								<li><code>async</code> – указывает, что получение скрипта происходит асинхронно, а выполнение будет произведено сразу по завершению скачивания. 
+								Очередность выполнения скриптов не гарантируется.(Modern Browsers)</li>
+							</ul>
+						</div>
+					</section>
+					
+					<section>
+						<h2>Overview. Events.</h2>
+						<ul style="font-size: 30px; line-height: 30px;">
+							<li>HTML aтрибут с приставкой on. 
+							<pre><code>&lt;body onload=" 
+	var message = 'Page is loaded...'; 
+	console.log(message); ">
+	...
+&lt;/body></code></pre>
+							</li>
+							<li>Определить метод(с приставкой on) у элемента
+							<pre><code>&lt;script type="text/javascript">
+	window.onload = function ( event ) {
+		var message = 'Page is loaded...'; 
+		console.log(message);
+	};
+&lt;/script></code></pre>
+							</li>
+							<li>Повесить обработчик события
+							<pre><code>&lt;script type="text/javascript">
+	var ready = function ( event ) {
+		var message = 'Page is loaded...'; 
+		console.log(message);
+	}
+	if ( window.addEventListener ) { // Modern Browsers
+		window.addEventListener( 'load', ready, false );
+	} else if ( window.attachEvent ) { // IE
+		window.attachEvent( 'onload', ready );
+	}
+&lt;/script></code></pre>
+							</li>
+						</ul>
+					</section>
+					
+				</section>
+
+				<section>
+                    
+					<section>
+					<h2>Window. Overview</h2>
+					<ul>
+						<li>Window - глобальный контекст исполнения. Доступен через глобальную переменную - window.</li>
+						<li>Каждое окно приложения имеет уникальный объект Window и определяет уникальный контекст исполнения для кода клиентского JavaScript.</li>
+						<li>Нельзя получить доступ к другому объекту Window (Исключение - <code>iframe</code> загруженный с того же домена).</li>
+					</ul>
+                    </section>
+					
+                    <section>
+					<h2>Window. Properties</h2>
+					<ul>
+						<li>
+							<code>console</code> - объект для работы с консолью. <small>(В IE доступен через "Инструменты разработчика" [F12])</small>
+						</li>
+						<li>
+							<code>document</code> - ссылка на DOM (Document Object Model). Осуществляет доступ к элементам.
+						</li>
+						<li>
+							<code>history</code> - позволяет отправить посетителя на предыдущую/последующую страницу по истории, а также изменить URL без перезагрузки страницы.
+						</li>
+						<li>
+							<code>localStorage</code> - хранилище данных на стороне клиента. Работает по принципу ключ/значение. Размер зависит от браузера. 
+						</li>
+						<li>
+							<code>location</code> - объект с информацией о текущем URL. Любое изменение перегружает страницу.
+						</li>
+						<li>
+							<code>navigator</code>, <code>screen</code> - информация о браузере и экране.
+						</li>
+						<li><em>and others...</em></li>
+					</ul>
+                    </section>
+                    <section>
+					<h2>Window. Methods</h2>
+					<ul style="font-size: 30px; line-height: 30px;">
+						<li>
+							<code>alert</code> - выводит модальное окно с текстом переданным в аргументе.
+						</li>
+						<li>
+							<code>confirm</code> - запросить у пользовател согласие. Возвращает <code>Boolean</code> тип.
+						</li>
+						<li>
+							<code>eval</code> - выполняет строку javascript в глобальной области видимости. <strong>Не рекомендуется к использованию.</strong>
+						</li>
+						<li>
+							<code>promt</code> - запросить у пользователя ввод данных. Возвращает введенное значение.
+						</li>
+						<li>
+							<code>setInterval</code> - выполняет функцию через указанный интервал времени. Возвращает ID интервала, который можно удалить с помощью <code>clearInterval</code>
+						</li>
+						<li>
+							<code>setTimeout</code> - выполняет функцию с задержкой. Возвращает ID таймаута, который можно удалить с помощью <code>clearTimeout</code>
+						</li>
+						<li>
+							<code>close</code> - закрывает текущее окно. Браузер может запретить.
+						</li>
+						<li>
+							<code>open</code> - открывает новое окно. Может быть заблокировано браузером.
+						</li>
+						<li>
+							<code>print</code> - запустить страницу на печать.
+						</li>
+						<li><em>and others...</em></li>
+					</ul>
+                    </section>
+					
+                    <section>
+					<h2>Window. Events</h2>
+					<ul style="font-size: 30px; line-height: 30px;">
+						<li>
+							<code>load</code> - страница полностью загружена (включая все картинки).
+						</li>
+						<li>
+							<code>unload</code> - загрузка страницы прервалась.
+						</li>
+						<li>
+							<code>error</code> - на странице возникла необработаная ошибка.
+						</li>
+						<li>
+							<code>resize</code> - изменение размера окна.
+						</li>
+						<li>
+							<code>close</code> - окно пытаются закрыть.
+						</li>
+						<li>
+							<code>contextmenu</code> - было вызвано контекстное меню.
+						</li>
+						<li>
+							<code>hashchange</code> - изменился hash страницы.
+						</li>
+						<li>
+							<code>scroll</code> - изменилась позиция scroll бара.
+						</li>
+						<li>
+							<code>online/offline</code> - состояние подключения к сети.
+						</li>
+						<li><em>and others...</em></li>
+					</ul>
+                    </section>
+					
+                    
+				</section>
+				<section>
+					<section>
+						<h2>DOM. Overview</h2>
+						<ul>
+							<li><strong>Объектная модель документа (DOM)</strong> – это прикладной программный интерфейс(API), определяющий порядок доступа к объектам, из которых состоит документ.</li>
+							<li>Доступен через <code>window.document</code>.</li>
+							<li>Размер DOM в px отличается от размера окна</li>
+							<li>Все элементы страницы, включая теги, текст(даже пустые пробельные символы), комментарии, являются узлами DOM.</li>
+							<li>Получить доступ можно только к уже созданным элементам в DOM. Полноценная работа возможна только после наступления события - <code>DOMContentLoaded</code></li>
+							<li>Не каждый элемент в DOM отображается на странице (например комментарий или фрагмент).</li>
+						</ul>
+					</section>
+					<section>
+						<h2>DOM. Properties</h2>
+						<ul>
+							<li>
+								<code>body</code> - доступ к элементу BODY
+							</li>
+							<li>
+								<code>head</code> - доступ к элементу HEAD
+							</li>
+							<li>
+								<code>cookie</code> - позволяет читать и писать cookie
+							</li>
+							<li>
+								<code>ELEMENT_NODE, TEXT_NODE, ATTRIBUTE_NODE</code> - константы для определения типа ноды
+							</li>
+							<li>
+								<code>title</code> - get/set заголовок страницы.
+							</li>
+							<li>
+								<code>height/width</code> - получить высоту/ширину страницы.
+							</li>
+							<li>
+								<code>images, forms, scripts, links, applets...</code> - доступ к коллекции всех соответствующих элементов( java апплеты, картинки, формы, ссылки...). 
+							</li>
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+					<section>
+						<h2>DOM. Methods</h2>
+						<ul  style="font-size: 30px; line-height: 30px;">
+							<li>
+								<code>write( text ) </code> - записать содержимое в тело документа. Актуально в момент разбора документа, так если вызвать после - затрет все содержимое.
+							</li>
+							
+							<li>
+								<code>createElement( tagName ), createTextNode( text )</code> - создает новый HTML элемент(текстовую ноду) и возвращает ссылку на него.
+							</li>
+							<li>
+								<code>createDocumentFragment</code> - создает новый фрагмент документа. Контейнер вне самого документа.
+							</li>
+							<li>
+								<code>getElementById( id )</code> - получить элемент по значению его атрибута <code>id</code>. Самый быстрый способ получить элемент на странице.
+							</li>
+							<li>
+								<code>getElementsByClassName( classes )</code> - получить все элементы, у которых есть классы classes.
+							</li>
+							<li>
+								<code>getElementsByName( name )</code> - поиск элементов по значению атрибута <code>name</code>
+							</li>
+							<li>
+								<code>getElementsByTagName( name )</code> - поиск элементов по тегу
+							</li>
+							<li>
+								<code>querySelector( cssSelector )</code> - поиск первого элемента, удовлетворяющего селектору
+							</li>
+							<li>
+								<code>querySelectorAll( cssSelector )</code> - поиск всех элементов, удовлетворяющего селектору
+							</li>
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+					<section>
+						<h2>DOM. Events</h2>
+						<ul>
+							<li>
+								<code> DOMContentLoaded </code> - DOM готов к использованию. Не дожидается полной загрузки картинок.
+								<pre><code>// Simple cross-domain variant 
+var DOMReady = function () {
+	// your code!
+};
+if ( document.addEventListener ) {
+	document.addEventListener( "DOMContentLoaded", DOMReady, false ); // Modern Browsers
+} else {
+	document.attachEvent("onreadystatechange", function(){ // IE, but wait all images!
+            if ( document.readyState === "complete" ) {
+			DOMReady();
+            }
+        });
+}</code></pre>
+<pre><code>// Alternative way. Call your function before /body tag
+&lt;body>
+	...
+	&lt;script type="text/javascript">
+		DOMReady(); // All elements are loaded.
+	&lt;/script>
+&lt;/body></code></pre>
+							</li>
+				
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+					
+					<section>
+						<h2>DOM. Events. Capture > Target > Bubling</h2>
+						<img src="img/eventflow.png" />
+					</section>
+					
+					<section>
+						<h2>DOM. Interface Event</h2>
+						<p>Первым аргументом в обработчиках событий идет объект типа <code>Event</code>. Если из обработчика вернуть <code>false</code>, то это остановит выполнение дальнейших действий! </p>
+						<ul  style="font-size: 30px; line-height: 30px;">
+							<li>
+								<code> type </code> - тип события (click, mouseover...).
+							</li>
+							
+							<li>
+								<code> target/srcElement </code> - узел на котором произошло событие.
+							</li>
+							<li>
+								<code> currentTarget </code> - узел в котором сейчас обрабатывается событие. (грубо говоря <code>this</code>)
+							</li>
+							<li>
+								<code>eventPhase</code> - указывает фазу (<code>Event.CAPTURING_PHASE, Event.AT_TARGET, Event.BUBBLING_PHASE</code>). 
+							</li>
+							<li>
+								<code>timeStamp</code> - время, когда произошло событие
+							</li>
+							<li>
+								<code> stopPropagation() </code> - остановить дальнейшее распространеие события
+							</li>
+							<li>
+								<code> preventDefault() </code> - остановить действие по-умолчанию (например, для клика по ссылки это переход по URI, а для клика по кнопке submit это отправка)
+							</li>
+							<li><em>and others (зависит от типа события)...</em></li>
+						</ul>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>Elements. Overview</h2>
+						<ul>
+							<li>Практически все события могут быть применимы к <code>document</code></li>
+							<li>Методы изменения элементов могут быть применимы к <code>document</code></li>
+						</ul>
+					</section>
+					<section>
+						<h2>Elements. Properties</h2>
+						<ul  style="font-size: 30px; line-height: 30px;">
+							<li>
+								<code>attributes</code> - список всех атрибутов элемента
+							</li>
+							<li>
+								<code>nodeType</code> - тип элемента (HTML тег, комментарий, текстовый элемент)
+							</li>
+							<li>
+								<code>children/childNodes</code> - все дочерние элементы. (IE до 9 возвращает и комментарии). <code>childNodes</code> - включая текстовые узлы
+							</li>
+							<li>
+								<code>parentNode</code> - родительский элемент
+							</li>
+							<li>
+								<code>className</code> - get/set классы. Указаны через пробел
+							</li>
+							<li>
+								<code>id</code> - get/set уникальный id элемента
+							</li>
+							<li>
+								<code>innerHTML</code> - все содержимое HTML в виде строки. Можно изменять/удалять содержимое элемента
+							</li>
+							<li>
+								<code>nextElementSibling, previousElementSibling</code> - следующий/предидущий братский элемент.
+							</li>
+							<li>
+								<code>tagName</code> - имя тега
+							</li>
+							<li>
+								<code>contentEditable</code> - позволяет/запрещает пользователю редактирование элемента
+							</li>
+							<li>
+								<code>dataset</code> - data-атрибуты элемента
+							</li>
+							<li>
+								<code>style</code> - стили, которые применяются к элементу. Можо изменять.
+							</li>
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+					<section>
+						<h2>Elements. Methods</h2>
+						<ul  style="font-size: 30px; line-height: 30px;">
+							<li>
+								<code>addEventListener/attachEvent</code> - добавить обработчик событий к элементу
+							</li>
+							<li>
+								<code>removeEventListener/detachEvent</code> - удалить обработчик событий у элемента
+							</li>
+							<li>
+								<code>appendChild</code> - добавить новый дочерний элемент
+							</li>
+							<li>
+								<code>cloneNode</code> - возвращает копию элемента
+							</li>
+							<li>
+								<code>insertBefore</code> - вставляет элемент перед элементом указанным в качестве аргумента
+							</li>
+							<li>
+								<code>removeChild</code> - удаляет дочерний элемент, переданный в качестве аргумента
+							</li>
+							<li>
+								<code>replaceChild</code> - заменить дочерний элемент на другой
+							</li>
+							<li>
+								<code>setAttribute/getAttribute</code> - get/set значение атрибута
+							</li>
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+					<section>
+						<h2>Elements. Events</h2>
+						<ul  style="font-size: 30px; line-height: 30px;">
+							<li>
+								<code>click, dblclick, mouseup, mousedown</code> - кликнули по элементу
+							</li>
+							<li>
+								<code>keydown, keypress, keyup</code> - была нажата клавиша на клавиатуре
+							</li>
+							<li>
+								<code>focus, blur</code> - элемент получил/потерял фокус
+							</li>
+							<li>
+								<code>change, select, submit</code> - специфичные события  для некоторых элементов
+							</li>
+							<li>
+								<code>touchstart, touchend</code> - события в мобильных версиях браузеров
+							</li>
+							<li>
+								<code>mousemove, mouseover, mouseout, mouseenter, mouseleave</code> - перемещение курсора над элементом
+							</li>
+							<li><em>and others...</em></li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>AJAX. XMLHTTPRequest</h2>
+						<ul>
+							<li>AJAX - подход в построениии веб-приложений.</li>
+							<li>Запросы можно слать только на тот же домен. Альтернатива: <code>JSONP, Iframe, GET requests, Proxy, Flash</code>.</li>
+							<li>Формат данных - любой (XML, JSON, CVS, HTML)</li>
+							<li>Запросы могут быть синхронными и асинхронными</li>
+						</ul>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest. Constructor.</h2>
+						<pre><code>var CreateRequest = function () {
+	var xmlhttp; // Define variable
+	// В разных версиях библиотеки XML HTTP компании Microsoft объект имеет различные имена
+	try {
+		xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); // IE. Пробуем одну версию библиотеки
+	} catch (e) {
+		try {
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); // IE. Пробуем другую версию библиотеки
+		} catch (E) {
+			xmlhttp = false;
+		}
+	}
+	if (!xmlhttp && XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest(); // Современные браузеры
+	}
+	return xmlhttp;
+}
+// Using
+var newRequest = CreateRequest(); // Создаем
+newRequest.open('GET', '/orders/', false); // Открываем соединение
+newRequest.send(null); // Отправляем данные
+</code></pre>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest. Properties.</h2>
+						<ul>
+							<li><code>readyState</code> - текущее состояние объекта. Принимает значение от 0 до 4.
+								<ul>
+									<li>0 - Метод open() еще не вызывался</li>
+									<li>1 - Метод open() уже был вызван, но метод send() еще не вызывался</li>
+									<li>2 - Метод send() был вызван, но ответ от сервера еще не получен</li>
+									<li>3 - Идет прием данных от сервера</li>
+									<li>4 - Ответ сервера получен полностью</li>
+								</ul>
+							</li>
+							<li><code>responseText</code> - текст ответа сервера</li>
+							<li><code>status</code> - статускод (200, 401, 404, 502...)</li>
+						</ul>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest. Methods.</h2>
+						<ul style="font-size: 30px; line-height: 30px;">
+							<li><code>open( method, URL, [async, userName, password] )</code> - открывает соединение с сервером. Параметр async - типа <code>Boolean</code> (запрос будет синхронным или асинхроным)</li>
+							<li><code>send( data )</code> - отсылает запрос. Для GET запроса data должно быть <code>null</code></li>
+							<li><code>abort()</code> - обрывает текущий запрос</li>
+							<li><code> setRequestHeader(name, value) </code> - установить заголовок name для запроса</li>
+							<li><code> getAllResponseHeaders() </code> - получить HTTP-заголовками ответа сервера</li>
+							<li><code> getAllResponseHeaders() </code> - получить HTTP-заголовками ответа сервера</li>
+							<li><code> getResponseHeader(headerName) </code> - получить HTTP-заголовок по его назваию</li>
+							<li><code> onreadystatechange </code> - функция обработчик состояния запроса. Применяется при асинхронных запросах.</li>
+						</ul>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest</h2>
+						<h3>Sync or Async?</h3>
+						<p>
+							<strong>Синхронный</strong> - блокирующий <br />
+							<strong>Асинхронный</strong> - неблокирующий
+						</p>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest. Example - Sync.</h2>
+						<pre><code>// Создаем XMLHTTPRequest. Функцию CreateRequest см. выше
+var newRequest = CreateRequest(); 
+newRequest.open('GET', '/orders/', false); // Открываем соединение
+newRequest.send(null); // Отправляем данные
+if(newRequest.status == 200) {
+  alert(newRequest.responseText); // Данные получены успешно
+}
+</code></pre>
+					</section>
+					<section>
+						<h2>XMLHTTPRequest. Example - ASync.</h2>
+						<pre><code>// Создаем XMLHTTPRequest. Функцию CreateRequest см. выше
+var newRequest = CreateRequest(); 
+newRequest.open('GET', '/orders/', true); // Открываем соединение
+// Подписываемся на событие изменения состояния запроса
+newRequest.onreadystatechange = function() {
+  if (newRequest.readyState == 4) {
+     if(newRequest.status == 200) {
+       alert(newRequest.responseText); // Данные получены успешно
+      }
+  }
+};
+newRequest.send(null); // Отправляем данные
+</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h2>Question-answering</h2>
+				</section>
+				
+				<section>
+					<h1> Homework </h1>
+					<h3 style="float: left;clear: both;margin: 0px;">Tasks:</h3>
+					<ol style="float: left;clear: both;margin-bottom: 20px;">
+						<li>Read articles on javascript.ru</li>
+						<li>Read about javascript and DOM</li>
+						<li>Write your first HTML application</li>
+					</ol>
+					<h3 style="float: left;clear: both;margin: 0px;">Resources:</h3>
+					<ul style="float: left;clear: both;">
+						<li><a href="http://www.javascript.ru/">http://www.javascript.ru/</a></li>
+						<li>Дэвид Флэнаган, JavaScript. Подробное руководство.</li>
+					</ul>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                width: 960,
+                height: 700,
+				theme: "simple", // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
