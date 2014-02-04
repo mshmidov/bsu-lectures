@@ -1,0 +1,683 @@
+﻿<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Exadel UI Training for students. Lesson 1: Introduction</title>
+
+		<meta name="author" content="Mantsevich Dzenis">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+        <script src="lib/js/raphael-min.js"></script>
+        <script src="lib/js/jquery.min.js"></script>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>UI</h1>
+					<h3>Lesson 2: Introduction to JavaScript.</h3>
+					<p style="text-align: right; font-size: 16px;">
+						Denis Mantsevich <br />
+						<script>
+							document.write( (new Date()).toDateString() );
+						</script>
+					</p>
+				</section>
+
+				<section>
+					<h2>Today</h2>
+					<ol>
+						<li> Overview </li>
+						<li> Types </li>
+						<li> Variables </li>
+						<li> Constructions </li>
+						<li> QA </li>
+						<li> Homework</li>
+					</ol>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Overview. JS this is...</h2>
+						<div>
+							<h3>JavaScript это:</h3>
+							<ul>
+								<li>Интерпретируемый</li>
+								<li>Сценарный</li>
+								<li>Объектно-ориентированный</li>
+								<li>Синтаксис похож на C, C++, Java</li>
+								<li>Динамическая типизация</li>
+								<li>Отсутствуют классы, а наследование объектов реализовано через прототипы</li>
+								<li>Функции выступают как объекты (пригоден для приложений основанных на событиях)</li>
+							</ul>
+						</div>
+					</section>
+                    <section>
+                        <h2>Overview. Using.</h2>
+                        <div>
+                            <h3>Используется в:</h3>
+							<ul>
+								<li>
+									Создание веб-приложений
+									<ul>
+										<li>Серверная часть (NodeJS, RingoJS)</li>
+										<li>Клиентская часть (DOM, AJAX, Comet)</li>
+									</ul>
+								</li>
+								<li>Букмарклеты</li>
+								<li>Встраиваемые платформы</li>
+								<li>Мобильные приложения (в браузере мобильного устройства, PhoneGap, Appcelerator Titanium)</li>
+								<li>Виджеты и расширения для браузеров</li>
+								<li>Прикладное программное обеспечение(ПО для Windows 8)</li>
+								<li>Манипуляция объектами приложений (продукты Adobe, MS Office)</li>
+							</ul>
+                        </div>
+                    </section>
+					<section>
+						<h2>Overview. Influence.</h2>
+						<div>
+							<h3>Повлиял или схож:</h3>
+							<ul>
+								<li>Objective-J<li>Dart<li>TypeScript<li>CoffeeScript<li>Haxe<li>JSON<li>ActionScript</li>
+							</ul>
+						</div>
+					</section>
+					<section>
+						<h2>Overview. Run.</h2>
+						<div>
+						JavaScript всегда выполняется в рамках глобального объекта. В браузере это window, в Node JS – global.
+							<ul>
+								<li>From Command Line (Rhino, V8, NodeJS, RingoJS)
+								<pre><code>// Run with Rhino
+java -jar js.jar –f myapp.js
+// Run with NodeJS
+node myapp.js</code></pre>
+								</li>
+								<li>
+								In Browser
+									<ul>
+										<li>HTML тег &lt;script> с атрибутом type="text/javascript"</li>
+										<li>Адресная строка со спецификатором: javascript</li>
+										<li>С помощью Dev Tools (Google Chrome Web Inspector, FireBug, Средства разработчика в IE)</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</section>
+				</section>
+
+				<section>
+                    <section >
+					<h2>Syntax. Identificators.</h2>
+					<ul>
+						<li>Могут содержать: <strong>$, _, a-Z, 0-9</strong></li>
+						<li>Не могут начинаться с цифры</li>
+						<li>Не могут совпадать с зарезервированными словами</li>
+					</ul>
+                    </section>
+                    <section>
+                        <h2>Syntax. Reserved Words.</h2>
+						<h4>Используются в JS</h4>
+						<p>break; do; if; switch; typeof; case; else; in; this; var; catch; false; instanceof; throw; void; continue; finally; new; true; while; default; for; null; try; with; delete; function; return</p>
+						<h4>Не используются в JS</h4>
+						<p>abstract; double; goto; native; static; boolean; enum; implements; package; super; byte; export; import; private; synchronized; char; extends; int; protected; throws; class; final; interface; public; transient; const; float; long; short; volatile; debugger</p>
+                    </section>
+				</section>
+				<section>
+					<section>
+						<h2>Types</h2>
+						<ul>
+							<li>Number</li>
+							<li>String</li>
+							<li>Boolean</li>
+							<li>Null</li>
+							<li>Undefined</li>
+							<li>Object</li>
+						</ul>
+					</section>
+					
+					<!--- NUMBER  --->
+					<section>
+						<h2>Types. Number</h2>
+						<ul> 
+							<li>Нет различий между вещественным числом и целым
+							<li>Можно сравнивать, складывать, отнимать, делить, умножать
+							<li>Максимально-возможное значение можно определить: <code>Number.MAX_VALUE</code>
+							<li>Все что больше/меньше максимального/минимального (+-)<code>Infinity</code>
+							<li><code>NaN</code> (Not A Number).
+						</ul>
+					</section>
+					<section>
+						<h2>Types. Number. Define</h2>
+						<pre><code>// Литеральный способ
+var year = 2013; 
+var price = 3.99;
+
+//C помощью конструктора
+var nextYear = new Number(2014); </code></pre>
+					</section>
+					<section>
+						<h2>Types. Number. isNumber?</h2>
+						<pre><code>var isNumber = function (n) {
+	return !!(toString.call(n) === "[object Number]");
+}</code></pre>
+					</section>
+
+					<!--- STRING  --->
+					<section>
+						<h2>Types. String</h2>
+						<ul> 
+							<li>Строковые литералы указываются в “ или  ‘
+							<li>Для экранирования используется обратный слеш
+							<li>Строковые литералы должны записываться в одной строке программы и не могут разбиваться на две строки
+							<li>Строку невозможно изменить
+							<li>Длину строки можно определить с помощью свойства length (<code>console.log("JavaScript".length); // 10</code>)
+							<li>Можно использовать управляющие последовательности(<code>\n, \t</code> и т.д).
+							<li>Объединять строки можно с помощью "+"
+							<li>Обращаться к символам можно по их индексам
+						</ul>
+					</section>
+					<section>
+						<h2>Types. String. Define</h2>
+						<pre><code>// Литеральный способ
+var name = “Denis”; 
+var lastName = ‘Mantsevich’;
+
+//C помощью конструктора
+var surName = new String(“Denis”); </code></pre>
+					</section>
+					<section>
+						<h2>Types. Number. isString?</h2>
+						<pre><code>var isString = function (n) {
+	return !!(toString.call(n) === "[object String]");
+}</code></pre>
+					</section>
+
+					
+					<!--- Boolean  --->
+					<section>
+						<h2>Types. Boolean</h2>
+						<ul> 
+							<li>Могут принимать только 2 значения: true, false
+							<li>Поменять значение на противоположное можно с помощью: "!"
+						</ul>
+					</section>
+					<section>
+						<h2>Types. Boolean. Define</h2>
+						<pre><code>// Литеральный способ
+var isMan =true;
+
+//C помощью конструктора
+var isWomen = new Boolean(false); </code></pre>
+					</section>
+					<section>
+						<h2>Types. Number. isBoolean?</h2>
+						<pre><code>var isBoolean = function (n) {
+	return !!(toString.call(n) === "[object Boolean]");
+}</code></pre>
+					</section>
+					
+					<section>
+						<h2>Types. Conversion</h2>
+						<pre><code>// To Number
+// Автоматическое преобразоваие: Cделать мат действия (умножить, отнять, разделить)
+// Явное 
+var price = Number(“45”); 
+// или использовать методы parseInt, parseFloat. 
+var size = parseInt(“200px”, 10); //=> size === 200.
+
+
+// To String
+// Автоматическое преобразование: сложить со строкой. 
+// Обратите внимание: var price = 3 + “99” => “399”, а не 102!
+// Явное
+var price = String(3.99); // or 
+var subPrice = 3.99.toString();
+
+
+// To Boolean
+// Автоматическое преобразование происходит при проверке условий
+// Явное: 
+var isMan = !!man; // OR
+var isMan = Boolean(man);
+						</code></pre>
+					</section>
+
+					<!--- NULL UNDEFINED  --->
+					<section>
+						<h2>Types. Null. Undefined</h2>
+						<ul> 
+							<li>Null – специально присвоили «НИЧЕГО». 
+							<li>Undefined - возвращается при обращении либо к переменной, которая была объявлена, но которой никогда не присваивалось значение, либо к свойству объекта, которое не существует.
+						</ul>
+					</section>
+					<section>
+						<h2>Types. isNull? isUndefined?</h2>
+						<pre><code>var isNull = function (val) {
+return !!(myVar === null);
+}
+var isUndefined = function (val) {
+return !!(val === void 0); // or 'val === undefined' or 'typeof val === "undefined"'
+}
+</code></pre>
+					</section>
+					
+					
+										
+					
+					<!--- OBJECT  --->
+					<section>
+						<h2>Types. Object</h2>
+						<ul> 
+							<li>Объект – это коллекция именованных значений (свойств)
+							<li>Чтобы сослаться на свойство объекта, надо указать имя объекта, затем точку и имя свойства
+							<li>Свойства объектов во многом похожи на JavaScript переменные – они могут содержать любой тип данных, включая массивы, функции и другие объекты
+							<li>Доступ к свойствам объекта из методов осуществляется с помощью ключевого слова <code>this</code>
+							<li>Объекты в JavaScript могут выступать в качестве ассоциативных массивов
+							<li>Передаются в функции по ссылке
+							<li>Все объекты наследуются от базового конструктора Object
+						</ul>
+					</section>
+					<section>
+						<h2>Types. Object. Examples</h2>
+						<pre><code>// Доступ к значением свойств
+console.log(order.price); // Получили Свойство
+console.log(order.submit()); // Вызвали Метод
+order.goods = [“Camera”, “TV”, “Laptop”]; // Установили свойство
+console.log(order[“goods”]); => // Camera, TV, Laptop.  Обращение к свойству, как к ассоциативному массиву
+
+// Создание
+//Литерал
+var order = {
+	price: 3.99,
+	user: null,
+	add: function(val){
+		this.price = this.price + val; // Обращение через this
+	},
+	goods: []
+};
+// Через функцию конструктор с использованием ключевого слова new:
+var order = new Object(); // Общий случай
+var order = new Order(3.99); // До этого объявили собственную функцию – конструктор Order.
+</code></pre>
+					</section>
+										<section>
+						<h2>Types. Conversion</h2>
+						<pre><code>// To Number
+// Вызывается метод valueOf, 
+// если возвращает примитивное значение, 
+// то тогда оно используется в дальнейших вычислениях. 
+// Если возвращается сам объект, то тогда вызывается метод toString().
+
+// To String
+// Вызов метода toString.
+
+// To Boolean
+// Всегда true!
+						</code></pre>
+					</section>
+					
+					
+					<section>
+						<h2>Types. Object. isObject?</h2>
+						<pre><code>var isObject = function (myVar) {
+	return !!( myVar === Object(myVar) ); 
+}</code></pre>
+					</section>
+					
+<!--- ARRAY  --->
+					<section>
+						<h2>Types. Array</h2>
+						<ul> 
+							<li>Массив это объект
+							<li>Обращаться к элементам можно по порядковым номерам
+							<li>Не существует многомерных массивов
+							<li>Элементы массива не обязательно должны быть одного типа
+							<li>Изменить длину массива можно установив значение свойства length
+							<li>Длина массива не фиксирована
+						</ul>
+					</section>
+					<section>
+						<h2>Types. Array. Define</h2>
+						<pre><code>// Литеральный способ
+var goods = [“TV”, “Camera”, “PlayStation”]; 
+var orders = []; // Пустой массив
+
+//C помощью конструктора
+var nums = new Array(3); // Если аргумент 1 и он числовой, то это длина массива. 
+var nums = new Array(3, 0, 10, 100); // Создаст массив длиной 4. И соответствующими элементами массива.</code></pre>
+					</section>
+					<section>
+						<h2>Types. Array. isArray?</h2>
+						<pre><code>var isArray = function (n) {
+	return !!( toString.call(n) === “[object Array]” ); 
+}</code></pre>
+					</section>
+					<section>
+						<h2>Types. Object. Other</h2>
+						<p><code>Date, RegExp, Error, Math, Arguments</code> и др.</p>
+					</section>
+					
+					
+					
+					<!--- FUNCTION  --->
+					<section>
+						<h2>Types. Function</h2>
+						<ul> 
+							<li>Функция это объект (Присваивать их переменным. Добавлять собственные свойства и методы. Возвращать из других функций. Передавать в качестве аргументов.)
+							<li>Может выступать в качестве метода
+							<li>Может быть анонимной
+							<li>Выступают в качестве конструкторов для объектов
+							<li>Единственный способ создать локальную область видимости
+							<li>Могут принимать любое количество аргументов
+							<li>К аргументам можно обратиться с помощью локального объекта arguments(похож на массив, но имеет ряд доп. свойств)
+						</ul>
+					</section>
+					<section>
+						<h2>Types. Function. Define</h2>
+						<pre><code>// Литеральный способ
+function calc (arg1, arg2) { return arg1 * arg2; }
+// или 
+var calc = function () { return arguments[0] * arguments[1]; }
+
+//C помощью конструктора
+var calc = new Function(“arg1, arg2”, “return arg1 * arg2”);
+</code></pre>
+					</section>
+					<section>
+						<h2>Types. Function. isFunction?</h2>
+						<pre><code>var isFunction = function (n) {
+	return !!( typeof n  === “function” );
+}</code></pre>
+					</section>					
+					
+				</section>
+
+				<section>
+					<section>
+						<h2>Variables</h2>
+						<ul> 
+							<li>Объявляются с помощью ключевого слова <code>var</code>
+							<li>Если опустить это слово, то переменная станет свойством глобального объекта
+							<li>Не типизированные
+							<li>Можно присваивать значения различных типов
+							<li>Нельзя явно удалить (в отличии от свойств объектов, которые можно удалить с помощью оператора delete).
+						</ul>
+					</section>
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>var myVar = 3; // Создали переменную
+myVar = “This is String!”;  // Изменили тип
+// Все объявления переменных всплывают автоматически, поэтому лучше объявить их сразу в начале функции!
+var n = 3, s = “My String”;
+n = 4;
+s = n + “ ” + s;
+var t = n * n;
+var n = 43;
+// эквивалентно следующему:
+var n, s, t; // они undefined!
+n = 3;
+s = “My String”;
+n = 4;
+s = n + “ ” + s;
+t = n * n;
+n = 43;
+</code></pre>
+					</section>
+					<section>
+						<h2>Variables. Scope</h2>
+						<ul> 
+							<li>Глобальная область видимости доступна из любого места программы
+							<li>Локальную можно задать только с помощью функций
+							<li>Аргументы функций выступают в качестве локальных переменных
+							<li>Локальная область видимости доступна для всех вложенных функций
+							<li>Отсутствует блочная область видимости
+						</ul>
+					</section>
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>var name = “This is global!”;
+function localFunction () {
+  var localName = “Local Name”;
+   name = “This is local”; // Переопределили глобальную так как пропустили var.
+}
+console.log(name); // “This is global”;
+localFunction();
+console.log(name); // “This is local”;
+console.log(localName); // Ошибка. Переменная не определена в глобальной области видимости.
+</code></pre>
+					</section>	
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>var myVar = [], i = -1 ;
+for (var i = 0; i < 10; i++) {
+   var myVar = “Hello world!”;
+   console.log(i); // 1, 2... 9
+}
+console.log(i); // 10
+myVar.push(34); // Ошибка. Почему?
+</code></pre>
+					</section>		
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>var a = 3, b = 6, t = 10;
+function calc (a, b) {
+	var c = 10;
+	function plus () {
+		var c = 2;
+		return (a + b) * c - t;
+	}
+	return plus();
+}
+calc(1,2); // -4.
+</code></pre>
+					</section>			
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>// Каррирование:
+function curry(x){
+    return function(y){
+        return x + y;
+    }
+}
+curry(4)(5); // вернёт 9
+</code></pre>
+					</section>					
+					<section>
+						<h2>Variables. Examples</h2>
+						<pre><code>// Замыкание:
+var uid = (function(){
+   var id = 0;
+  return function () {
+    return ++id;
+  }
+})();
+uid(); // 1;
+uid(); // 2;
+uid(); // 3;
+</code></pre>
+					</section>					
+					
+		
+				</section>
+				
+				<section>			
+					<section>
+						<h2>The basic construction. If</h2>
+						<pre><code>if (условие) {} else {}</code></pre>
+						<pre><code>(условие)? вернет если истина : вернет если ложь ;</code></pre>
+						<h4>Сложные условия:</h4>
+						<ul>
+							<li> <code>&&</code> - логическое И
+							<li> <code>||</code> - логическое ИЛИ
+						</ul>
+						<h5>Оператор равенства:</h5>
+						<ul>
+							<li> <code>==</code> простое сравнение, например: <code>0 == “” //=> true; 123 == “123” //=> true;</code>
+							<li> <code>===</code> строгое сравнение, например: <code>0 === “” //=> false; 123 === “123” //=> false;</code>
+						</ul>
+					</section>					
+					<section>
+						<h2>The basic construction. If. Examples</h2>
+						<pre><code>function calc (arg1, arg2) {
+    arg2 = arg2 || 10;
+    return arg1 + arg2;
+}
+calc(3, 9); // 12
+calc(3); // 13
+calc(3, 0); // 13
+// Или 
+var myObj = {};
+myObj._events || (myObj._events = []);
+// Эквивалент
+var myObj = {};
+if (!myObj._events) {
+   myObj._event = [];
+}
+</code></pre>
+					</section>					
+					<section>
+						<h2>The basic construction. Switch.</h2>
+						<pre><code>switch(переменная) {
+	case 1: // Выполняется, если переменная == 1
+	// Исполняем блок кода 1.
+	break; // Здесь останавливаемся
+	case 2: // Выполняется, если переменная == 2
+	// Исполняем блок кода 2.
+	break; // Здесь останавливаемся
+	case 3: // Выполняется, если n == 3
+	// Исполняем блок кода 3.
+	break; // Здесь останавливаемся
+	default: // Если все остальное не подходит...
+	// Исполняем блок кода 4.
+	break; // Здесь останавливаемся
+}
+</code></pre>
+					</section>						
+					<section>
+						<h2>The basic construction. For, While.</h2>
+						<p>Можно использовать: <code>break, continue</code>.</p>
+						<pre><code>while (условие) {
+ // Тело цикла
+}
+</code></pre>						
+						<pre><code>do {
+  // Тело цикла
+} while ( условие );
+</code></pre>				
+						<pre><code>for (инициализация; условие; инкримент) {
+ // Тело цикла
+}
+</code></pre>	
+						<pre><code>for (var переменная in объект) {
+  // тут можно обращаться к свойствам объекта через переменную 
+  // (использовать синтаксис ассоциативных массивов). 
+  // Порядок обхода свойств не определен.
+}
+</code></pre>
+					</section>
+					<section>
+						<h2>The basic construction. Try, catch, finally</h2>
+						<pre><code>try {
+ // Может генерироваться исключение
+ // либо непосредственно с помощью инструкции throw, либо косвенно.
+}
+catch (e) {
+ // Этот блок может
+ // либо каким-либо образом обработать исключение, либо проигнорировать
+ // его, делая что-то другое, либо заново сгенерировать исключение
+ // с помощью инструкции throw.
+}
+finally {
+ // Этот блок содержит инструкции, которые выполняются всегда, независимо от того, 
+ // что произошло в блоке try
+}
+</code></pre>
+					</section>						
+		
+				</section>
+
+				<section>
+					<h2>Question-answering</h2>
+				</section>
+				
+				<section>
+					<h1> Homework </h1>
+					<h3 style="float: left;clear: both;margin: 0px;">Tasks:</h3>
+					<ol style="float: left;clear: both;margin-bottom: 20px;">
+						<li>Read articles on javascript.ru</li>
+						<li>Read about javascript and DOM</li>
+						<li>Write your first console application</li>
+					</ol>
+					<h3 style="float: left;clear: both;margin: 0px;">Resources:</h3>
+					<ul style="float: left;clear: both;">
+						<li><a href="http://www.javascript.ru/">http://www.javascript.ru/</a></li>
+						<li>Дэвид Флэнаган, JavaScript. Подробное руководство.</li>
+					</ul>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                width: 960,
+                height: 700,
+				theme: "simple", // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
