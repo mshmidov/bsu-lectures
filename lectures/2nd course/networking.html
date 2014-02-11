@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Networking in Java</title>
+    <title>World Wide Web. HTTP</title>
 
-    <meta name="author" content="MAxim Shmidov">
+    <meta name="author" content="Sergey Krauchenia">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -21,11 +21,17 @@
     <script>
         document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
     </script>
+    <style>
+        .middle-block {
+            position: absolute;
+            top: 26%;
+            left: 16%;
+        }
 
-    <!--[if lt IE 9]>
-    <script src="reveal/lib/js/html5shiv.js"></script>
-    <![endif]-->
-
+        .p-left {
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,372 +41,420 @@
 <div class="reveal">
     <div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
 
-        <section>
-            <h1>Networking in Java</h1>
+    <section>
+        <h1 style="margin-top: 150px;">World wide web</h1>
 
-            <p>Пакет <strong>java.net</strong> содержит фундаментальные классы, отвечающие за работу с сетью.</p>
+        <h1>HTTP protocol</h1>
+        <i>© 2014 Sergey Krauchenia</i>
 
+    </section>
+
+    <section>
+        <h1>Интернет в 2005 году</h1>
+        <img src="networking.files/Internet_map_2005.jpg">
+    </section>
+
+    <section>
+        <h1>internet-map.net</h1>
+        <img src="networking.files/Internet_map_circles.png">
+    </section>
+
+    <section>
+        <h1>World Wide Web Consortium</h1>
+        <dl>
+            <dt>W3C</dt>
+            <dd><i>организация, разрабатывающая и внедряющая технологические стандарты для Всемирной паутины</i></dd>
+            <dd>лучший источник знаний о сети. Их сайт - <a href="http://w3c.org">w3c.org</a></dd>
+        </dl>
+    </section>
+
+    <section>
+        <section id="www-caption">
+            <div class="middle-block">
+                <h1>World Wide Web</h1>
+            </div>
+        </section>
+        <section id="page-example">
+            <p>Пример страницы</p>
+            <img src="networking.files/page_example.png"/>
+        </section>
+        <section id="client-side">
+            <h1>Client side</h1>
             <dl>
-                <dt>Socket</dt>
-                <dd>устанавливает TCP-соединения; передаёт и принимает данные</dd>
-                <dt>ServerSocket</dt>
-                <dd>слушает подключения от Socket'ов</dd>
-                <dt>InetAddress</dt>
-                <dd>описывает IP-адрес; может получить IP из имени хоста</dd>
-                <dt>URL</dt>
-                <dd>может установить соединение с ресурсом</dd>
-                <dt>URLConnection</dt>
-                <dd>позволяет обмениваться данными с ресурсом</dd>
+                <dt>Клиентом выступает браузер</dt>
+                <dd>пример: Chrome, firefox, opera, safari</dd>
+                <dt>Internet Explorer</dt>
+                <dd>программа для скачивания браузеров</dd>
             </dl>
-
         </section>
-
-        <section>
-            <section>
-                <h1>java.net.Socket (1/2)</h1>
-
-                <aside>
-                    <small>
-                        <h2>Socket умеет:</h2>
-                        <ul>
-                            <li>Соединяться с конкретным портом конкретного хоста</li>
-                            <li>Открывать поток для входящих данных</li>
-                            <li>Открывать поток для исходящих данных</li>
-                            <li>Закрываться</li>
-                        </ul>
-
-                    </small>
-                </aside>
-
-                                <pre><code class="java">public class Socket {
-
-public Socket(String host, int port);
-
-public InputStream getInputStream() throws IOException;
-
-public OutputStream getOutputStream() throws IOException;
-
-public synchronized void close() throws IOException;
-
-}</code></pre>
-            </section>
-
-            <section>
-                <h1>java.net.Socket (2/2)</h1>
-
-                <h2>Пример использования</h2>
-
-                                <pre><code class="java long">Socket socket = null;
-PrintWriter out = null;
-BufferedReader in = null;
-
-try {
-    socket = new Socket("some host", 7);
-    out = new PrintWriter(socket.getOutputStream(), true);
-    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-    out.println("request");
-    final String response = in.readLine();
-
-} catch (UnknownHostException e) {
-    System.err.println(e);
-} catch (IOException e) {
-    System.err.println(e);
-
-} finally {
-    close(out);
-    close(in);
-    close(socket);
-}</code></pre>
-            </section>
-        </section>
-
-        <section>
-            <h1>java.net.InetAddress</h1>
-
-            <aside>
-                <small>
-                    <h2>InetAddress умеет:</h2>
-                    <ul>
-                        <li>Получать IP-адреса по имени хоста (DNS lookup)</li>
-                        <li>Получать разнообразную информацию об IP-адресе</li>
-                    </ul>
-
-                </small>
-            </aside>
-
-                            <pre><code class="java">public class InetAddress implements java.io.Serializable {
-
-public static InetAddress[] getAllByName(String host)
-    throws UnknownHostException;
-
-public String getHostAddress();
-public String getHostName();
-public String getCanonicalHostName();
-
-        }</code></pre>
-
-            <h2>Пример использования</h2>
-                            <pre><code class="java long">final InetAddress[] addresses = InetAddress.getAllByName("google.com");
-
-for (InetAddress address : addresses) {
-    System.out.println("host address: " + address.getHostAddress());
-    System.out.println("host name: " + address.getHostName());
-    System.out.println("canonical host name: " + address.getCanonicalHostName());
-}</code></pre>
-
-        </section>
-
-        <section>
-            <section>
-                <h1>java.net.URL (1/2)</h1>
-
-                <aside>
-                    <small>
-                        <h2>URL умеет:</h2>
-                        <ul>
-                            <li>Создаваться из строки адреса</li>
-                            <li>Открывать соединение</li>
-                            <li>Открывать поток чтения (через открытие соединения)</li>
-                        </ul>
-
-                    </small>
-                </aside>
-
-                                <pre><code class="java">public final class URL implements java.io.Serializable {
-
-public URL(String protocol, String host, int port, String file)
-    throws MalformedURLException;
-
-public URL(String spec)
-    throws MalformedURLException;
-
-public URLConnection openConnection()
-    throws java.io.IOException;
-
-public final InputStream openStream()
-    throws java.io.IOException;
-}</code></pre>
-            </section>
-
-            <section>
-                <h1>java.net.URL (2/2)</h1>
-
-                <h2>Пример использования</h2>
-                                <pre><code class="java long">final URL url = new URL("http", "google.com", "/intl/en/about/");
-
-BufferedReader stream = null;
-
-try {
-    stream = new BufferedReader(new InputStreamReader(url.openStream()));
-
-    String line;
-
-    while((line = stream.readLine()) != null) {
-        System.out.println(line);
-    }
-
-} catch (IOException e) {
-    System.out.println(e);
-
-} finally {
-    close(stream);
-}</code></pre>
-            </section>
-
-        </section>
-
-        <section>
-            <h1>java.net.URLConnection</h1>
-
-            <aside>
-                <small>
-                    <h2>URLConnection умеет:</h2>
-                    <ul>
-                        <li>Устанавливать заголовки запроса</li>
-                        <li>Получать информацию из заголовка ответа</li>
-                        <li>Открывать поток для входящих данных</li>
-                        <li>Открывать поток для исходящих данных</li>
-                    </ul>
-                </small>
-            </aside>
-
-                            <pre><code class="java">public abstract class URLConnection {
-
-    public void setRequestProperty(String key, String value);
-
-    public String getHeaderField(String name);
-
-    public void setDoInput(boolean doinput);
-
-    public void setDoOutput(boolean dooutput);
-
-    public InputStream getInputStream() throws IOException;
-
-    public OutputStream getOutputStream() throws IOException;
-
-}</code></pre>
-
-            <h2>java.net.HttpURLConnection</h2>
+        <section id="url-1">
+            <h1>URL (1/2)</h1>
+            <h3>Uniform resource locator</h3>
+            <p>URL состоит из трех частей:</p>
             <ul>
-                <li>потомок URLConnection</li>
-                <li>работает с HTTP-запросами</li>
+                <li>протокол</li>
+                <li>доменное имя сервера</li>
+                <li>путь к странице</li>
             </ul>
         </section>
-
-        <section id="tasks">
-
-            <section>
-                <h1>Задачи (1/6)</h1>
-
-                <h2>Скачивание ресурса (6 баллов)</h2>
-
-                <p>Программма должна скачивать содержимое существующего в интернете ресурса в файл на локальной машине.
-                    Имя локального файла и адрес удалённого ресурса могут быть фиксированно заданы в тексте программы.</p>
-
-                <h3>Дополнительные баллы:</h3>
-                <ul>
-                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
-                        перезаписать файл или прекратить исполнение программы.
-                    </li>
-                    <li>После завершения копирования выводить на экран размер скачанного файла в килобайтах.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>Задачи (2/6)</h1>
-
-                <h2>Скачивание и склеивание ресурсов (7 баллов) </h2>
-
-                <p>Программма должна последовательно считывать содержимое нескольких существующих в интернете ресурсов и
-                    записывать его в локальный файл.
-                    Имена локального файла и адреса удалённых ресурсов могут быть фиксированно заданы в тексте программы.
-                    Количество входных ресурсов опредеделяется исполнителем произвольно.</p>
-
-                <h3>Дополнительные баллы:</h3>
-                <ul>
-                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
-                        перезаписать файл или прекратить исполнение программы.
-                    </li>
-                    <li>Решить задачу универсальным алгоритмом для N входных ресурсов.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>Задачи (3/6)</h1>
-
-                <h2>Сравнение ресурсов (7 баллов)</h2>
-
-                <p>Программа должна посимвольно считывать содержимое двух существующих в интернете ресурсов и сравнивать его.
-                    При первом найденном различии программа должна вывести на экран позицию различающегося символа и прекратить
-                    исполнение.
-                    Адреса ресурсов могут быть фиксированно заданы в тексте программы.</p>
-
-                <h3>Дополнительные баллы:</h3>
-                <ul>
-                    <li>При найденном различии выводить на экран фрагменты сравниваемых ресурсов (например, 15 символов),
-                        содержащие различающийся символ. (+2 балла)
-                    </li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>Задачи (4/6)</h1>
-
-                <h2>Сортировка строк в файле (7 баллов)</h2>
-
-                <p>Программа должна считывать в память содержимое существующего в интернете текстового файла,
-                    сортировать его строки по алфавиту и сохранять результат в выходной файл.
-                    Адреса файлов могут быть фиксированно заданы в тексте программы.</p>
-
-                <h3>Дополнительные баллы:</h3>
-                <ul>
-                    <li>Предусмотреть ситуацию, в которой выходной файл уже существует. Предложить пользователю
-                        перезаписать файл или прекратить исполнение программы.
-                    </li>
-                    <li>После завершения копирования выводить на экран количество строк во входном файле.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>Задачи (5/6)</h1>
-
-                <h2>Подсчёт слов в файле (9 баллов)</h2>
-
-                <p>Программа должна считывать содержимое существующего в интернете текстового файла, разбивать его на
-                    слова и
-                    подсчитывать количество повторов каждого слова. Результат подсчёта сохранять в текстовый файл.
-                    Имена файлов могут быть фиксированно заданы в тексте программы.</p>
-
-                <p><strong>Словом</strong> следует считать последовательность символов, отделённую от других
-                    последовательностей любым количеством следующих разделителей:</p>
-                <ul>
-                    <li>пробелом</li>
-                    <li>знаком табуляции</li>
-                    <li>знаками перевода строки</li>
-                    <li>точкой</li>
-                    <li>запятой</li>
-                </ul>
-
-                <h3>Дополнительные баллы:</h3>
-                <ul>
-                    <li>Решить задачу универсальным алгоритмом для любого набора разделителей.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>Задачи (6/6)</h1>
-
-                <h2>Приложение: текстовые файлы для задач</h2>
-
-                <p>Ниже приведён список случайно выбранных книг с сайта
-                    <a href="http://www.gutenberg.org/">Gutenberg Project</a>. Все книги размещены в plaintext UTF-8.
-                    Если приведённых файлов не хватает, там есть ещё много.</p>
-
-                <ul>
-                    <li>http://www.gutenberg.org/cache/epub/3537/pg3537.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/132/pg132.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/41791/pg41791.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/2938/pg2938.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/2846/pg2846.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/1877/pg1877.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/1206/pg1206.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/1719/pg1719.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/41897/pg41897.txt</li>
-                    <li>http://www.gutenberg.org/cache/epub/270/pg270.txt</li>
-                </ul>
-            </section>
-        </section>
-        <section>
-            <section>
-            <h1>Proxy</h1>
-            Нужно задать 2 параметра, чтобы указать прокси, который будет использоваться
-            http protocol handler'ом
-            <ul>
-                <li><b>http.proxyHost/https.proxyHost</b>: имя хоста прокси-сервера</li>
-                <li><b>http.proxyPort/https.proxyHost</b>: порт (по умолчанию http - 80, https - 443)</li>
-            </ul>
-            Пример как использовать:
+        <section id="url-2">
+            <h1>URL (2/2)</h1>
+            <p>Пример</p>
             <pre>
                 <code>
-        java -Dhttp.proxyHost=webcache.mydomain.com GetURL
+    http://www.google.ru/intl/ru/about/index.html
                 </code>
             </pre>
-            </section>
-            <section>
-                <h1>Proxy authentication</h1>
-                <pre>
-                    <code class="java">
-Authenticator.setDefault(new Authenticator() {
-    public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication("User", "password".toCharArray());
-    }
-});
-                    </code>
-                </pre>
-            </section>
+            <ul>
+                <li><b>protocol</b> - http</li>
+                <li><b>DNS имя</b> - www.google.ru</li>
+                <li><b>путь</b> - /intl/ru/about/index.html</li>
+            </ul>
         </section>
+        <section id="click-workflow">
+            <h3>Что же произойдет, если я кликну по ссылке?</h3>
+            <ul>
+                <li>Браузер определяет URL</li>
+                <li>Браузер спрашивает у DNS по имени <b>www.google.ru</b> IP сервера</li>
+                <li>DNS отвечает <b>74.125.131.94</b></li>
+                <li>Браузер устанавливает TCP соединение с 74.125.131.94 на порту 80 (по умолчанию для протокола HTTP)</li>
+                <li>Браузер посылает запрос по HTTP, запрашивая страницу <b>/intl/ru/about/index.html</b></li>
+                <li>www.google.ru возвращает HTTP ответ</li>
+                <li>Если на странице есть другие URL’ы, которые нужно подгрузить, браузер повторяет процесс и для них</li>
+                <li>Браузер отображает страницу</li>
+                <li>TCP соединение закрывается</li>
+            </ul>
+        </section>
+        <section id="mime-types">
+            <h1>MIME-типы</h1>
+            <table>
+                <tr>
+                    <th>Тип</th>
+                    <th>Пример подтипа</th>
+                    <th>Описание</th>
+                </tr>
+                <tr>
+                    <td><b>text</b></td>
+                    <td>plain, <b>html</b>, xml, css</td>
+                    <td>Тексты в разном формате</td>
+                </tr>
+                <tr>
+                    <td>image</td>
+                    <td>gif, jpeg, tiff</td>
+                    <td>картинки</td>
+                </tr>
+                <tr>
+                    <td>audio</td>
+                    <td>basic, mpeg, mp4</td>
+                    <td>звуки</td>
+                </tr>
+                <tr>
+                    <td>video</td>
+                    <td>mpeg, mp4, quicktime</td>
+                    <td>видео</td>
+                </tr>
+                <tr>
+                    <td>application</td>
+                    <td>octet-stream, pdf, javascript, zip</td>
+                    <td>данные, произведенные приложением</td>
+                </tr>
+            </table>
+        </section>
+        <section id="html-reference-2">
+            <h1>HTML (1/2)</h1>
+            <h3>HyperText Markup Language</h3>
+            <p>Язык HTML интерпретируется браузерами и отображается в виде документа в удобной для человека форме</p>
+        </section>
+        <section id="html-reference-1">
+            <h1>HTML (2/2)</h1>
+            <p>Пример:</p>
+            <pre>
+                <code class="html">
+    &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Sample&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;h1&gt;Hello, world&lt;/h1&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
+                </code>
+            </pre>
+        </section>
+        <section id="server-side-general-workflow">
+            <h1>Server side</h1>
+            <p>Основные шаги, которые делает сервер после того, как клиент отправил запрос</p>
+            <ol>
+                <li>Принимает TCP соединение от клиента (браузера)</li>
+                <li>Достает из запроса путь к странице</li>
+                <li>Получает доступ к странице на диске или, если это динамический ресурс, выполняет команду, которая подготавливает страницу</li>
+                <li>Посылает файл обратно клиенту</li>
+                <li>Освобождает соединение</li>
+            </ol>
+        </section>
+        <section id="server-side-diagram">
+            <h1>Простой пример архитектуры сервера (1/2)</h1>
+            <img src="networking.files/server-architecture-example.png"/>
+        </section>
+        <section id="processing-module-workflow">
+            <h1>(2/2)</h1>
+            <p>Шаги, которые может предпринимать модуль-обработчик:</p>
+            <ol>
+                <li>Определяет имя запрашиваемой страницы</li>
+                <li>Проверяет права доступа</li>
+                <li>Проверяет кэш на наличие закешированных данных</li>
+                <li>Получает запрошенную страницу с диска или вызывает обработчик, который ее сгенерирует</li>
+                <li>Конструирует остаток ответа (MIME-тип и т.д.)</li>
+                <li>Возвращает ответ клиенту</li>
+                <li>Логирует информацию о проделанной работе</li>
+            </ol>
+        </section>
+    </section>
+
+    <section>
+        <section id="http-caption">
+            <h1>HTTP</h1>
+            <h3>HyperText Transfer Protocol - протокол передачи гипертекста</h3>
+        </section>
+        <section id="http-definition">
+            <span class="thesis"><b>HTTP</b> это простой текстовый протокол прикладного уровня, основанный на принципе request-response. Он определяет в каком виде клиент должен слать запросы серверу и что за ответы он получит обратно. </span>
+        </section>
+        <section id="connection-1">
+            <h2>Соединение (TCP:80)</h2>
+            <img src="networking.files/connection-example.png">
+        </section>
+        <section id="connection-2">
+            <h2>Соединение</h2>
+            <dl>
+                <dt>(b) persistent connections (постоянное соединение)</dt>
+                <dd>после того, как получена страница, позволяет переиспользовать открытое соединение для оставшихся запросов</dd>
+                <dt>(c) HTTP pipelining (конвейерная обработка запросов)</dt>
+                <dd>позволяет посылать запрос номер 2 еще до того, как запрос номер 1 получил ответ</dd>
+            </dl>
+        </section>
+        <section id="methods">
+            <h1>HTTP методы</h1>
+            <p>HTTP определяет список стандартных типов запроса (методов)</p>
+            <span class="thesis">HTTP запрос состоит из нескольких строк текста, содержащих ASCII символы. Первое слово первой строки всегда должно быть имя метода. Имена чувствительны к регистру</span>
+            <p>Пример:</p>
+            <pre><code>GET /index.html HTTP/1.1</code></pre>
+        </section>
+        <section id="methods-list">
+            <h1>Список методов:</h1>
+            <ul>
+                <li>GET - Используется для запроса содержимого указанного ресурса</li>
+                <li>HEAD - Запрашивает заголовки запрашиваемого ресурса</li>
+                <li>POST - Применяется для передачи пользовательских данных заданному ресурсу</li>
+                <li>PUT - Применяется для загрузки содержимого запроса на указанный в запросе URI</li>
+                <li>DELETE - Удаляет указанный ресурс</li>
+                <li>TRACE - Возвращает полученный запрос так, что клиент может увидеть, какую информацию промежуточные серверы добавляют или изменяют в запросе</li>
+                <li>OPTIONS - Используется для определения возможностей веб-сервера</li>
+            </ul>
+        </section>
+        <section id="method-get">
+            <h1>Метод GET</h1>
+            <p>Примеры:</p>
+            <pre><code>GET index.html HTTP/1.1</code></pre>
+            <p>Можно указывать дополнительные параметры после знака вопроса, разделяя их амперсандом</p>
+            <pre><code>GET /path/resource?param1=value1&amp;param2=value2 HTTP/1.1</code></pre>
+        </section>
+        <section id="method-post">
+            <h1>Метод POST</h1>
+            <p>Используется обычно для отправки пользовательских данных с формы на сервер</p>
+            <p>Пример:</p>
+            <p>Начальная строка:</p>
+            <pre><code class="http">POST / HTTP/1.1</code></pre>
+            <p>Заголовки:</p>
+            <pre><code class="http">
+Host: www.example.com
+Connection: keep-alive
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.68 Safari/537.17
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8,ru;q=0.6
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+            </code></pre>
+            <p>Обязательная пустая строка:</p>
+            <pre><code></code></pre>
+            <p>Тело сообщения:</p>
+            <pre><code class="http">
+param1=value1&amp;param2=value2
+            </code></pre>
+        </section>
+        <section id="http-response-1">
+            <h1>HTTP Response</h1>
+            <p>Пример 1:</p>
+            <pre><code class="http">HTTP/1.1 200 OK</code></pre>
+            <dl>
+                <dt>1.1</dt>
+                <dd>версия протокола</dd>
+                <dt>200</dt>
+                <dd>статус-код ответа</dd>
+                <dt>OK</dt>
+                <dd>текстовое короткое пояснение к коду</dd>
+            </dl>
+        </section>
+        <section id="http-response-2">
+            <p>Пример 2:</p>
+            <p>Начальная строка:</p>
+            <pre><code class="HTTP">HTTP/1.1 200 OK</code></pre>
+
+            <p>Заголовки</p>
+                    <pre><code class="HTTP">Server: nginx/1.2.1
+Date: Fri, 08 Feb 2013 11:04:05 GMT
+Content-Type: text/html;charset=utf-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Status: 200
+Content-Encoding: gzip</code></pre>
+            <p>Обязательная пустая строка</p>
+            <pre><code><br></code></pre>
+            <p>Тело сообщения</p>
+                    <pre><code>&lt;html&gt;
+    &lt;head&gt;
+        ...
+    &lt;/head&gt;
+    &lt;body&gt;
+        ...
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+        <section id="status-code-groups">
+            <h1>Группы статус-кодов</h1>
+            <ul>
+                <li>1xx &mdash; информационные</li>
+                <li>2xx &mdash; успешные</li>
+                <li>3xx &mdash; перенаправление</li>
+                <li>4xx &mdash; ошибки клиента</li>
+                <li>5xx &mdash; ошибки сервера</li>
+            </ul>
+
+            <p>Наиболее частые статусы:</p>
+            <ul>
+                <li>200 OK</li>
+                <li>403 Forbidden</li>
+                <li>404 Not Found</li>
+                <li>502 Bad Gateway</li>
+                <li>504 Gateway Timeout</li>
+            </ul>
+        </section>
+        <section id="message-headers-1">
+            <h1>Заголовки сообщений (1/5)</h1>
+            <dl>
+                <dt>User-Agent</dt>
+                <dd>позволяет сообщить серверу какой браузер использует клиент</dd>
+                <dt>Accept, Accept-Charset, Accept-Encoding, Accept-Language</dt>
+                <dd>говорят серверу, что клиент хотел бы принимать</dd>
+                <dt>If-Modified-Since и If-None-Match</dt>
+                <dd>используется в кешировании</dd>
+            </dl>
+        </section>
+        <section id="message-headers-2">
+            <h1>Заголовки сообщений (2/5)</h1>
+            <dl>
+                <dt>Host</dt>
+                <dd>содержит имя сервера и является обязательным</dd>
+                <dt>Authorization</dt>
+                <dd>используется для тех случаев, когда доступ к странице ограничен</dd>
+                <dt>Referer</dt>
+                <dd>откуда пользователь пришел</dd>
+            </dl>
+        </section>
+        <section id="message-headers-3">
+            <h1>Заголовки сообщений (3/5)</h1>
+            <dl>
+                <dt>Set-Cookie, Cookie</dt>
+                <dd>позволяет управлять куками</dd>
+                <dt>Content-Encoding, Content-Language, Content-Length, Content-Type, Content-Range</dt>
+                <dd>позволяют серверу описать контент, который он посылает клиенту</dd>
+                <dt>Last-modified</dt>
+                <dd>дата последнего изменения страницы</dd>
+            </dl>
+        </section>
+        <section id="message-headers-4">
+            <h1>Заголовки сообщений (4/5)</h1>
+            <dl>
+                <dt>Expires</dt>
+                <dd>когда страница перестанет быть актуальной</dd>
+                <dt>Location</dt>
+                <dd>сообщить клиенту какой URL ему следует использовать</dd>
+                <dt>Range</dt>
+                <dd>диапазон запрашиваемого контента</dd>
+            </dl>
+        </section>
+        <section id="message-headers-5">
+            <h1>Заголовки сообщений (5/5)</h1>
+            <dl>
+                <dt>Date</dt>
+                <dd>дата и время запроса или ответа</dd>
+                <dt>Etag</dt>
+                <dd>короткий идентификатор страницы</dd>
+                <dt>Cache-Control</dt>
+                <dd>стратегия управления кешем</dd>
+            </dl>
+        </section>
+        <section id="caching">
+            <h1>Кеширование:</h1>
+            <p>Какие стратегии можно использовать для кеширования?</p>
+            <ol>
+                <li>Использование заголовка Expires</li>
+                <li>Conditional GET</li>
+            </ol>
+        </section>
+        <section>
+            <h3>Conditional GET (1/2)</h3>
+            <img src="networking.files/conditional-get.png">
+        </section>
+        <section>
+            <h3>Conditional GET (2/2)</h3>
+            <p>Какие заголовки можно использовать, чтобы составить Conditional GET:</p>
+            <ul>
+                <li>If-Modified-Since</li>
+                <li>If-Unmodified-Since</li>
+                <li>If-Match</li>
+                <li>If-None-Match</li>
+                <li>If-Range</li>
+            </ul>
+        </section>
+        <section>
+            <h1>Cache-Control</h1>
+            <span class="thesis">Сервер может явным образом установить поведение, касающееся кеширования или скорее некеширования, используя Cache-Control. Выставив значение в no-cache, сервер даст понять клиенту, что не хочет, чтобы контент кешировали.</span>
+        </section>
+    </section>
+
+    <section>
+        <p>Используем Java чтобы послать запрос на сервер</p>
+        <pre><code>
+try {
+    URL url = new URL("http://www.gutenberg.org/cache/epub/3537/pg3537.txt");
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("GET");
+    connection.setRequestProperty("Accept", "text/html");
+
+    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+    String inputLine;
+    while ((inputLine = in.readLine()) != null) {
+        System.out.println(inputLine);
+    }
+    in.close();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+        </code></pre>
+    </section>
+
+    <section>
+        <h1>Практические задания</h1>
+        <ol>
+            <li>Приведенный пример на Java не совсем рабочий. Исправьте его таким образом, чтобы в итоге текст книги печатался в консоль</li>
+            <li>Выведите в консоль все заголовки ответа</li>
+        </ol>
+    </section>
+
     </div>
+	<div class="progress" style="display: block;"><span></span></div>
+	<div class="slide-number"></div>
 </div>
 
 <script src="reveal/lib/js/head.min.js"></script>
@@ -411,10 +465,10 @@ Authenticator.setDefault(new Authenticator() {
 
         controls: true,// Display controls in the bottom right corner
         progress: true,	// Display a presentation progress bar
-        history: false,// Push each slide change to the browser history
+        history: true,// Push each slide change to the browser history
         keyboard: true,// Enable keyboard shortcuts for navigation
         overview: true,// Enable the slide overview mode
-        center: false,	// Vertical centering of slides
+        center: true,	// Vertical centering of slides
         loop: false,// Loop the presentation
         rtl: false,	// Change the presentation direction to be RTL
         autoSlide: 0,
@@ -452,6 +506,7 @@ Authenticator.setDefault(new Authenticator() {
             } }
         ]
     });
+	
 </script>
 </body>
 </html>
