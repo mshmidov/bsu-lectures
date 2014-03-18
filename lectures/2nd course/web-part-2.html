@@ -1,11 +1,12 @@
 <!doctype html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
 
-    <title>Web applications in Java</title>
+    <title>Servlet API, JSP</title>
 
-    <meta name="author" content="Maxim Shmidov">
+    <meta name="author" content="Sergey Krauchenia">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -20,11 +21,22 @@
     <script>
         document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
     </script>
+    <style>
+        .middle-block {
+            position: absolute;
+            top: 26%;
+            left: 16%;
+        }
 
-    <!--[if lt IE 9]>
-    <script src="reveal/lib/js/html5shiv.js"></script>
-    <![endif]-->
+        .p-left {
+            text-align: left;
+        }
 
+        .reveal pre {
+            word-wrap: normal !important;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -32,516 +44,74 @@
 <div id="exadel-header"></div>
 
 <div class="reveal">
-<div class="slides">
+<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+
+<section>
+    <h1 style="margin-top: 150px;">Servlet API</h1>
+
+    <h1>Java Server Pages (JSP)</h1>
+    <h2>Часть 2</h2>
+    <i>© 2014 Sergey Krauchenia</i>
+
+</section>
 
     <section>
-        <h1>Web applications in Java part 2</h1>
-    </section>
-
-    <section id="mvc-section">
         <section>
-            <h1>Model-View-Controller (MVC)</h1>
-        <span class="thesis">
-            Основная цель применения – отделить логику от представления
-        </span>
+            <h1>Filter</h1>
+            <span class="thesis">Переиспользуемый кусок кода, который может изменять содержимое HTTP-запроса/ответа и их заголовки</span>
+        </section>
+        <section>
+            <h2>Где фильтр может быть полезен?</h2>
             <ul>
-                <li><b>Model</b> - данные и методы для работы с ними</li>
-                <li><b>View</b> - отвечает за отображение информации</li>
-                <li><b>Controller</b> - обеспечивает связь между пользователем и системой (ввод данных
-                    пользователем и навигация, использует модель и представление)
-                </li>
+                <li>Если нужен доступ к ресурсу до того как запрос начнет обрабатываться</li>
+                <li>Изменение заголовков запроса/ответа и данных с помощью оборачивания его в вашу собственную версию объекта запроса/ответа</li>
+                <li>Если нужно что-то сделать до или после вызова обработчика запроса</li>
             </ul>
         </section>
         <section>
-            <img src="web-2.files/mvc-diagram.jpg" style="width:40%;height:40%;">
-        </section>
-        <section>
-            <h1>Преимущества MVC</h1>
+            <h2>Примеры использования фильтра</h2>
             <ul>
-                <li>К одной Model можно присоединить разные View</li>
-                <i>Пример: данные могут быть представлены в виде HTML страницы для браузера или PDF отчёта</i>
-                <li>Одни и те же Model и View могут быть использованны разными Controller</li>
-                <i>упрощается создание страниц с похожей функциональностью</i>
-                <li>Разделение труда разработчиков – Model и View часто могут разрабатываться независимо.</li>
-            </ul>
-        </section>
-    </section>
-
-    <section id="app-navigation-section">
-        <section>
-            <h1>Навигация</h1>
-            <h2>Основные способы навигации в web приложении Java:</h2>
-            <ul>
-                <li>Redirect</li>
-                <li>Forward</li>
+                <li>Фильтр аутентификации</li>
+                <li>Фильтр авторизации</li>
+                <li>Фильтр логирования и аудита</li>
+                <li>Фильтр сжатия данных</li>
+                <li>Фильтр шифрования</li>
+                <li>Кеширующий фильтр</li>
             </ul>
         </section>
         <section>
-            <h1>Redirect</h1>
-            <ul>
-                <li>Сервер отправляет браузеру указание перейти на другой URL</li>
-                <li>В качестве адреса перехода может быть указан любой URL</li>
-                <li>Браузер получает указание о переходе и осуществляет открытие указанного URL (соответсвенно меняется ардесная строка)</li>
-                <li><b>HttpServletResponse.sendRedirect(location)</b></li>
-            </ul>
+            <h2>Исполнение цепочки фильтров</h2>
+            <img src="web-2.files/filter-workflow.png">
         </section>
         <section>
-            <h1>Forward</h1>
-            <ul>
-                <li>Cервлет/JSP могут делегировать обработку запроса другому сервлету/JSP, причём только в рамках данного web приложения.</li>
-                <li>Компонент (сервлет/JSP) который будет осуществлять обрабоку действует в рамках того же самого запроса.</li>
-                <li>Браузер не знает про делегацию обработки</li>
-                <li><b>ServletRequest.getRequestDispatcher(url) и RequestDispatcher.forward(request, response)</b></li>
-                <li>Информацию между объектами можно передавать используя <b>ServletRequest.setAttribute</b></li>
-            </ul>
-        </section>
-        <section>
-            <h1>Пример сервлета</h1>
+            <h2>Фильтр замеряющий время выполнения</h2>
             <pre>
                 <code class="java">
-public class DemoServlet extends HttpServlet {
+@WebFilter("/*")
+public class TimeMeasurementFilter implements Filter {
+
+    private Logger logger = Logger.getAnonymousLogger();
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
-        Person person = new Person();
-        if (id != null) {
-            person = getPersonById(Integer.parseInt(id));
-        }
-        request.setAttribute("person", person);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/edit.jsp");
-        dispatcher.forward(request, response);
-    }
-}
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Пример: edit.jsp</h1>
-            <pre>
-                <code class="jsp">
-&lt;html&gt;
-    &lt;body&gt;
-    ...
-        &lt;form id="myform" action="&lt;%=request.getContextPath()%&gt;/demo/person" method="post"&gt;
-        &lt;table&gt;
-            &lt;tr&gt;
-                &lt;td&gt;Id(Required)&lt;/td&gt;
-                &lt;td&gt;&lt;input id="id" name="personId" value="${person.id}"/&gt;&lt;/td&gt;
-            &lt;/tr&gt;
-        ...
-        &lt;/table&gt;
-
-        &lt;button onclick="return validateAndSubmit();"&gt;Save&lt;/button&gt;
-        &lt;/form&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <img src="web-2.files/forward-example.png">
-        </section>
-    </section>
-
-    <section id="el-section">
-        <section>
-            <h1>JSP - Expression Language (EL)</h1>
-            <pre>
-                <code class="jsp">
-    ${expr}
-                </code>
-            </pre>
-            <ul>
-                <li>Получение доступа к полям бина</li>
-                <pre>
-                    <code class="jsp">
-    ${user.name}
-                    </code>
-                </pre>
-                <li>Арифметические операции</li>
-                <pre>
-                    <code class="jsp">
-&lt;jsp:setProperty name="box" property="perimeter" value="${2*box.width+2*box.height}"/&gt;
-                    </code>
-                </pre>
-            </ul>
-        </section>
-        <section>
-            <h1>Доступные операторы</h1>
-            <ul>
-                <li><b>.</b> - Access a bean property or Map entry</li>
-                <li><b>[]</b> - Access an array or List element</li>
-                <li><b>( )</b> - Group a subexpression to change the evaluation order</li>
-                <li><b>+ - * / %</b> - Arithmetic operators</li>
-                <li><b>==</b> - Test for equality </li>
-                <li><b>!=</b> - Test for inequality</li>
-                <li><b>&lt; </b> -Test for less than </li>
-                <li>И т.д.</li>
-            </ul>
-        </section>
-        <section>
-            <h1>Зарезервированные слова</h1>
-            <ul>
-                <li>lt, le, gt, ge</li>
-                <li>eq, ne, true, false</li>
-                <li>and, or, not, instanceof</li>
-                <li>div, mod, empty, null</li>
-            </ul>
-        </section>
-        <section>
-            <h2>Список объектов, неявно доступных на странице JSP</h2>
-            <ul>
-                <li><b>pageScope, requestScope, sessionScope, applicationScope</b> - Scoped variables</li>
-                <li><b>param</b> - Request parameters as strings</li>
-                <li><b>paramValues</b> - Request parameters as collections of strings</li>
-                <li><b>header</b> - HTTP request headers as strings</li>
-                <li><b>headerValues</b> - HTTP request headers as collections of strings</li>
-                <li><b>cookie</b> - Cookie values</li>
-                <li><b>pageContext</b> - The JSP PageContext object for the current page</li>
-            </ul>
-            <pre>
-                <code class="jsp">
-        ${paramValues.myParam[0]}
-        ${paramValues['myParam'][0]}
-        ${param.myParam}
-        ${param['myParam']}
-                </code>
-            </pre>
-        </section>
-    </section>
-
-    <section id="jstl-section">
-        <section>
-            <h1>JSP - Standard Tag Library (JSTL)</h1>
-            <ul>
-                <li>Core Tags</li>
-                <li>Formatting tags</li>
-                <li>и т.д.</li>
-            </ul>
-        </section>
-        <section>
-            <h1>Подключение tld</h1>
-            <pre>
-                <code class="html">
-&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
-&lt;%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
-                </code>
-            </pre>
-            <span>Библиотека <b>jstl-1.2.jar</b> должна быть доступна на classpath</span>
-        </section>
-        <section>
-            <h1>Core Tags</h1>
-            <ul>
-                <li><b>&lt;c:out&gt;</b> - Делает вывод содержимого</li>
-                <li><b>&lt;c:set&gt;</b> - Кладет значение в 'scope'</li>
-                <li><b>&lt;c:if&gt;</b> - Условный тэг, тело которого исполняется, только если 'test' true</li>
-                <li><b>&lt;c:choose&gt;</b> - Способ реализовать if/else if/else</li>
-                <li><b>&lt;c:forEach&gt;</b> - Итерация по Iterable объекту</li>
-                <li><b>&lt;c:redirect&gt;</b> - Осуществляет редирект</li>
-            </ul>
-        </section>
-        <section>
-            <h1>Core Tags examples</h1>
-            <pre>
-                <code class="xml">
-&lt;c:if test="${empty param.name and param.action == 'search'}"&gt;
-    &lt;c:out value="${user.name}"/&gt;
-    &lt;c:choose&gt;
-        &lt;c:when test="${user.admin}"&gt;
-            &lt;c:forEach items="${fileList}" var="file"&gt;
-                &lt;c:out value="${file.name}"/&gt;
-            &lt;/c:forEach&gt;
-        &lt;/c:when&gt;
-        &lt;c:otherwise&gt;
-            &lt;c:redirect url="http://google.com"/&gt;
-        &lt;/c:otherwise&gt;
-    &lt;/c:choose&gt;
-&lt;/c:if&gt;
-                </code>
-            </pre>
-        </section>
-    </section>
-
-    <section id="data-transfer-section">
-        <section>
-            <h1>Передача данных из браузера</h1>
-        </section>
-        <section>
-            <h1>Тег &lt;form&gt;</h1>
-            <pre>
-                <code class="jsp">
-&lt;form action="&lt;%=request.getContextPath()%&gt;/demo/person" method="post"&gt;
-    ...
-&lt;/form&gt;
-                </code>
-            </pre>
-            <ul>
-                <li>Форма для отправки данных</li>
-                <li>Атрибут action – куда отправить данные</li>
-                <li>Атрибут method – как отправить данные. Может принимать значения get либо post</li>
-            </ul>
-        </section>
-        <section>
-            <h1>Поля формы</h1>
-            <pre>
-                <code class="html">
-    &lt;input type="text" value="Sergey" name="userName"&gt;
-                </code>
-            </pre>
-            <ul>
-                <li>Атрибут type – тип поля, принимает значения:</li>
-                    <ul>
-                        <li>text – текстовое поле</li>
-                        <li>radio -  переключатель</li>
-                        <li>checkbox – компонент checkbox</li>
-                        <li>password – поле для ввода пароля</li>
-                        <li>submit – кнопка, инициирующая отправку данных</li>
-                        <li>и др.</li>
-                    </ul>
-                <li>Атрибут value – значение поля формы, которое будет показано на экране</li>
-                <li>Атрибут name – имя поля формы, используется браузером при отправке данных</li>
-            </ul>
-        </section>
-        <section>
-            <pre>
-                <code class="html">
-    &lt;form action="${pageContext.request.contextPath}/login" method="post"&gt;
-        &lt;input name="login" value="admin"/&gt;&lt;br&gt;
-        &lt;input name="pwd" type="password"/&gt;&lt;br&gt;
-        &lt;input name="avatar" type="file"/&gt;&lt;br&gt;
-
-        &lt;input type="submit" value="Create"/&gt;
-    &lt;/form&gt;
-                </code>
-                </pre>
-        </section>
-        <section>
-            <h1>Результат</h1>
-            <img src="web-2.files/inputs-result.png">
-        </section>
-
-        <section>
-            <h1>Получение данных на сервере</h1>
-            <ul>
-                <li>Поля формы передаются как параметр запроса. <b>ServletRequest.getParameter</b> можно использовать для получения параметра</li>
-                <li>Информацию о методе можно получить используя <b>HttpServletRequest.getMethod</b> в методе service а также переопределив соответсвующий метод (doGet, doPost)</li>
-            </ul>
-        </section>
-        <section>
-            <h1>edit.jsp</h1>
-            <pre>
-                <code class="html">
-&lt;form id="myform" method="post" action="${pageContext.request.contextPath}/demo/person" &gt;
-
-&lt;table&gt;
-    &lt;tr&gt;
-        &lt;td&gt;Id(Required)&lt;/td&gt;
-        &lt;td&gt;&lt;input id="id" name="personId" value="${person.id}"/&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;First Name(Required)&lt;/td&gt;
-        &lt;td&gt;&lt;input id="firstName" name="personFirstName" value="${person.firstName}"/&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;button onclick="return validateAndSubmit();"&gt;Save&lt;/button&gt;
-&lt;/form&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Результат</h1>
-            <img src="web-2.files/edit-form-results.png">
-        </section>
-        <section>
-            <h1>Обработка на сервере</h1>
-            <pre>
-                <code class="java">
-public class DemoServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Construct object from parameter
-        Person person = new Person();
-        String id = request.getParameter("personId");
-        person.setId(Integer.parseInt(id));
-        person.setFirstName(request.getParameter("personFirstName"));
-        person.setLastName(request.getParameter("personLastName"));
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-        //TODO: save the object in the DB/XML file/etc.
+        long start = System.currentTimeMillis();
+        chain.doFilter(request, response);
+        long end = System.currentTimeMillis();
 
-        request.setAttribute("person", person);
-        RequestDispatcher dispatcher =
-        request.getRequestDispatcher("/WEB-INF/views/result.jsp");
-        dispatcher.forward(request, response);
-    }
-}
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Результат</h1>
-            <img src="web-2.files/view-output-result.png">
-        </section>
-    </section>
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String path = httpRequest.getRequestURI();
+        String method = httpRequest.getMethod();
 
-    <section id="unicode-section">
-        <section>
-        <h1>Unicode символы</h1>
-        <h3>TOMCAT_HOME/conf/server.xml</h3>
-        <pre>
-            <code class="xml">
-&lt;Connector port="8080" protocol="HTTP/1.1"
-              connectionTimeout="20000
-              redirectPort="8443"
-              URIEncoding="UTF-8"/&gt;
-            </code>
-        </pre>
-        <h3>TOMCAT_HOME/conf/web.xml</h3>
-        <pre>
-            <code class="xml">
-&lt;filter&gt;
-    &lt;filter-name&gt;setCharacterEncodingFilter&lt;/filter-name&gt;
-    &lt;filter-class&gt;org.apache.catalina.filters.SetCharacterEncodingFilter&lt;/filter-class&gt;
-    &lt;init-param&gt;
-        &lt;param-name&gt;encoding&lt;/param-name&gt;
-        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;async-supported&gt;true&lt;/async-supported&gt;
-&lt;/filter&gt;
-&lt;filter-mapping&gt;
-    &lt;filter-name&gt;setCharacterEncodingFilter&lt;/filter-name&gt;
-    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;
-            </code>
-        </pre>
-        </section>
-        <section>
-            <h1>Экранирование спецсимволов</h1>
-            <ul>
-                <li>Данные, отображаемые на HTML странице не должны содержать спецсимволов. Для вывода спецсимволов
-                    необходимо их экранировать(<b>&amp;lt; &amp;gt</b>; …)</li>
-                <li>Один из возможных способов – использование специальных библиотек, например, JSTL
-                    <ul>
-                        <li>Разместить  jstl-1.2.jar в WEB-INF/lib</li>
-                        <li>Использовать JSP тег &lt;c:out&gt;. Данный тег обрабатывается на сервере.</li>
-                        <li><a href="http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters/">http://www.yellowpipe.com/yis/tools/ASCII-HTML-Characters</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <pre>
-                <code class="html">
-&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-&lt;%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
-&lt;html&gt;
-
-&lt;table&gt;
-    &lt;tr&gt;
-        &lt;td&gt;id&lt;/td&gt;
-        &lt;td&gt;&lt;c:out value="${person.id}"/&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;First Name&lt;/td&gt;
-        &lt;td&gt;&lt;c:out value="${person.firstName}"/&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;Last Name&lt;/td&gt;
-        &lt;td&gt;&lt;c:out value="${person.lastName}"/&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-                </code>
-            </pre>
-        </section>
-    </section>
-
-    <section id="internationalization-section">
-        <section>
-            <h1>Интернационализация</h1>
-            <ul>
-                <li>Для интернационализации обычно используют Resource Bundle</li>
-                <li>Использование Resource Bundle позволяет гибко адаптировать приложение для разных стран</li>
-                <li>Получение локализованных данных осуществляется, используя JSP теги <b>&lt;fmt:bundle&gt; и &lt;fmt:message&gt;</b>
-                    <ul>
-                        <li>Данные теги обрабатываются на сервере.</li>
-                        <li>Для использования этих тегов необходима библиотека <b>jstl-1.2.jar</b> (разместить в WEB-INF/lib)</li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <h1>Пример использования</h1>
-            <pre>
-                <code class="html">
-    &lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-    &lt;%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %&gt;
-    &lt;fmt:bundle basename="/pages/mybundle"&gt;
-    &lt;html&gt;
-        &lt;head&gt;
-            &lt;title&gt;&lt;fmt:message key="test.title"/&gt;&lt;/title&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-            &lt;h2&gt;&lt;fmt:message key="test.description"/&gt;&lt;/h2&gt;
-        &lt;/body&gt;
-    &lt;/html&gt;
-    &lt;/fmt:bundle&gt;
-                </code>
-            </pre>
-    Предполагается, что в classpath существует файл /pages/mybundle.properties:
-            <pre>
-                <code class="property">
-    test.title=Localization example
-    test.description=Welcome
-               </code>
-            </pre>
-        </section>
-    </section>
-
-    <section id="validation-section">
-        <section>
-            <h1>Проверка вводимых данных</h1>
-            <ul>
-                <li>Все данные, вводимые пользователем должны проверяться на корректность – валидация
-                    <ul>
-                        <li>числовые поля не содержат букв</li>
-                        <li>обязательные поля заполненны</li>
-                        <li>значения находятся в допустимых пределах</li>
-                        <li>и т.д.</li>
-                    </ul>
-                </li>
-                <li>Для удобства пользователя проверку можно частично осуществлять в браузере(Javascript) - http://javascript.ru/ </li>
-                <li>Проверка данных в браузере не отменяет необходимоть реализовывать валидацию на сервере.</li>
-            </ul>
-        </section>
-        <section>
-            <h1>Пример валидации на Javascript</h1>
-            <pre>
-                <code class="javascript">
-function validateAndSubmit() {
-    var formValid = true;
-
-    var id = document.getElementById('id');
-    if (id.value.trim() == "") {
-        id.style.backgroundColor = "red";
-        formValid = false;
+        logger.info(String.format("%s '%s' - done (%d ms)", method, path, end - start));
     }
 
-    var firstName = document.getElementById('firstName');
-    if (firstName.value.trim() == "") {
-        firstName.style.backgroundColor = "red";
-        formValid = false;
-    }
-
-    ...
-
-    if (formValid) {
-        var form = document.getElementById("myform");
-        form.submit();
-    }
-
-    return formValid;
+    @Override
+    public void destroy() {}
 }
                 </code>
             </pre>
@@ -552,7 +122,7 @@ function validateAndSubmit() {
         <section>
             <h1>Пользовательская сессия</h1>
             <ul>
-                <li>Протокол HTTP не требует постоянного соединения, соответственно сервер "не помнит" кого он обслуживал ранее.</li>
+                <li>Протокол HTTP не содержит состояния, соответственно сервер "не помнит" кого он обслуживал ранее.</li>
                 <li>Для пользователя желательно иметь возможность "запомнить" данные о себе в приложении.</li>
             </ul>
         </section>
@@ -579,286 +149,765 @@ function validateAndSubmit() {
                 <li>Привязка пользователя к сессии осуществляется с помощью <b>JSESSIONID</b></li>
                 <li>При создании сессии через <b>request.getSession(true)</b> или <b>request.getSession(false)</b> генерируется
                     <b>JSESSIONID</b> и кладется в <b>Cookie</b></li>
+                <li>Не стоит злоупотреблять сессией и хранить там большие объемы данных.</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Пример</h3>
+            <pre>
+                <code class="java">
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    String login = req.getParameter("login");
+    String password = req.getParameter("password");
+
+    if (loginIsCorrect(login, password)) {
+        HttpSession session = req.getSession(true);
+        session.setAttribute("userId", login);
+    }
+}
+                </code>
+            </pre>
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h1>Java Server Pages (JSP)</h1>
+            <span class="thesis">Технология, позволяющая легко и гибко создавать динамический веб-контент (HTML, XML и т.д.)</span>
+        </section>
+
+        <section>
+            <section>
+                <h2>JSP-страница это тоже Servlet</h2>
+                <img src="web-2.files/jsp-is-servlet.png">
+            </section>
+        </section>
+        <section>
+            <p>Создайте на одном уровне с WEB-INF файл hello-world.jsp</p>
+            <pre>
+                <code class="jsp">
+        &lt;html&gt;
+        &lt;body&gt;
+        &lt;%
+            out.println(new java.util.Date());
+        %&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+                </code>
+            </pre>
+            <p>Все, что между символами &lt;% и %&gt; называется скриптлет и является обычным java-кодом</p>
+        </section>
+        <section>
+            <p>Так как JSP это сервлет, она будет доступна по следующему URL</p>
+            <img src="web-2.files/jsp-is-servlet-prove.png">
+        </section>
+        <section>
+            <p>С помощью директива page можно импортировать классы</p>
+            <pre>
+                <code class="jsp">
+    &lt;%@ page import="java.util.Date" %&gt;
+    &lt;html&gt;
+    &lt;body&gt;
+    &lt;%= new Date() %&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+                </code>
+            </pre>
+            <p>Мы добавили знак равно и теперь это не скриптлет, а выражение</p>
+        </section>
+        <section>
+            <h3>Итого</h3>
+            <ul>
+                <li>Scriptlet: &lt;% %&gt;</li>
+                <li>Directive: &lt;%@ %&gt;</li>
+                <li>Expression: &lt;%= %&gt;</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Так во что же транслируется jsp?</h3>
+            <div class="fragment roll-in">
+                <pre>
+                    <code class="java">
+/*
+* Generated by the Jasper component of Apache Tomcat
+* Version: Apache Tomcat/8.0.3
+* Generated at: 2014-03-13 22:48:58 UTC
+* Note: The last modified time of this file was set to
+*       the last modified time of the source file after
+*       generation to assist with modification tracking.
+*/
+package org.apache.jsp;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+import java.util.Date;
+
+public final class hello_002dworld_jsp extends org.apache.jasper.runtime.HttpJspBase
+implements org.apache.jasper.runtime.JspSourceDependent {
+
+    private static final javax.servlet.jsp.JspFactory _jspxFactory =
+    javax.servlet.jsp.JspFactory.getDefaultFactory();
+
+    private static java.util.Map&lt;java.lang.String,java.lang.Long&gt; _jspx_dependants;
+
+    private javax.el.ExpressionFactory _el_expressionfactory;
+    private org.apache.tomcat.InstanceManager _jsp_instancemanager;
+
+    public java.util.Map&lt;java.lang.String,java.lang.Long&gt; getDependants() {
+        return _jspx_dependants;
+    }
+
+    public void _jspInit() {
+        _el_expressionfactory = _jspxFactory.getJspApplicationContext(getServletConfig().getServletContext()).getExpressionFactory();
+        _jsp_instancemanager = org.apache.jasper.runtime.InstanceManagerFactory.getInstanceManager(getServletConfig());
+    }
+
+    public void _jspDestroy() {
+    }
+
+    public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+        throws java.io.IOException, javax.servlet.ServletException {
+
+        final javax.servlet.jsp.PageContext pageContext;
+        javax.servlet.http.HttpSession session = null;
+        final javax.servlet.ServletContext application;
+        final javax.servlet.ServletConfig config;
+        javax.servlet.jsp.JspWriter out = null;
+        final java.lang.Object page = this;
+        javax.servlet.jsp.JspWriter _jspx_out = null;
+        javax.servlet.jsp.PageContext _jspx_page_context = null;
+
+
+        try {
+            response.setContentType("text/html");
+            pageContext = _jspxFactory.getPageContext(this, request, response,
+            null, true, 8192, true);
+            _jspx_page_context = pageContext;
+            application = pageContext.getServletContext();
+            config = pageContext.getServletConfig();
+            session = pageContext.getSession();
+            out = pageContext.getOut();
+            _jspx_out = out;
+
+            out.write("\n");
+            out.write("&lt;html&gt;\n");
+            out.write("    &lt;body&gt;\n");
+            out.write("        ");
+            out.print( new Date() );
+            out.write("\n");
+            out.write("    &lt;/body&gt;\n");
+            out.write("&lt;/html&gt;\n");
+        } catch (java.lang.Throwable t) {
+            if (!(t instanceof javax.servlet.jsp.SkipPageException)){
+                out = _jspx_out;
+            if (out != null && out.getBufferSize() != 0)
+                try { out.clearBuffer(); } catch (java.io.IOException e) {}
+            if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+                else throw new ServletException(t);
+            }
+        } finally {
+            _jspxFactory.releasePageContext(_jspx_page_context);
+        }
+    }
+}
+
+                    </code>
+                </pre>
+            </div>
+        </section>
+        <section>
+            <h2>Неявные объекты, доступные на странице</h2>
+            <ul>
+                <li>JspWriter - out</li>
+                <li>HttpServletRequest - request</li>
+                <li>HttpServletResponse - response</li>
+                <li>HttpSession - session</li>
+                <li>ServletContext - application</li>
+                <li>ServletConfig - config</li>
+                <li>PageContext - pageContext</li>
+                <li>Object - page</li>
             </ul>
         </section>
     </section>
+
     <section>
-        <h1>Типы содержимого</h1>
+        <h2>Директивы:</h2>
+        <dl>
+            <dt>page - &lt;%@ page import="java.util.Date" session="false" %&gt;</dt>
+            <dd>Определяет специфичные для страницы свойства - кодировку, Content-Type. Всего около 13 свойств</dd>
+
+            <dt>taglib - &lt;%@ taglib tagdir=”/WEB-INF/tags/myLib” prefix=”my” %&gt;</dt>
+            <dd>Объявляет кастомную библиотеку тэгов, которая будет доступна на этой странице</dd>
+
+            <dt>include - &lt;%@ include file=”header.jsp” %&gt;</dt>
+            <dd>Добавляет к странице в месте объявления содержимое файла. Позволяет создавать общие части для многих страниц - header, footer, menu и переиспользовать их в разных страницах</dd>
+        </dl>
+    </section>
+
+<section>
+    <h1>Scriptlets considered harmful?</h1>
+    <div class="fragment roll-in">
+        <h2>Yes!!111</h2>
         <ul>
-            <li>HTML, Картинки, CSS, JS, файлы и пр.</li>
-            <li>Заголовок <b>Content-type</b> указывает браузеру тип содержимого.</li>
-            <li>В зависимости от значения Content-type браузер может отобразить содержимое самостоятельно,
-                используя плагины или использовать внешние приложения.</li>
+            <li>Трудно поддерживать</li>
+            <li>Кроме java разработчика существуют еще дизайнеры, верстальщики и т.д. которые не знают java</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <section>
+        <h1>Expression Language (EL)</h1>
+        <span class="thesis">Способен полностью заменить скриптлеты. Если вдруг это становится невозможным или излишне громоздким, то может этому коду вообще не место в JSP и его стоит перенести в сервлет или в другую часть программы?</span>
+    </section>
+    <section>
+        <p>EL это всегда что-то начинающееся с $ и обрамленное в фигурные скобки</p>
+        <b>${something}</b>
+        <div class="fragment roll-in">
+            <p>EL expression</p>
+            <pre>
+                <code class="java">${requestScope.mail}</code>
+            </pre>
+            <p>Java expression</p>
+            <pre>
+                <code class="java">&lt;%= request.getAttribute("mail") %&gt;</code>
+            </pre>
+        </div>
+    </section>
+    <section>
+        <h2>Точка</h2>
+        <p class="thesis">Используется для доступа к свойствам JavaBean или к значениям в Map</p>
+        <h3>${person.name}</h3>
+        <ul>
+            <li>Если <b>person</b> это JavaBean, то <b>name</b> это его свойство</li>
+            <li>Если <b>person</b> это Map, то <b>name</b> это ключ</li>
         </ul>
     </section>
-    <section id="examples-section">
-        <section>
-            <h1>Примеры</h1>
-        </section>
-        <section>
-            <h1>Dynamic image example (1/3)</h1>
-            <h3>ImageExample.jsp</h3>
-            <pre>
-                <code class="html">
-&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"&gt;
-    &lt;META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"&gt;
-    &lt;META HTTP-EQUIV="EXPIRES" CONTENT="0"&gt;
-    &lt;title&gt;Image example&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;p&gt;Image generated by servlet &lt;/p&gt;
-
-&lt;p&gt;
-    &lt;img src="${pageContext.request.contextPath}/dynamic/images/jpg?text=abcd" alt="My image"&gt;
-&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Dynamic image example (2/3)</h1>
-            <pre>
-                <code class="java">
-public class ImageServlet extends HttpServlet {
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) 	throws ServletException, IOException {
-        //Tell the browser that this response is an image
-        response.setContentType("image/jpeg");
-        ServletOutputStream outputStream = response.getOutputStream();
-
-        String text = request.getParameter("text");
-        BufferedImage image = createImage(text);
-        ImageIO.write(image, "JPEG", outputStream);
-    }
-
-    private BufferedImage createImage(String text) {
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = image.createGraphics();
-        graphics.setFont(new Font("Arial", Font.BOLD, 20));
-
-        graphics.drawString(text, 30, 55);
-
-        return image;
-    }
-}
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Dynamic image example (3/3)</h1>
-            <img src="web-2.files/image-example.png"/>
-        </section>
-        <section>
-            <h1>Download File example (1/6)</h1>
-            <h3>FileServlet</h3>
-            <pre>
-                <code class="java">
-public class FileServlet extends HttpServlet {
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Get file somewhere, for example, generate it on the fly
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter writer = new PrintWriter(stream);
-        writer.println("Lorem ipsum dolor sit amet...");
-        writer.print("Generated for id=" + request.getParameter("id"));
-        writer.flush();
-        byte[] data = stream.toByteArray();
-
-        //Tell the browser that this response is an image
-        response.setHeader("Content-type", "application/download");
-        response.setHeader("Content-length", Integer.toString(data.length));
-        response.setHeader("Content-transfer-encodig", "binary");
-        response.setHeader("Content-disposition", "attachment; filename=MyFile.txt");
-
-        //Write bytes
-        response.getOutputStream().write(data);
-    }
-}
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Download File example (2/6)</h1>
-            <h3>fileExample.jsp</h3>
-            <pre>
-                <code class="html">
-&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"&gt;
-    &lt;META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"&gt;
-    &lt;META HTTP-EQUIV="EXPIRES" CONTENT="0"&gt;
-    &lt;title&gt;File example&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    Click &lt;a href="${pageContext.request.contextPath}/dynamic/files?id=123"&gt;this link&lt;/a&gt; to download a file
-&lt;/body&gt;
-&lt;/html&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Download File example (3/6)</h1>
-            <h3>Страница в браузере</h3>
-            <img src="web-2.files/download-example-page-view.png">
-        </section>
-        <section>
-            <h1>Download File example (4/6)</h1>
-            <h3>HTML страницы</h3>
-            <img src="web-2.files/download-example-html-of-page.png">
-        </section>
-        <section>
-            <h1>Download File example (5/6)</h1>
-            <h3>Download dialog</h3>
-            <img src="web-2.files/download-example-dialog.png">
-        </section>
-        <section>
-            <h1>Download File example (6/6)</h1>
-            <h3>Файл с сервера</h3>
-            <img src="web-2.files/download-example-text-file.png">
-        </section>
-
-        <section>
-            <h1>Upload File example (1/3)</h1>
-            <h3>fileUploadExample.jsp</h3>
-            <pre>
-                <code class="html">
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;File example&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;form action="${pageContext.request.contextPath}/servlet/upload" method="post" enctype="multipart/form-data"&gt;
-    &lt;input type="file" name="myfile"/&gt;&lt;br&gt;
-
-    &lt;input type="submit"/&gt;
-&lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Upload File example (2/3)</h1>
-            <h3>UploadServlet</h3>
-            <pre>
-                <code class="java">
-@MultipartConfig
-public class UploadServlet extends HttpServlet {
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Collection&lt;Part&gt; parts = request.getParts();
-        for (Part part : parts) {
-            String contentType = part.getContentType();
-            System.out.println("contentType = " + contentType);
-
-            System.out.println("file = " + getFileName(part));
-
-            InputStream stream = part.getInputStream();
-            String content = readAsString(stream);
-            System.out.println("content = " + content);
-        }
-
-        response.getOutputStream().println("&lt;html&gt;&lt;body&gt;The file has been uploaded&lt;/body&gt;&lt;/html&gt;");
-    }
-
-    private String readAsString(InputStream stream) throws IOException {
-        String result = "";
-        InputStreamReader inputReader = new InputStreamReader(stream);
-        BufferedReader reader = new BufferedReader(inputReader);
-        while (reader.ready()) {
-            result += reader.readLine();
-        }
-
-        return result;
-    }
-
-    private String getFileName(Part part) {
-        String[] contentAttributes = part.getHeader("content-disposition").split(";");
-        for (String attribute : contentAttributes) {
-            if (attribute.trim().startsWith("filename")) {
-                String value = attribute.substring(attribute.indexOf('=') + 1).trim();
-                return value.replace("\"", "");
-            }
-        }
-
-    return null;
-}
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Upload File example (3/3)</h1>
-            <h3>Страница</h3>
-            <img src="web-2.files/updaload-example-page.png"/>
-        </section>
+    <section>
+        <h2>Квадратные скобки - [ ]</h2>
+        <p class="thesis">Используется для доступа к свойствам JavaBean или к значениям в Map, List, array</p>
+        <pre>
+            <code class="el">
+        ${person["name"]}
+        ${person[name]} // ошибка
+        ${persons[1]}
+        ${persons["0"]} // тоже допустимо
+            </code>
+        </pre>
+        <ul>
+            <li>Если значение в [ ] строка, то левая часть выражения должен быть либо Map либо bean</li>
+            <li>Если значение в [ ] число, то левая часть выражения должен быть либо List либо array</li>
+        </ul>
     </section>
+    <section>
+        <pre>
+            <code class="java">
+    // servlet
+    Map&lt;String, String&gt; musicMap = new HashMap&lt;&gt;();
+    musicMap.put("Grunge", "Nirvana");
 
-    <section id="security-section">
-        <section>
-            <h1>Basic Authentication</h1>
-            <ul>
-                <li>Логин/пароль запрашивает браузер</li>
-                <li>Полученные логин и пароль пересылаются серверу (при этом используется кодировка Base64)</li>
-                <li>Замечания
-                    <ul>
-                        <li>BASIC аутентификация поддерживается широким кругом приложений</li>
-                        <li>Кодировка Base64 ≠ Шифрование. Рекомендуется дополнительно использовать протокол HTTPS</li>
-                        <li>Не существует стандартного решения, чтобы сделать Log Out</li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <h1>Настройка сервера</h1>
-            <ul>
-                <li>Добавить пользователя в <b>tomcat-users.xml</b></li>
-            </ul>
-            <pre>
-                <code class="xml">
-&lt;tomcat-users&gt;
-    &lt;role rolename="administrator"/&gt;
-    &lt;user username="admin" password="11111" roles="administrator"/&gt;
-&lt;/tomcat-users&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Фрагмент web.xml (приложение)</h1>
-            <pre>
-                <code class="xml">
-&lt;!-- Security settings--&gt;
-&lt;security-constraint&gt;
-    &lt;web-resource-collection&gt;
-        &lt;web-resource-name&gt;securePages&lt;/web-resource-name&gt;
-        &lt;url-pattern&gt;/pages/secure/*&lt;/url-pattern&gt;
-    &lt;/web-resource-collection&gt;
-    &lt;auth-constraint&gt;
-        &lt;role-name&gt;administrator&lt;/role-name&gt;
-    &lt;/auth-constraint&gt;
-&lt;/security-constraint&gt;
-&lt;login-config&gt;
-    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
-    &lt;realm-name&gt;Demo for students&lt;/realm-name&gt;
-&lt;/login-config&gt;
-                </code>
-            </pre>
-        </section>
-        <section>
-            <h1>Доступ к защищённым URL</h1>
-            <img src="web-2.files/security-access-example.png">
-        </section>
+    request.setAttribute("musicMap", musicMap);
+    request.setAttribute("Genre", "Grunge");
+
+    // jsp
+    Music is ${musicMap[Genre]}
+    // преобразуется в
+    Music is ${musicMap["Grunge"]}
+    // преобразуется в
+    Music is Nirvana
+
+            </code>
+        </pre>
     </section>
 
     <section>
-        <h1>Вопросы?</h1>
+        <h2>Вложенные выражения</h2>
+        <pre>
+            <code class="java">
+    // servlet
+    Map&lt;String, String&gt; musicMap = new HashMap&lt;&gt;();
+    musicMap.put("Grunge", "Nirvana");
+
+    String[] genres = {"Grunge", "Pop"};
+
+    request.setAttribute("musicMap", musicMap);
+    request.setAttribute("genres", genres);
+
+    // jsp
+    Music is ${musicMap[genres[0]]}
+    // преобразуется в
+    Music is ${musicMap["Grunge"]}
+    // преобразуется в
+    Music is Nirvana
+            </code>
+        </pre>
     </section>
+
+</section>
+
+<section>
+    <section>
+        <h1>Неявные объекты, доступные в EL</h1>
+        <ul>
+            <li><b>pageScope, requestScope, sessionScope, applicationScope</b> - Scoped variables</li>
+            <li><b>param, paramValues</b> - Maps of the request parameters</li>
+            <li><b>header, headerValues</b> - Maps of the request headers</li>
+            <li><b>cookie</b> - Cookie values</li>
+            <li><b>pageContext</b> - The JSP PageContext object for the current page</li>
+        </ul>
+    </section>
+    <section>
+        <h2>param и paramValues</h2>
+        <p>http://localhost:8080/myPage.jsp?<b>genre</b>=Grunge&<b>genre</b>=Pop</p>
+        <pre>
+            <code class="java">
+    ${param.genre} // Grunge
+    ${paramValues.genre[1]} // Pop
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>requestScope != request object</h2>
+        <p>requestScope это просто Map, содержащая аттрибуты запроса. Чтобы получить доступ к текущему объекту request, можно использовать pageContext</p>
+        <pre>
+            <code class="java">       ${pageContext.request}</code>
+        </pre>
+    </section>
+    <section>
+        <h2>pageScope, requestScope, sessionScope, applicationScope</h2>
+        <p>Если вам не важно где находится нужный вам объект, в requestScope или sessionScope, то обращение к scope* не обязательно</p>
+        <pre>
+            <code class="java">
+    // servlet
+    request.setAttribute("personName", "Fedor");
+
+    // JSP
+    ${requestScope.personName} // Fedor
+    ${personName} // Fedor
+            </code>
+        </pre>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h2>EL functions</h2>
+        <p class="thesis">Если вам нужно больше функциональности, чем просто доступ к данным, вы можете реализовать свои EL-функции и использовать их</p>
+    </section>
+    <section>
+        <h2>Функция имитации броска кубика</h2>
+        <h3>1. Реализуйте функцию как статический метод</h3>
+        <pre>
+            <code class="java">
+        public class DiceRoller {
+            public static int rollDice() {
+                return (int) ((Math.random() * 6) + 1);
+            }
+        }
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h3>2. Создайте файл с описанием функции - Tag Library Descriptor (TLD)</h3>
+        <p>/WEB-INF/myFunctions.tld</p>
+        <pre>
+            <code class="xml">
+    &lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;
+    &lt;taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" version="2.0"&gt;
+    &lt;tlib-version&gt;1.2&lt;/tlib-version&gt;
+    &lt;uri&gt;MyFunctions&lt;/uri&gt;
+        &lt;function&gt;
+            &lt;name&gt;rollIt&lt;/name&gt;
+            &lt;function-class&gt;foo.DiceRoller&lt;/function-class&gt;
+            &lt;function-signature&gt;
+                int rollDice()
+            &lt;/function-signature&gt;
+        &lt;/function&gt;
+    &lt;/taglib&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h3>3. Использование в JSP</h3>
+        <pre>
+            <code class="xml">
+    &lt;%@ taglib prefix="mine" uri="MyFunctions" %&gt;
+    &lt;html&gt;
+    &lt;body&gt;
+        ${mine:rollIt()}
+    &lt;/body&gt;
+    &lt;/html&gt;
+            </code>
+        </pre>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>Header, Footer, Menu, etc</h1>
+        <p class="thesis">Header и Footer может повторяться из страницы к странице. Так же вы можете иметь и другие
+            общие компоненты на странице. Эти повторяющиеся части кода можно вынести в отдельные файлы и
+            переиспользовать с помощью <b>директивы include</b> или <b>функции &lt;jsp: include/&gt;</b></p>
+    </section>
+    <section>
+        <h2>Директива include</h2>
+        <p class="thesis">Директива говорит контейнеру "скопируй все, что есть во включаемом файле и вставь прямо сюда"</p>
+
+        <p>header.jsp</p>
+        <pre>
+            <code class="html">
+    &lt;img src="header.png"&gt;
+    &lt;h3&gt;My super application&lt;/h3&gt;
+            </code>
+        </pre>
+        <p>page.jsp</p>
+        <pre>
+            <code class="">
+    ...
+    &lt;%@ include file=”Header.jsp”%&gt;
+    ...
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Функция &lt;jsp: include/&gt;</h2>
+        <p class="thesis">Вставляет <b>ответ</b> включаемой jsp-страницы</p>
+        <pre>
+            <code class="jsp">
+    ...
+    &lt;jsp:include page=”Header.jsp” /&gt;
+    ...
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Кастомизация с помощью &lt;jsp:param&gt;</h2>
+        <p class="thesis">Позволяет передать параметры во включаемый файл для большей гибкости. Например название текущей страницы</p>
+        <pre>
+            <code class="xml">
+    &lt;jsp:include page="header.jsp"&gt;
+        &lt;jsp:param name="currentPageTitle" value="User profile"/&gt;
+    &lt;/jsp:include&gt;
+            </code>
+        </pre>
+        <p>header.jsp</p>
+        <pre>
+            <code class="xml">
+    &lt;em&gt;&lt;strong&gt;${param.currentPageTitle}&lt;/strong&gt;&lt;/em&gt;
+            </code>
+        </pre>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h2>Функция &lt;jsp:forward/&gt;</h2>
+        <p>Передает исполнение другой JSP или сервлету</p>
+        <pre>
+            <code class="xml">
+        &lt;jsp:forward page="/tasks"/&gt;
+            </code>
+        </pre>
+        <p class="thesis">Note: Когда вы делаете перенаправление, буфер объекта HttpServletResponse очищается</p>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>JSP Standard Tag Library (JSTL)</h1>
+        <p class="thesis">Предоставляют большой набор полезных функций</p>
+    </section>
+
+    <section>
+        <h2>Сross Site Sсriрting</h2>
+        <p class="thesis">Внедрении в выдаваемую веб-системой страницу вредоносного кода</p>
+    </section>
+    <section>
+        <h2>Пример XSS</h2>
+            <pre>
+                <code class="java">
+    // servlet
+    String style = "&lt;style&gt;body {background: red;}&lt;/style&gt;";
+    String script = "&lt;script&gt;alert('Hi there!')&lt;/script&gt;";
+    request.setAttribute("someStyle", style);
+    request.setAttribute("someScript", script);
+
+    // JSP
+    &lt;body&gt;
+    ${someStyle}
+    ${someScript}
+    &lt;/body&gt;
+                </code>
+            </pre>
+        <p>Так как содержимое переменной выводится как есть, в результате цвет фона всего документа изменится на красный и будет показан диалог с сообщением "Hi there!"</p>
+    </section>
+    <section>
+        <h2>Функция &lt;c:out&gt;</h2>
+        <p class="thesis">Позволяет выводить контент и экранировать специальные символы</p>
+        <pre>
+            <code class="xml">          &lt;c:out value="${someStyle}"/&gt;</code>
+        </pre>
+    </section>
+    <section>
+        <h2>Функция &lt;c:forEach&gt;</h2>
+        <p class="thesis">Используется для итерирования по элементам коллекции</p>
+        <pre>
+            <code class="html">
+    &lt;table class="table table-hover"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Title&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;c:forEach items="${tasks}" var="task"&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;c:out value="${task.title}"/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h1>Доступные операторы</h1>
+        <ul>
+            <li><b>.</b> - Access a bean property or Map entry</li>
+            <li><b>[]</b> - Access an array or List element</li>
+            <li><b>( )</b> - Group a subexpression to change the evaluation order</li>
+            <li><b>+ - * / %</b> - Arithmetic operators</li>
+            <li><b>==</b> - Test for equality </li>
+            <li><b>!=</b> - Test for inequality</li>
+            <li><b>&lt; </b> -Test for less than </li>
+            <li>И т.д.</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Зарезервированные слова</h1>
+        <ul>
+            <li>lt, le, gt, ge</li>
+            <li>eq, ne, true, false</li>
+            <li>and, or, not, instanceof</li>
+            <li>div, mod, empty, null</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Функция &lt;c:if&gt;</h2>
+        <p class="thesis">Позволяет строить условные выражения</p>
+        <pre>
+            <code class="xml">
+    &lt;c:if test="${not empty tasks}"&gt;
+
+        &lt;table class="table table-hover"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Title&lt;/th&gt;
+            &lt;/tr&gt;
+            ...
+
+        &lt;/table&gt;
+    &lt;/c:if&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Функция &lt;c:choose&gt; и &lt;c:when&gt; с &lt;c:otherwise&gt;</h2>
+        <p class="thesis">Позволяет реализовать конструкцию if else</p>
+        <pre>
+            <code class="html">
+&lt;c:choose&gt;
+    &lt;c:when test=”${userPref == 'performance'}”&gt;
+        Now you can stop even if you &lt;em&gt;do&lt;/em&gt; drive insanely fast.
+    &lt;/c:when&gt;
+    &lt;c:when test=”${userPref == 'safety'}”&gt;
+        Our brakes will never lock up, no matter how bad a driver you are
+    &lt;/c:when&gt;
+    &lt;c:when test=”${userPref == 'maintenance'}”&gt;
+        Lost your tech job? No problem--you won't have to service these brakes for at least three years.
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+        Our brakes are the best.
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Функция &lt;c:set&gt; (1/2)</h2>
+        <p class="thesis">Устанавливает значение аттрибута</p>
+        <pre>
+            <code class="xml">     &lt;c:set var="language" value="en_US" scope="session"/&gt;</code>
+        </pre>
+        <p class="thesis">либо значение в Map или поля JavaBean</p>
+        <pre>
+            <code class="xml">     &lt;c:set target=”${PetMap}” property=”dogName” value=”Clover” /&gt;</code>
+        </pre>
+    </section>
+    <section>
+        <h2>Функция &lt;c:set&gt; (2/2)</h2>
+        <ul>
+            <li>Нельзя устанавливать и target и var</li>
+            <li>scope опционален. Значение по умолчанию - page</li>
+            <li>Если value == null, аттрибут с именем, указанным в "var", будет удален</li>
+            <li>Если аттрибута с именем, указанным в "var" нет, он будет создан, но только, если value != null</li>
+            <li>Если target == null, контейнер кинет исключение</li>
+            <li>Если значение в target не bean и не Map, контейнер кинет исключение</li>
+            <li>Если bean не имеет свойства, указанного в property, контейнер кинет исключение</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Функция &lt;c:remove&gt;</h2>
+        <p class="thesis">
+            Удаляет аттрибут из контекстного объекта
+        </p>
+        <pre>
+            <code class="xml">
+        &lt;c:remove var="userStatus" scope="request"/&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>Подключение tld</h2>
+        <p class="thesis">Чтобы все вышеуказанные функции были доступны для использования на странице, нужно сделать следующее:</p>
+        <ul>
+            <li>Объявить tld с помощью директивы taglib</li>
+            <pre>
+                <code class="html">&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;</code>
+            </pre>
+            <li>Скачать jstl-1.2.jar и добавить ее на classpath</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h2>Tag Files</h2>
+        <p class="thesis">Служит для объявления своих собственных тэгов</p>
+    </section>
+    <section>
+        <h3>Header tag</h3>
+        <p>/WEB-INF/tags/header.tag</p>
+        <pre>
+            <code class="xml">
+    &lt;%@ attribute name="subTitle" required="true" rtexprvalue="true" %&gt;
+    &lt;em&gt;&lt;strong&gt;${subTitle}&lt;/strong&gt;&lt;/em&gt;
+            </code>
+        </pre>
+        <pre>
+            <code class="xml">
+    &lt;%@ taglib prefix="myTags" tagdir="/WEB-INF/tags" %&gt;
+    &lt;html&gt;
+    &lt;body&gt;
+        &lt;myTags:header subTitle="We take the String out of SOAP"/&gt;
+    ...
+    &lt;/html&gt;
+            </code>
+        </pre>
+    </section>
+    <section>
+        <h2>&lt;jsp:doBody/&gt; (1/2)</h2>
+        <p class="thesis">Используется для получения доступа к данным, которые могли быть указаны в теле тега</p>
+        <p>/WEB-INF/tags/header.tag</p>
+        <pre>
+            <code class="xml">&lt;em&gt;&lt;strong&gt;&lt;jsp:doBody/&gt;&lt;/strong&gt;&lt;/em&gt;</code>
+        </pre>
+        <p>my.jsp</p>
+        <pre>
+            <code class="xml">
+    &lt;%@ taglib prefix="myTags" tagdir="/WEB-INF/tags" %&gt;
+    &lt;myTags:header&gt;
+        very very long description
+    &lt;/myTags:header&gt;
+            </code>
+        </pre>
+    </section>
+</section>
+
+<section>
+    <h1>Проверка вводимых данных (валидация)</h1>
+    <ul>
+        <li>Все данные, вводимые пользователем должны проверяться на корректность
+            <ul>
+                <li>числовые поля не содержат букв</li>
+                <li>обязательные поля заполненны</li>
+                <li>значения находятся в допустимых пределах</li>
+                <li>и т.д.</li>
+            </ul>
+        </li>
+        <li>Для валидации полей формы можно использовать новые возможности, <a href="http://professorweb.ru/my/html/html5/level2/2_2.php">предоставляющиеся</a> в HTML5</li>
+        <li>Помимо клиентской валидации обязательно должна присутствовать и серверная</li>
+    </ul>
+</section>
+
+<section id="security-section">
+    <section>
+        <h1>Basic Authentication</h1>
+        <ul>
+            <li>Логин/пароль запрашивает браузер</li>
+            <li>Полученные логин и пароль пересылаются серверу (при этом используется кодировка Base64)</li>
+            <li>Замечания
+                <ul>
+                    <li>BASIC аутентификация поддерживается широким кругом приложений</li>
+                    <li>Кодировка Base64 ≠ Шифрование. Рекомендуется дополнительно использовать протокол HTTPS</li>
+                    <li>Не существует стандартного решения, чтобы сделать Log Out</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <section>
+        <h1>Настройка сервера</h1>
+        <ul>
+            <li>Добавить пользователя в <b>tomcat-users.xml</b></li>
+        </ul>
+            <pre>
+                <code class="xml">
+    &lt;tomcat-users&gt;
+        &lt;role rolename="administrator"/&gt;
+        &lt;user username="admin" password="11111" roles="administrator"/&gt;
+    &lt;/tomcat-users&gt;
+                </code>
+            </pre>
+    </section>
+    <section>
+        <h1>Фрагмент web.xml (приложение)</h1>
+            <pre>
+                <code class="xml">
+    &lt;!-- Security settings--&gt;
+    &lt;security-constraint&gt;
+        &lt;web-resource-collection&gt;
+            &lt;web-resource-name&gt;securePages&lt;/web-resource-name&gt;
+            &lt;url-pattern&gt;/pages/secure/*&lt;/url-pattern&gt;
+        &lt;/web-resource-collection&gt;
+        &lt;auth-constraint&gt;
+            &lt;role-name&gt;administrator&lt;/role-name&gt;
+        &lt;/auth-constraint&gt;
+    &lt;/security-constraint&gt;
+    &lt;login-config&gt;
+        &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+        &lt;realm-name&gt;Demo for students&lt;/realm-name&gt;
+    &lt;/login-config&gt;
+                </code>
+            </pre>
+    </section>
+    <section>
+        <h1>Доступ к защищённым URL</h1>
+        <img src="web-2.files/security-access-example.png">
+    </section>
+</section>
+
+<section>
+    <h2>Задания</h2>
+    <ul>
+        <li>Самостоятельно ознакомиться с <a href="https://developers.google.com/appengine/docs/java/config/webxml?hl=ru">Web.xml - deployment descriptor</a></li>
+        <li>Просмотреть уже реализованные вами JSP, сервлеты и, если необходимо, изменить, применяя полученные сегодня знания</li>
+    </ul>
+</section>
+
+<section>
+    <h1>Вопросы?</h1>
+</section>
+
+
 </div>
+<div class="progress" style="display: block;"><span></span></div>
+<div class="slide-number"></div>
 </div>
 
 <script src="reveal/lib/js/head.min.js"></script>
@@ -869,15 +918,15 @@ public class UploadServlet extends HttpServlet {
 
         controls: true,// Display controls in the bottom right corner
         progress: true,	// Display a presentation progress bar
-        history: false,// Push each slide change to the browser history
+        history: true,// Push each slide change to the browser history
         keyboard: true,// Enable keyboard shortcuts for navigation
         overview: true,// Enable the slide overview mode
-        center: false,	// Vertical centering of slides
+        center: true,	// Vertical centering of slides
         loop: false,// Loop the presentation
         rtl: false,	// Change the presentation direction to be RTL
         autoSlide: 0,
         mouseWheel: false,// Enable slide navigation via mouse wheel
-        rollingLinks: false,// Apply a 3D roll to links on hover
+        rollingLinks: true,// Apply a 3D roll to links on hover
         transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
 
         dependencies: [
@@ -910,6 +959,7 @@ public class UploadServlet extends HttpServlet {
             } }
         ]
     });
+
 </script>
 </body>
 </html>

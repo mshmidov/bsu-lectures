@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Web applications in Java</title>
+    <title>Servlet API, JSP</title>
 
-    <meta name="author" content="Maxim Shmidov">
+    <meta name="author" content="Sergey Krauchenia">
 
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -21,471 +21,392 @@
     <script>
         document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
     </script>
+    <style>
+        .middle-block {
+            position: absolute;
+            top: 26%;
+            left: 16%;
+        }
 
-    <!--[if lt IE 9]>
-    <script src="reveal/lib/js/html5shiv.js"></script>
-    <![endif]-->
+        .p-left {
+            text-align: left;
+        }
 
+    </style>
 </head>
 
 <body>
 
-    <div id="exadel-header"></div>
+<div id="exadel-header"></div>
 
-    <div class="reveal">
-        <div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+<div class="reveal">
+<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
 
-            <section>
+<section>
+    <h1 style="margin-top: 150px;">Servlet API</h1>
 
-                <h1>Web applications in Java part 1</h1>
+    <h1>Java Server Pages (JSP)</h1>
+    <h2>Часть 1</h2>
+    <i>© 2014 Sergey Krauchenia</i>
 
-                <p class="thesis">Web-приложения на данный момент доминируют на рынке ПО.</p>
+</section>
 
-                <p class="thesis">Опыт разработки web-приложений пригодится и на быстро растущем рынке мобильных
-                    приложений.</p>
-
-            </section>
-
-            <section>
-                <h1>Клиент-серверная архитектура</h1>
-
-                <h2>Толстый клиент</h2>
-
-                <p class="thesis">В данной модели сервер отвечает за хранение данных, организацию и разграничение
-                    доступа к ним. Клиент выполняет большую часть вычислительной работы.</p>
-
-                <p>Преимущества:</p>
-                <ul>
-                    <li>Высокая скорость обработки данных.</li>
-                    <li>&laquo;Родной&raquo; пользовательский интерфейс.</li>
-                </ul>
-                <p>Недостатки:</p>
-                <ul>
-                    <li>Сложность обновления клиентского ПО.</li>
-                    <li>Необходимость поддерживать версии для разных ОС.</li>
-                </ul>
-
-            </section>
-
-            <section>
-                <h1>Клиент-серверная архитектура</h1>
-
-                <h2>Тонкий web-клиент</h2>
-
-                <p class="thesis">В данной модели вычислениями занимается в основном сервер. Клиент отображает
-                    интерфейс, запрашивает данные и минимально манипулирует ими.</p>
-
-                <p>Преимущества:</p>
-                <ul>
-                    <li>Клиенту нужен только браузер.</li>
-                    <li>Одна версия ПО годится для любой ОС.</li>
-                    <li>Новая версия мгновенно становится доступна всем.</li>
-                </ul>
-                <p>Недостатки:</p>
-                <ul>
-                    <li>Необходимо решать проблемы масштабирования серверов.</li>
-                    <li>Полная зависимость клиента от работоспособности сетевого подключения.</li>
-                </ul>
-
-            </section>
-
-            <section>
-                <h1>Технический стек веб-приложения</h1>
-
-                <dl>
-                    <dt>Интерфейс</dt>
-                    <dd><abbr title="Hypertext Markup Language">HTML</abbr> + <abbr
-                            title="Cascading Stylesheets">CSS</abbr> + JavaScript
-                    </dd>
-                    <dt>Коммуникация с сервером</dt>
-                    <dd><abbr title="Hypertext Transfer Protocol">HTTP</abbr> + <abbr
-                            title="JavaScript Object Notation">JSON</abbr> или <abbr title="Extensible Markup Language">XML</abbr>
-                    </dd>
-                    <dt>Серверная логика</dt>
-                    <dd>Java, PHP, Python, Ruby и множество других языков программирования</dd>
-                </dl>
-
-            </section>
-
-            <section>
-                <section>
-                    <h1>HTTP (1/5)</h1>
-
-                    <p class="thesis">HTTP &mdash; это протокол обмена данными между клиентом и сервером по
-                        принципу &laquo;запрос&ndash;ответ&raquo;</p>
-
-                    <p class="thesis">HTTP определяет список стандартных типов запроса (методов)</p>
-
-                    <p class="thesis">HTTP определяет список стандартных кодов ответа</p>
-
-                    <p class="thesis">HTTP&ndash;сообщение &mdash; это простой текст</p>
-
-                </section>
-
-                <section>
-                    <h1>HTTP (2/5)</h1>
-                    <h2>Методы</h2>
-                    <dl>
-                        <dt>GET</dt>
-                        <dd>Запрашивает у сервера ресурс</dd>
-                        <dt>POST</dt>
-                        <dd>Отправляет на сервер данные</dd>
-                        <dt>HEAD</dt>
-                        <dd>Запрашивет у сервера заголовки ресурса</dd>
-                        <dt>OPTIONS</dt>
-                        <dd>Запрашивает у сервера список методов, применимых к ресурсу</dd>
-                        <dt>PUT</dt>
-                        <dd>Предлагает серверу сохранить передаваемые данные в качестве нового ресурса</dd>
-                        <dt>DELETE</dt>
-                        <dd>Предлагает серверу удалить ресурс</dd>
-                    </dl>
-
-                </section>
-
-                <section>
-                    <h1>HTTP (3/5)</h1>
-
-                    <h2>Статусы (коды ответа)</h2>
-                    <ul>
-                        <li>1xx &mdash; информационные</li>
-                        <li>2xx &mdash; успешные</li>
-                        <li>3xx &mdash; перенаправление</li>
-                        <li>4xx &mdash; ошибки клиента</li>
-                        <li>5xx &mdash; ошибки сервера</li>
-                    </ul>
-
-                    <p>Наиболее частые статусы:</p>
-                    <ul>
-                        <li>200 OK</li>
-                        <li>403 Forbidden</li>
-                        <li>404 Not Found</li>
-                        <li>502 Bad Gateway</li>
-                        <li>504 Gateway Timeout</li>
-                    </ul>
-
-                </section>
-
-                <section>
-                    <h1>HTTP (4/5)</h1>
-
-                    <h2>Пример запроса</h2>
-
-                    <p>Начальная строка:</p>
-                    <pre><code>GET / HTTP/1.1</code></pre>
-                    <p>Заголовки</p>
-                    <pre><code class="HTTP">Host: www.isup.me
-Connection: keep-alive
-Cache-Control: max-age=0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.68 Safari/537.17
-Accept-Encoding: gzip,deflate,sdch
-Accept-Language: en-US,en;q=0.8,ru;q=0.6
-Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3</code></pre>
-                    <p>Обязательная пустая строка</p>
-                    <pre><code><br></code></pre>
-                    <p>Тело сообщения (необязательно)</p>
-                    <pre><code>[Его в нашем случае и нет. В случае POST-запроса здесь были бы данные.]</code></pre>
-
-                </section>
-
-                <section>
-                    <h1>HTTP (5/5)</h1>
-
-                    <h2>Пример ответа</h2>
-
-
-                    <p>Начальная строка:</p>
-                    <pre><code class="HTTP">HTTP/1.1 200 OK</code></pre>
-
-                    <p>Заголовки</p>
-                    <pre><code class="HTTP">Server: nginx/1.2.1
-Date: Fri, 08 Feb 2013 11:04:05 GMT
-Content-Type: text/html;charset=utf-8
-Transfer-Encoding: chunked
-Connection: keep-alive
-Status: 200
-Content-Encoding: gzip</code></pre>
-                    <p>Обязательная пустая строка</p>
-                    <pre><code><br></code></pre>
-                    <p>Тело сообщения</p>
-                    <pre><code>&lt;html&gt;
-    &lt;head&gt;
-        ...
-    &lt;/head&gt;
-    &lt;body&gt;
-        ...
-    &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-                </section>
-
-            </section>
-
-            <section>
-                <section>
-                    <h1>Передача данных на сервер (1/3)</h1>
-                    <h2>Query string (для GET-запросов)</h2>
-                    <pre><code class="HTTP">http://en.wikipedia.org/w/index.php?search=http&title=Special%3ASearch&fulltext=1</code></pre>
-                    <ul>
-                        <li>После имени ресурса ставим вопрос</li>
-                        <li>Перечисляем параметры в формате &laquo;ключ=значение&raquo;</li>
-                        <li>Разделяем параметры амперсандом</li>
-                        <li>Заменяем не-ASCII символы на их коды по стандарту URL encoding</li>
-                    </ul>
-                </section>
-                <section>
-                    <h1>Передача данных на сервер (2/3)</h1>
-                    <h2><abbr title="Representational State Transfer">REST</abbr>ful URLs (для GET и POST-запросов)</h2>
-                    <pre><code class="HTTP">http://en.wikipedia.org/search/fulltext/http</code></pre>
-                    <ul>
-                        <li>На сервере нет физического ресурса, соответствующего данному URL</li>
-                        <li>Вместо этого серверное приложение обрабатывает URL, выделяя из него параметры</li>
-                    </ul>
-                </section>
-                <section>
-                    <h1>Передача данных на сервер (3/3)</h1>
-                    <h2>POST-параметры (для POST-запросов)</h2>
-                    <pre><code class="HTTP">POST http://en.wikipedia.org/w/index.php HTTP/1.1
-User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.68 Safari/537.17
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 45
-
-search=http&title=Special%3ASearch&fulltext=1</code></pre>
-                    <ul>
-                        <li>Параметры формируются так же, как в случае query string</li>
-                        <li>Параметры отправляются в теле POST-запроса</li>
-                    </ul>
-
-                </section>
-            </section>
-
-            <section>
-                <h1>Серверные приложения</h1>
-                <p>Серверное ПО состоит как правило из двух характерных частей:</p>
-                <dl>
-                    <dt>Веб-сервер</dt>
-                    <dd>Контейнер, в котором &laquo;крутятся&raquo; ваши приложения. Берёт на себя однообразную техническую работу.</dd>
-                    <dt>Приложение</dt>
-                    <dd>Ваш код, решающий ваши задачи.</dd>
-                </dl>
-
-               <p>В Java это выглядит так:</p>
-                <dl>
-                    <dt>Веб-сервер</dt>
-                    <dd>Apache Tomcat, Glassfish, JBoss AS, и.т.п.</dd>
-                    <dt>Приложение</dt>
-                    <dd>Java-классы, специальным образом упакованные в war-архив</dd>
-                </dl>
-
-            </section>
-
-            <section>
-                <h1>WAR</h1>
-                <ul>
-                    <li>.war&ndash;файл &mdash; это zip&ndash;файл, в котором лежат классы, страницы и другие
-                        файлы, необходимые для работы веб-приложения.</li>
-                    <li>war&ndash;файл должен иметь определённую структуру:
-                        <dl>
-                            <dt>/WEB-INF/</dt>
-                            <dd>Всё, что находится в этом каталоге, защищено от прямого доступа из сети. Здесь находится
-                                основная часть приложения.</dd>
-                            <dt>/WEB-INF/web.xml</dt>
-                            <dd>В этом файле содержатся ключевые настройки вашего приложения.</dd>
-                            <dt>/WEB-INF/classes/</dt>
-                            <dd>В этом каталоге находятся скомпилированные классы java&ndash;приложения.</dd>
-                            <dt>/WEB-INF/lib/</dt>
-                            <dd>В этом каталоге находятся jar&ndash;библиотеки, необходимые приложению.</dd>
-                        </dl>
-                        Снаружи каталога WEB-INF обычно кладут веб-страницы, скрипты, стили и другой статический контент.
-                    </li>
-                    <li>Все java&ndash;сервера умеют работать с организованным таким образом war&ndash;файлами.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h1>web.xml</h1>
-                <pre><code class="xml">&lt;!DOCTYPE web-app PUBLIC
-"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-"http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
-
-&lt;web-app&gt;
-    &lt;display-name&gt;Web Demo Application&lt;/display-name&gt;
-
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.exadel.lectures.second.web.hello.HelloServlet&lt;/servlet-class&gt;
-    &lt;/servlet&gt;
-
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/hello.html&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-
-    &lt;welcome-file-list&gt;
-        &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
-    &lt;/welcome-file-list&gt;
-
-&lt;/web-app&gt;</code></pre>
-            </section>
-
-            <section>
-                <section>
-                    <h1>Servlet API (1/2)</h1>
-                    <h2>javax.servlet.http.HttpServlet</h2>
-                    <p class="thesis">Http&ndash;сервлет - это класс, предназначенный для обслуживания входящих HTTP&ndash;запросов.</p>
-                    <pre><code class="java">public abstract class HttpServlet extends GenericServlet
-        implements java.io.Serializable {
-
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException;
-
-        protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException;
-
-        protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException;
-
-        protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException;
-
-        protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException;
-
-    }</code></pre>
-                </section>
-
-                <section>
-                    <h1>Servlet API (2/2)</h1>
-                    <pre><code class="java">@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-
-    final String name = request.getParameter("name");
-    response.getWriter().write("&lt;html&gt;&lt;body&gt;" + name + "&lt;/body&gt;&lt;/html&gt;");
-}</code></pre>
-                </section>
-            </section>
-
-            <section>
-
-                <section>
-                   <h1>Apache Tomcat (1/2)</h1>
-                   <p><a href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></p>
-
-                    <ul>
-                        <li>Простой и надёжный контейнер сервлетов</li>
-                        <li>Реализует стандарты Java Servlet и JavaServer Pages</li>
-                        <li>Очень популярен</li>
-                        <li>Легко развернуть и настроить</li>
-                    </ul>
-
-                </section>
-
-                <section>
-                    <h1>Apache Tomcat (1/2)</h1>
-                    <h2>Установка</h2>
-
-                    <ol>
-                        <li>Ставим Java</li>
-                        <li>Скачиваем и распаковываем tomcat</li>
-                        <li>Запускать: bin/startup.bat</li>
-                        <li>war&ndash;файлы класть в каталог webapp</li>
-                        <li>Приложения доступны по адресу http://localhost:8080/{имя war&ndash;файла}/</li>
-                        <li>Останавливать: bin/shutdown.bat</li>
-                    </ol>
-                </section>
-
-            </section>
+    <section>
         <section>
-            <section>
-                <h1>Java Service Pages</h1>
-                <ul>
-                    <li>Технология, позволяющая комбинировать статический и динамический контент</li>
-                    <li>Предоставляет большой набор тэгов</li>
-                    <li>EL (Expression Language)</li>
-                    <li>Высокая производительность за счет трансляции кода страницы в java-code и его
-                    последующей компиляции в байт-код</li>
-                </ul>
-            </section>
-            <section>
-                <h1>hello.jsp</h1>
-                <pre><code class="jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
-&lt;%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;Hello using JSP&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;Hello
-        &lt;c:if test="${not empty param.name}"&gt;
-            &lt;c:out value=" ${param.name}"/&gt;
-        &lt;/c:if&gt;
-        !!!&lt;/h1&gt;
-    &lt;p&gt;Response to &lt;c:out value="${pageContext.request.method}"/&gt; request&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-            </section>
+            <h1>Hello, World Servlet</h1>
+            <p>Цель - страничка hello-world, которую будет "отдавать" сервер</p>
         </section>
         <section>
-            <h2>Полезные ссылки:</h2>
+            <h2>1. Servlet container</h2>
             <ul>
-                <li><a href="http://www.w3.org">w3.org</a> - Консорциум Всемирной паутины</li>
-                <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">w3.org/Protocols/rfc2616/rfc2616.html</a> - HTTP spec</li>
-                <li><a href="http://www.w3schools.com">w3schools.com</a> - хороший справочный ресурс по html, css, js</li>
-                <li><a href="http://htmlbook.ru">htmlbook.ru</a> - русскоязычный хороший справочный ресурс</li>
+                <li><a href="http://ftp.byfly.by/pub/apache.org/tomcat/tomcat-8/v8.0.3/bin/apache-tomcat-8.0.3.zip">Скачать</a></li>
+                <li>Распаковать куда угодно. Далее TOMCAT_DIR</li>
             </ul>
         </section>
-        </div>
-    </div>
+        <section>
+            <h2>2. Создаем структуру проекта</h2>
+            <img src="web-1.files/hw-structure.png">
+        </section>
+        <section>
+            <h2>3. HelloWorldServlet.java</h2>
+            <pre>
+                <code class="java web-lecture-example">
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
 
-    <script src="reveal/lib/js/head.min.js"></script>
-    <script src="reveal/js/reveal.min.js"></script>
+@WebServlet(name = "helloWorld", urlPatterns = {"/hi"})
+public class HelloWorldServlet extends HttpServlet {
 
-    <script>
-        Reveal.initialize({
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().write("&lt;h1&gt;Hello, world!&lt;/h1&gt;");
+    }
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h2>4. Компилируем код</h2>
+            <p>Запускаем из директории проекта <b>hello-world</b></p>
+            <pre>
+                <code class="console web-lecture-example">
+>javac -classpath TOMCAT_DIR/lib/servlet-api.jar -d WEB-INF/classes src/HelloWorldServlet.java
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h2>5. Deployment и запуск</h2>
+            <ul>
+                <li>Копируем папку hello-world в TOMCAT_DIR/webapps/</li>
+                <li>Запускаем томкат</li>
+                <pre>
+                    <code class="console">
+        >TOMCAT_DIR/bin/startup.sh
+                    </code>
+                </pre>
+            </ul>
+        </section>
+        <section>
+            <h2>6. Проверяем</h2>
+            <p>Набираем в адресной строке браузера адрес сервлета и ожидаем ответ в виде страницы</p>
+            <img src="web-1.files/hw-response.png"/>
+        </section>
+        <section>
+            <h2>Адрес сервлета</h2>
+            <img src="web-1.files/hw-servlet-address.png">
+        </section>
+    </section>
 
-            controls: true,// Display controls in the bottom right corner
-            progress: true,	// Display a presentation progress bar
-            history: false,// Push each slide change to the browser history
-            keyboard: true,// Enable keyboard shortcuts for navigation
-            overview: true,// Enable the slide overview mode
-            center: false,	// Vertical centering of slides
-            loop: false,// Loop the presentation
-            rtl: false,	// Change the presentation direction to be RTL
-            autoSlide: 0,
-            mouseWheel: false,// Enable slide navigation via mouse wheel
-            rollingLinks: false,// Apply a 3D roll to links on hover
-            transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+    <section>
+        <section>
+            <h1>Servlet Container</h1>
+        </section>
+        <section>
+            <h2>Что делает контейнер сервлетов?</h2>
+            <ul>
+                <li class="fragment roll-in">Создает сервлеты</li>
+                <li class="fragment roll-in">Ищет нужный сервлет для обработки запроса</li>
+                <li class="fragment roll-in">Оборачивает Http-запрос/ответ в удобные объекты HttpServletRequest/HttpServletResponse</li>
+                <li class="fragment roll-in">Вызывает метод сервлета и передает туда соответствующие объекты запроса/ответа</li>
+                <li class="fragment roll-in">Управляет жизненным циклом сервлета</li>
+                <li class="fragment roll-in">И т.д.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (1/6)</h2>
+            <p>Пользователь отправляет запрос на URL сервлета</p>
+            <img src="web-1.files/request-handling-1.png">
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (2/6)</h2>
+            <p>Контейнер создает 2 объекта HttpServletRequest и HttpServletResponse</p>
+            <img src="web-1.files/request-handling-2.png">
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (3/6)</h2>
+            <p>Контейнер находит нужный сервлет по URL-у запроса, создает или выделяет thread для запроса и передает в него объекты запроса и ответа</p>
+            <img src="web-1.files/request-handling-3.png">
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (4/6)</h2>
+            <p>Контейнер вызывает метод service(), который в зависимости от метода запроса вызывает нужный метод, например doGet</p>
+            <img src="web-1.files/request-handling-4.png">
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (5/6)</h2>
+            <p>doGet метод генерирует код страницы и делает его частью ответа</p>
+            <img src="web-1.files/request-handling-5.png">
+        </section>
+        <section>
+            <h2>Как выглядит процесс обработки запроса (6/6)</h2>
+            <p>Контейнер конвертирует объект HttpServletResponse в  HTTP-ответ и отдает клиенту. Удаляет объекты запроса и ответа</p>
+            <img src="web-1.files/request-handling-6.png">
+        </section>
 
-            dependencies: [
-                // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-                { src: 'reveal/lib/js/classList.js', condition: function () {
-                    return !document.body.classList;
-                } },
-                // Interpret Markdown in <section> elements
-                { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
-                    return !!document.querySelector('[data-markdown]');
-                } },
-                { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
-                    return !!document.querySelector('[data-markdown]');
-                } },
-                // Syntax highlight for <code> elements
-                { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
-                    hljs.tabReplace = '    ';
-                    hljs.initHighlightingOnLoad();
-                } },
-                // Zoom in and out with Alt+click
-                { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
-                    return !!document.body.classList;
-                } },
-                // Speaker notes
-                { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
-                    return !!document.body.classList;
-                } },
-                { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
-                    clock.init("exadel-header");
-                } }
-            ]
-        });
-    </script>
+    </section>
+
+    <section>
+        <section>
+            <h1>Integrated development environment (IDE)</h1>
+            <p>Мы рекомендуем Intellij IDEA в качестве среды разработки</p>
+            <p>Можно скачать <a href="http://confluence.jetbrains.com/display/IDEADEV/IDEA+13.1+EAP">Отсюда</a></p>
+            <p>IDE избавит от рутинной процедуры сборки и деплоя приложения, поможет ускорить разработку, облегчит процесс дебага</p>
+        </section>
+        <section>
+            <h1>Как создать Web-проект в IDEA (1/4)</h1>
+            <img src="web-1.files/ide-new-project-1.png">
+        </section>
+        <section>
+            <h1>Как создать Web-проект в IDEA (2/4)</h1>
+            <img src="web-1.files/ide-new-project-2.png">
+        </section>
+        <section>
+            <h1>Как создать Web-проект в IDEA (3/4)</h1>
+            <img src="web-1.files/ide-new-project-3.png">
+            <img src="web-1.files/ide-new-project-4.png">
+        </section>
+        <section>
+            <h1>Как создать Web-проект в IDEA (4/4)</h1>
+            <img src="web-1.files/ide-new-project-5.png">
+        </section>
+    </section>
+    <section>
+        <section>
+            <h2>Как можно отправить данные на сервер?</h2>
+            <div class="fragment roll-in">
+                <p>С помощью формы</p>
+                <pre>
+                    <code class="html web-lecture-example">
+    &lt;form method="post" action="send-data"&gt;
+        &lt;input name="fullName" placeholder="Name"/&gt;
+        &lt;input name="age" placeholder="Age"&gt;
+        &lt;input type="submit" value="Submit"&gt;
+    &lt;/form&gt;
+                    </code>
+                </pre>
+            </div>
+        </section>
+        <section>
+            <h2>Как такие данные можно обработать на сервере?</h2>
+            <div class="fragment roll-in">
+                <pre>
+                    <code class="java web-lecture-example">
+@WebServlet(name = "submitForm", urlPatterns = {"/send-data"})
+public class SubmitFormServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("fullName");
+        Integer age = Integer.parseInt(req.getParameter("age"));
+    }
+}
+                    </code>
+                </pre>
+            </div>
+        </section>
+        <section>
+            <h2>Как еще можно отправить данные на сервер?</h2>
+            <div class="fragment roll-in">
+                <p>Как часть URL-a GET-запроса</p>
+                <dl>
+                    <dt>http://localhost:8080/send-data?fullName=Pushkin&age=37</dt>
+                    <dd>Параметры указываются после знака вопроса в формате <b>paramName=paramValue</b>. Если параметров несколько,
+                    они разделяются амперсандом (&amp;)</dd>
+                    <dd>Такой запрос обрабатывает так же как и предыдущий, но так как это GET-запрос, обработка описывается в
+                    методе doGet</dd>
+                </dl>
+            </div>
+        </section>
+        <section>
+
+        </section>
+    </section>
+
+<section id="mvc-section">
+    <section>
+        <h1>Model-View-Controller (MVC)</h1>
+        <span class="thesis">
+            Основная цель применения – отделить логику от представления
+        </span>
+        <ul>
+            <li><b>Model</b> - данные и методы для работы с ними, бизнес логика</li>
+            <li><b>View</b> - отвечает за отображение информации, работает с контроллером</li>
+            <li><b>Controller</b> - обеспечивает связь между пользователем и системой (ввод данных
+                пользователем и навигация, использует модель и представление)
+            </li>
+        </ul>
+    </section>
+    <section>
+        <img src="web-1.files/mvc-diagram.jpg" style="width:40%;height:40%;">
+    </section>
+    <section>
+        <h1>Преимущества MVC</h1>
+        <ul>
+            <li>К одной Model можно присоединить разные View</li>
+            <i>Пример: данные могут быть представлены в виде HTML страницы для браузера или PDF отчёта</i>
+            <li>Одни и те же Model и View могут быть использованны разными Controller</li>
+            <i>упрощается создание страниц с похожей функциональностью</i>
+            <li>Разделение труда разработчиков – Model и View часто могут разрабатываться независимо.</li>
+        </ul>
+    </section>
+</section>
+
+<section id="app-navigation-section">
+    <section>
+        <h1>Навигация</h1>
+        <h2>Основные способы навигации в web приложении Java:</h2>
+        <ul>
+            <li>Redirect</li>
+            <li>Forward</li>
+        </ul>
+    </section>
+    <section>
+        <h1>Redirect</h1>
+        <ul>
+            <li>Сервер отправляет браузеру указание перейти на другой URL</li>
+            <li>В качестве адреса перехода может быть указан любой URL</li>
+            <li>Браузер получает указание о переходе и осуществляет открытие указанного URL (соответсвенно меняется ардесная строка)</li>
+            <li><b>HttpServletResponse.sendRedirect(location)</b></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Forward</h1>
+        <ul>
+            <li>Cервлет/JSP могут делегировать обработку запроса другому сервлету/JSP, причём только в рамках данного web приложения.</li>
+            <li>Компонент (сервлет/JSP) который будет осуществлять обрабоку действует в рамках того же самого запроса.</li>
+            <li>Браузер не знает про делегацию обработки</li>
+            <li><b>ServletRequest.getRequestDispatcher(url) и RequestDispatcher.forward(request, response)</b></li>
+            <li>Информацию между объектами можно передавать используя <b>ServletRequest.setAttribute</b></li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Пример сервлета</h1>
+        <p>http://localhost:8080/show-person?id=5</p>
+            <pre>
+                <code class="java web-lecture-example">
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String id = request.getParameter("id");
+
+    Person person = new Person();
+    if (id != null) {
+        person = personService.getPersonById(Integer.parseInt(id));
+    }
+    request.setAttribute("person", person);
+
+    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/edit.jsp");
+    dispatcher.forward(request, response);
+}
+                </code>
+            </pre>
+    </section>
+    <section>
+        <h1>Пример: edit.jsp</h1>
+            <pre>
+                <code class="jsp web-lecture-example">
+    &lt;form id="myform" action="demo/person" method="post"&gt;
+        &lt;table&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Id(Required)&lt;/td&gt;
+                &lt;td&gt;&lt;input id="id" name="personId" value="${person.id}"/&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            ...
+        &lt;/table&gt;
+
+        &lt;input type="submit" value="Save"/&gt;
+    &lt;/form&gt;
+                </code>
+            </pre>
+    </section>
+
+</section>
+<section>
+    <h2>Задание</h2>
+    <ul>
+        <li>Создать web-проект</li>
+        <li>Реализовать необходимые классы сервлетов и обеспечить переходы между страницами</li>
+        <li>Из уже свёрстаных html-страниц сделать jsp-страницы. Показывать на них динамический контент - список пользователей, редактирование пользователя и т.д.</li>
+        <li>Реализовать слой приложения, который занимается сохранением данных (на данном этапе в памяти)</li>
+    </ul>
+</section>
+
+</div>
+<div class="progress" style="display: block;"><span></span></div>
+<div class="slide-number"></div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: true,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: true,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: true,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+
+</script>
 </body>
 </html>
