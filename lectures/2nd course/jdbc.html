@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>JDBC</title>
+
+    <meta name="author" content="Sergey Krauchenia">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link rel="stylesheet" href="reveal/css/reveal.css">
+    <link rel="stylesheet" href="reveal/css/theme/exadel/exadel.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+    <style>
+        .middle-block {
+            position: absolute;
+            top: 26%;
+            left: 16%;
+        }
+
+        .p-left {
+            text-align: left;
+        }
+
+        .reveal pre {
+            word-wrap: normal !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="exadel-header"></div>
+
+<div class="reveal">
+<div class="slides"><!-- Any section element inside of this container is displayed as a slide -->
+
+<section>
+    <h1 style="margin-top: 150px;">World wide web</h1>
+
+    <h1>JDBC overview</h1>
+    <i>© 2014 Sergey Krauchenia</i>
+
+</section>
+
+    <section id="overview">
+        <section>
+            <span style="font-size: 50px;"><b>JDBC</b> - <b>J</b>ava <b>D</b>ata<b>b</b>ase <b>C</b>onnectivity</span>
+            <br><br>
+            <span>Используется для:</span>
+            <br><br>
+            <div>
+                <ul>
+                    <li>Установления соединения с базой данных</li>
+                    <li>Выполнением SQL запросов</li>
+                    <li>Работой с результатом запросов</li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h2>Взаимодействие DriverManager, JDBC Driver и вашего приложения</h2>
+            <img src="jdbc.files/JDBC-Architecture.gif">
+        </section>
+    </section>
+
+    <section>
+        <section>
+            <h2>JDBC connection</h2>
+        </section>
+        <section>
+            <h3>Что надо сделать, чтобы создать соединение</h3>
+            <ul>
+                <li>Зарегистрировать драйвер</li>
+                <li>Определить URL к базе</li>
+                <li>Создать объект соединения</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Пример создания соединения к базе MySQL</h3>
+            <pre>
+                <code class="java">
+    Class.forName("com.mysql.jdbc.Driver");
+
+    String url = "jdbc:mysql://localhost:3306/users";
+    String user = "root";
+    String password = "root";
+
+    Connection connection = DriverManager.getConnection(url, user, password);
+                </code>
+            </pre>
+        </section>
+    </section>
+    <section id="driver">
+        <h2>JDBC Driver</h2>
+        <span>Чтобы создать соединение к базе, драйвер должен быть доступен в classpath</span>
+        <ul>
+            <li>PostgreSQL - <a href="http://bit.ly/1flyM1z">http://bit.ly/1flyM1z</a></li>
+            <li>Mysql - <a href="http://bit.ly/1tR9ixk">http://bit.ly/1tR9ixk</a></li>
+        </ul>
+    </section>
+
+    <section id="statements">
+        <section>
+            <h2>JDBC Statement, CallableStatement, PreparedStatement</h2>
+            <span class="thesis">Интерфейсы, определяющие методы и свойства для посылки SQL на исполнение и получения данных как результат посланых запросов</span>
+        </section>
+        <section>
+            <dl>
+                <dt>Statement</dt>
+                <dd>Используется для выполнения статичного SQL, не принимает параметров</dd>
+
+                <dt>PreparedStatement</dt>
+                <dd>Полезен, когда вы планируете использовать SQL зарпос много раз и с параметрами</dd>
+
+                <dt>CallableStatement</dt>
+                <dd>Используется для вызова хранимых процедур</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Statement. Создание</h2>
+            <pre>
+                <code class="java">
+    try(Statement stmt = getConnection().createStatement()) {
+        ...
+    } catch (SQLException e) {
+        ...
+    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h2>Statement. Методы</h2>
+            <dl>
+                <dt>int executeUpdate(String SQL)</dt>
+                <dd>Возвращает кол-во затронутых строк выполнением запроса. Используется для INSERT, UPDATE, или DELETE</dd>
+
+                <dt>ResultSet executeQuery(String SQL)</dt>
+                <dd>Возвращает объект ResultSet. Используется для SELECT.</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>PreparedStatement. Создание</h2>
+            <pre>
+                <code class="java">
+String sql = "Update Employees SET age = ? WHERE id = ?";
+
+try(PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
+    pstmt.setInt(1, 21);
+    pstmt.setLong(2, 53221);
+
+} catch (SQLException e) {
+    ...
+}
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h2>PreparedStatement. Parameters</h2>
+            <ul>
+                <li>В качестве маркера параметров используется знак вопроса</li>
+                <li>Методы вида setXXX() предназначены для того, чтобы связать определенный параметр запроса и его значение</li>
+                <li>Если вы забудете указать значение параметра, то получите SQLException</li>
+            </ul>
+        </section>
+    </section>
+
+    <section id="resultSets">
+        <section>
+            <h2>JDBC Result Sets</h2>
+            <span class="thesis">Представляет результат исполнения запроса типа SELECT, который имеет вид множества строк (row)</span>
+        </section>
+        <section>
+            <h2>Группы методов</h2>
+            <dl>
+                <dt>Навигационные</dt>
+                <dd>Предназначены для навигации по ResultSet</dd>
+
+                <dt>Get-Методы</dt>
+                <dd>Предназначены для получения доступа к данным в колонках текущей строки, на которую указывает курсор ResultSet'a</dd>
+
+                <dt>Update-Методы</dt>
+                <dd>Предназначены для обновления данных в колонках текущей строки</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Пример</h2>
+            <pre>
+                <code class="java">
+    Statement statement = connection.createStatement();
+    ResultSet resultSet = statement.executeQuery("select * from task");
+    while(resultSet.next()) {
+        long id = resultSet.getLong("id");
+        String name = resultSet.getString("title");
+
+        System.out.println(String.format("%s: %s", id, name));
+    }
+                </code>
+            </pre>
+        </section>
+    </section>
+
+    <section id="data-types">
+        <section>
+            <h2>Маппинг типов данных</h2>
+            <table>
+                <tr>
+                    <th>SQL</th>
+                    <th>JDBC/Java</th>
+                </tr>
+                <tr>
+                    <td>VARCHAR, CHAR, LONGVARCHAR</td><td>java.lang.String</td>
+                </tr>
+                <tr>
+                    <td>BIT</td><td>boolean</td>
+                </tr>
+                <tr>
+                    <td>NUMERIC</td><td>java.math.BigDecimal</td>
+                </tr>
+                <tr>
+                    <td>TINYINT</td><td>byte</td>
+                </tr>
+                <tr>
+                    <td>SMALLINT</td><td>short</td>
+                </tr>
+                <tr>
+                    <td>INTEGER</td><td>int</td>
+                </tr>
+                <tr>
+                    <td>BIGINT</td><td>long</td>
+                </tr>
+                <tr>
+                    <td>REAL, FLOAT</td><td>float</td>
+                </tr>
+                <tr>
+                    <td>DOUBLE</td><td>double</td>
+                </tr>
+                <tr>
+                    <td>DATE</td><td>java.sql.Date</td>
+                </tr>
+                <tr>
+                    <td>TIME</td><td>java.sql.Time</td>
+                </tr>
+                <tr>
+                    <td>TIMESTAMP</td><td>java.sql.Timestamp</td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h2>NULL</h2>
+            <span class="thesis">Значения NULL по разному интерпретируются в java и SQL. Например поле с типом int будет иметь значение 0. Чтобы узнать было ли оно NULL, можно использовать метод <b>resultSet.wasNull()</b></span>
+        </section>
+    </section>
+
+    <section id="transactions">
+        <section>
+            <h2>JDBC Транзакции</h2>
+            <span class="thesis">Если параметр <b>аutoСommit</b> выставлен в <b>true</b>, то каждый запрос на обновление записей в базе будет немедленно зафиксирован. По умолчанию его значение <b>true</b></span>
+            <span>Как поменять значение</span>
+            <pre>
+                <code class="java">    connection.setAutoCommit(false);</code>
+            </pre>
+        </section>
+        <section>
+            <h2>Commit и Rollback</h2>
+            <dl>
+                <dt>connection.commit();</dt>
+                <dd>Фиксирует изменения</dd>
+
+                <dt>connection.rollback();</dt>
+                <dd>Откатывает изменения</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Пример</h2>
+            <pre>
+                <code class="java">
+    try {
+        //Assume a valid connection object conn
+        conn.setAutoCommit(false);
+        Statement stmt = conn.createStatement();
+
+        String SQL = "INSERT INTO Employees VALUES (106, 20, 'Rita', 'Tez')";
+        stmt.executeUpdate(SQL);
+        //Submit a malformed SQL statement that breaks
+        String illegalSql = "INSERTED IN Employees VALUES (107, 22, 'Sita', 'Singh')";
+        stmt.executeUpdate(illegalSql);
+        // If there is no error.
+        conn.commit();
+    } catch (SQLException se) {
+        // If there is any error.
+        conn.rollback();
+    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h2>Savepoint</h2>
+            <span class="thesis">
+                Локальная точка отката
+            </span>
+            <pre>
+                <code class="java">
+    Savepoint savepoint = null;
+    try {
+        //Assume a valid connection object conn
+        conn.setAutoCommit(false);
+        Statement stmt = conn.createStatement();
+
+        //set a Savepoint
+        savepoint = conn.setSavepoint("savepoint");
+        String SQL = "INSERT INTO Employees VALUES (106, 20, 'Rita', 'Tez')";
+        stmt.executeUpdate(SQL);
+        //Submit a malformed SQL statement that breaks
+        String illegalSql = "INSERTED IN Employees VALUES (107, 22, 'Sita', 'Tez')";
+        stmt.executeUpdate(illegalSql);
+        // If there is no error, commit the changes.
+        conn.commit();
+
+    } catch (SQLException se) {
+        // If there is any error.
+        conn.rollback(savepoint);
+    }
+                </code>
+            </pre>
+        </section>
+    </section>
+
+    <section>
+        <h2>Для дальнейшего изучения</h2>
+        <ul>
+            <li><a href="http://www.tutorialspoint.com/hibernate/hibernate_quick_guide.htm">Hibernate</a></li>
+            <li><a href="http://docs.spring.io/spring/docs/2.0.8/reference/jdbc.html">Spring JDBC</a></li>
+        </ul>
+    </section>
+</div>
+<div class="progress" style="display: block;"><span></span></div>
+<div class="slide-number"></div>
+</div>
+
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/js/reveal.min.js"></script>
+
+<script>
+    Reveal.initialize({
+
+        controls: true,// Display controls in the bottom right corner
+        progress: true,	// Display a presentation progress bar
+        history: true,// Push each slide change to the browser history
+        keyboard: true,// Enable keyboard shortcuts for navigation
+        overview: true,// Enable the slide overview mode
+        center: true,	// Vertical centering of slides
+        loop: false,// Loop the presentation
+        rtl: false,	// Change the presentation direction to be RTL
+        autoSlide: 0,
+        mouseWheel: false,// Enable slide navigation via mouse wheel
+        rollingLinks: false,// Apply a 3D roll to links on hover
+        transition: 'linear', 	// Transition style default/cube/page/concave/zoom/linear/none
+
+        dependencies: [
+            // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+            { src: 'reveal/lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            } },
+            // Interpret Markdown in <section> elements
+            { src: 'reveal/plugin/markdown/showdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src: 'reveal/plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            // Syntax highlight for <code> elements
+            { src: 'reveal/plugin/highlight/highlight.pack.js', async: true, callback: function () {
+                hljs.tabReplace = '    ';
+                hljs.initHighlightingOnLoad();
+            } },
+            // Zoom in and out with Alt+click
+            { src: 'reveal/plugin/zoom-js/zoom.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            // Speaker notes
+            { src: 'reveal/plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            } },
+            { src: 'reveal/plugin/clock/clock.js', async: true, callback: function () {
+                clock.init("exadel-header");
+            } }
+        ]
+    });
+
+</script>
+</body>
+</html>
