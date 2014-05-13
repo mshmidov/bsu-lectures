@@ -30,6 +30,10 @@
         .pleft {
             text-align: left
         }
+
+        .reveal pre {
+            word-wrap: normal !important;
+        }
     </style>
 </head>
 
@@ -368,11 +372,10 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
         <h1>Типичные ошибки</h1>
         <ul>
             <li>Избыточность применения статических полей и методов</li>
-            <li>Процедурный стиль программирования</li>
+            <li>Стиль программирования "поток сознания"</li>
             <li>Игнорирования пакетирования и Naming convention</li>
             <li>Привязка к конкретной реализации</li>
             <li>Пренебрежение идентификаторами доступа</li>
-            <li><b>И</b>спользование коллекции Vector</li>
         </ul>
     </section>
     <section>
@@ -383,7 +386,7 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
         </ul>
     </section>
     <section>
-        <h2>Процедурный стиль программирования</h2>
+        <h2>Стиль программирования "поток сознания"</h2>
         <ul>
             <li>Дробить код программы на методы</li>
             <li>Если метод не вмещается на страницу экрана – это всегда признак плохого кода</li>
@@ -514,35 +517,6 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
             <li>Не используйте венгерскую нотацию</li>
         </ul>
     </section>
-    <section>
-        <h1>Именование</h1>
-        <p class="pleft">
-            Избегайте абстрактных названий
-        </p>
-        <pre>
-            <code class="java">
-    // wrong
-    int days;
-    // correct
-    int daysSinceCreation;
-    int daysSinceLastModification;
-    int durationInDays;
-            </code>
-        </pre>
-    </section>
-    <section>
-        <h1>Именование</h1>
-        <p class="pleft">
-            Короткие имена можно использовать в случае, когда время жизни переменной тоже коротко.
-        </p>
-        <pre>
-            <code class="java">
-    for (int i = 0; i < array.length; i++) {
-        // bla bla
-    }
-            </code>
-        </pre>
-    </section>
 </section>
 <section>
     <h1>Полезно почитать</h1>
@@ -583,10 +557,10 @@ private List&lt;Long&gt; exposeCustomerIds(List&lt;Form&gt; customerForms) {
 
         controls: true,// Display controls in the bottom right corner
         progress: true,	// Display a presentation progress bar
-        history: false,// Push each slide change to the browser history
+        history: true,// Push each slide change to the browser history
         keyboard: true,// Enable keyboard shortcuts for navigation
         overview: true,// Enable the slide overview mode
-        center: false,	// Vertical centering of slides
+        center: true,	// Vertical centering of slides
         loop: false,// Loop the presentation
         rtl: false,	// Change the presentation direction to be RTL
         autoSlide: 0,
